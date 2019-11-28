@@ -7,7 +7,7 @@ plugins {
 
 group = 'com.bb'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = JavaVersion.VERSION_11
 
 configurations {
     developmentOnly
@@ -31,13 +31,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
+    compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit', module: 'junit'
     }
+    testCompile "com.h2database:h2"
     testCompile "org.junit.jupiter:junit-jupiter-api:5.2.0"
     testCompile "org.junit.jupiter:junit-jupiter-params:5.2.0"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.2.0"
