@@ -3,7 +3,7 @@ package com.bb.stardium.player.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class PlayerTest {
     private final String nickname = "noname";
@@ -14,9 +14,9 @@ class PlayerTest {
     @DisplayName("새로운 플레이어 객체를 생성")
     void makeNewPlayer() {
         final Player player = new Player(nickname, email, password);
-        assertEquals(player.getNickname(), nickname);
-        assertEquals(player.getEmail(), email);
-        assertEquals(player.getPassword(), password);
+        assertThat(player.getNickname()).isEqualTo(nickname);
+        assertThat(player.getEmail()).isEqualTo(email);
+        assertThat(player.getPassword()).isEqualTo(password);
     }
 
     @Test
@@ -26,6 +26,6 @@ class PlayerTest {
         final Player originalPlayer = new Player(nickname, email, password);
         final Player newPlayer = new Player(newNickname, email, password);
         originalPlayer.update(newPlayer);
-        assertEquals(originalPlayer.getNickname(), newNickname);
+        assertThat(originalPlayer).isEqualTo(newPlayer);
     }
 }
