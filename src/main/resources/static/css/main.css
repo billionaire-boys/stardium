@@ -1,4 +1,5 @@
 body {
+    margin: 1rem;
 }
 
 body > .grid {
@@ -7,4 +8,9 @@ body > .grid {
 
 .column {
     max-width: 450px;
+}
+
+.div-signup {
+    margin-top: 2rem;
+    text-align: center;
 }
