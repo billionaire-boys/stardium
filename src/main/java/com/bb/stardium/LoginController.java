@@ -15,4 +15,9 @@ public class LoginController {
     public String signup() {
         return "signup.html";
     }
+
+    @GetMapping("/user/edit")
+    public String edit() {
+        return "user-edit.html";
+    }
 }
