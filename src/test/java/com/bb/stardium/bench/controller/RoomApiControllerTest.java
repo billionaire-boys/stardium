@@ -37,7 +37,7 @@ public class RoomApiControllerTest {
     @DisplayName("방 만들기 성공 테스트")
     @Test
     void createRoomTest() {
-        webTestClient.post().uri("/rooms")
+        webTestClient.post().uri("/api/rooms")
                 .body(Mono.just(roomRequest), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()
@@ -48,9 +48,9 @@ public class RoomApiControllerTest {
     @Test
     void updateRoom() {
         RoomRequestDto updateRequest = new RoomRequestDto("updatedTitle", "updatedIntro", address, startTime, endTime, 5);
-        createRoom(roomRequest);
+        Long roomId = createRoom(roomRequest);
 
-        webTestClient.put().uri("/rooms/1")
+        webTestClient.put().uri("/api/rooms/" + roomId)
                 .body(Mono.just(updateRequest), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()
@@ -60,9 +60,9 @@ public class RoomApiControllerTest {
     @DisplayName("방 삭제 성공 테스트")
     @Test
     void deleteRoomTest() {
-        createRoom(roomRequest);
+        Long roomId = createRoom(roomRequest);
 
-        webTestClient.delete().uri("/rooms/1")
+        webTestClient.delete().uri("/api/rooms/" + roomId)
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -71,9 +71,9 @@ public class RoomApiControllerTest {
     @DisplayName("방 조회 성공 테스트")
     @Test
     void readRoomTest() {
-        createRoom(roomRequest);
+        Long roomId = createRoom(roomRequest);
 
-        webTestClient.get().uri("/rooms/1")
+        webTestClient.get().uri("/api/rooms/" + roomId)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -84,21 +84,12 @@ public class RoomApiControllerTest {
                 .isEqualTo(roomRequest.getAddress().getCity());
     }
 
-    private Room toRoomEntity(RoomRequestDto roomRequest) {
-        return Room.builder()
-                .id(1L)
-                .title(roomRequest.getTitle())
-                .intro(roomRequest.getIntro())
-                .address(roomRequest.getAddress())
-                .startTime(roomRequest.getStartTime())
-                .endTime(roomRequest.getEndTime())
-                .playersLimit(roomRequest.getPlayersLimit())
-                .build();
-    }
-
-    private void createRoom(RoomRequestDto roomRequest) {
-        webTestClient.post().uri("/rooms")
+    private Long createRoom(RoomRequestDto roomRequest) {
+        return webTestClient.post().uri("/api/rooms")
                 .body(Mono.just(roomRequest), RoomRequestDto.class)
-                .exchange();
+                .exchange()
+                .expectBody(Long.class)
+                .returnResult()
+                .getResponseBody();
     }
 }

@@ -1,19 +1,14 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-<!--    <link href="/semantic.css" rel="stylesheet">-->
-<!--    <link href="/semantic.min.css" rel="stylesheet">-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>    ​
+    <th:block th:replace="fragment/head :: headFragment"/>
     <title>방 만들기</title>
 </head>
 <body>
 ​
 <div class="ui container">
-    <h1 class="ui header">방 만들기</h1>
+    <h1 class="ui violet header">방 만들기</h1>
     <form class="ui form" id="room-save-form">
         <div class="field">
             <h4 class="ui dividing header">제목</h4>
@@ -54,12 +49,12 @@
         </div>
         ​
         ​
-        <button class="ui button" id="signUp">Submit</button>
+        <button class="ui violet button" id="signUp">Submit</button>
     </form>
 </div>
 ​
-<script src="/semantic.js"></script>
-<script src="/semantic.min.js"></script>
+<th:block th:replace="fragment/script :: scriptFragment"/>
+
 <script src="/fetchApi.js"></script>
 <script src="/room.js"></script>
 ​

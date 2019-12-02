@@ -18,8 +18,8 @@ public class RoomApiController {
 
     @PostMapping()
     public ResponseEntity crate(@RequestBody RoomRequestDto roomRequest) {
-        Long roomNumber = roomService.create(roomRequest);
-        return ResponseEntity.ok().body(roomNumber);
+        Long roomId = roomService.create(roomRequest);
+        return ResponseEntity.ok(roomId);
     }
 
     @PutMapping("/{roomId}")
