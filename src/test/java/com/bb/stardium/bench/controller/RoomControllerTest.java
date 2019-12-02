@@ -1,22 +1,25 @@
 package com.bb.stardium.bench.controller;
 
-import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.Address;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-public class RoomApiControllerTest {
+public class RoomControllerTest {
 
     private Address address;
     private LocalDateTime startTime;
@@ -37,11 +40,11 @@ public class RoomApiControllerTest {
     @DisplayName("방 만들기 성공 테스트")
     @Test
     void createRoomTest() {
-        webTestClient.post().uri("/api/rooms")
+        webTestClient.post().uri("/rooms")
                 .body(Mono.just(roomRequest), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()
-                .isOk();
+                .is3xxRedirection();
     }
 
     @DisplayName("방 정보 수정 성공 테스트")
@@ -50,11 +53,11 @@ public class RoomApiControllerTest {
         RoomRequestDto updateRequest = new RoomRequestDto("updatedTitle", "updatedIntro", address, startTime, endTime, 5);
         Long roomId = createRoom(roomRequest);
 
-        webTestClient.put().uri("/api/rooms/" + roomId)
+        webTestClient.put().uri("/rooms/" + roomId)
                 .body(Mono.just(updateRequest), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()
-                .isOk();
+                .is3xxRedirection();
     }
 
     @DisplayName("방 삭제 성공 테스트")
@@ -62,10 +65,10 @@ public class RoomApiControllerTest {
     void deleteRoomTest() {
         Long roomId = createRoom(roomRequest);
 
-        webTestClient.delete().uri("/api/rooms/" + roomId)
+        webTestClient.delete().uri("/rooms/" + roomId)
                 .exchange()
                 .expectStatus()
-                .isOk();
+                .is3xxRedirection();
     }
 
     @DisplayName("방 조회 성공 테스트")
@@ -73,23 +76,27 @@ public class RoomApiControllerTest {
     void readRoomTest() {
         Long roomId = createRoom(roomRequest);
 
-        webTestClient.get().uri("/api/rooms/" + roomId)
+        webTestClient.get().uri("/rooms/" + roomId)
                 .exchange()
                 .expectStatus()
-                .isOk()
-                .expectBody()
-                .jsonPath("$.playersLimit")
-                .isEqualTo(roomRequest.getPlayersLimit())
-                .jsonPath("$.address.city")
-                .isEqualTo(roomRequest.getAddress().getCity());
+                .isOk();
     }
 
+    // TODO : 리팩토링 필요
     private Long createRoom(RoomRequestDto roomRequest) {
-        return webTestClient.post().uri("/api/rooms")
+        List<Long> roomIdList = new ArrayList<>();
+
+        webTestClient.post().uri("/rooms")
                 .body(Mono.just(roomRequest), RoomRequestDto.class)
                 .exchange()
-                .expectBody(Long.class)
-                .returnResult()
-                .getResponseBody();
+                .expectBody()
+                .consumeWith(response -> {
+                    String url = Objects.requireNonNull(response.getResponseHeaders().get("Location")).get(0);
+                    String roomId = url.substring(url.lastIndexOf("/") + 1);
+                    Long roomIdLong = Long.valueOf(roomId);
+                    roomIdList.add(roomIdLong);
+                });
+
+        return roomIdList.get(0);
     }
 }
