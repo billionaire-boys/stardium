@@ -34,11 +34,11 @@ public class Room {
     private int playersLimit;
 
     public void update(RoomRequestDto roomRequestDto) {
-//        this.title = roomRequestDto.getTitle();
-//        this.intro = roomRequestDto.getIntro();
-//        this.address = roomRequestDto.getAddress();
-//        this.startTime = roomRequestDto.getStartTime();
-//        this.endTime = roomRequestDto.getEndTime();
-//        this.playersLimit = roomRequestDto.getPlayersLimit();
+        this.title = roomRequestDto.getTitle();
+        this.intro = roomRequestDto.getIntro();
+        this.address = roomRequestDto.getAddress();
+        this.startTime = roomRequestDto.getStartTime();
+        this.endTime = roomRequestDto.getEndTime();
+        this.playersLimit = roomRequestDto.getPlayersLimit();
     }
 }
