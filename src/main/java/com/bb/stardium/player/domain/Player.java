@@ -1,5 +1,6 @@
 package com.bb.stardium.player.domain;
 
+import com.bb.stardium.player.dto.PlayerRequestDto;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -38,6 +39,10 @@ public class Player {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
+    }
+
+    public Player(final PlayerRequestDto dto) {
+        this(dto.getNickname(), dto.getEmail(), dto.getPassword());
     }
 
     public Long getId() {
