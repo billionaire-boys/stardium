@@ -41,7 +41,7 @@ const ROOM_APP = (() => {
             const roomBasicInfo = {
                 title: title.value,
                 address: {
-                    city:city.value,
+                    city: city.value,
                     gu: gu.value,
                     detail: detail.value
                 },
