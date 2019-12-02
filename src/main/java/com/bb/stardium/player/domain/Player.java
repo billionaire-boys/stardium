@@ -77,6 +77,14 @@ public class Player {
         return this;
     }
 
+    public boolean isMatchPassword(final String password) {
+        return this.password.equals(password);
+    }
+
+    public boolean isMatchPassword(final PlayerRequestDto requestDto) {
+        return isMatchPassword(requestDto.getPassword());
+    }
+
     @Override
     public boolean equals(final Object another) {
         if (this == another) return true;

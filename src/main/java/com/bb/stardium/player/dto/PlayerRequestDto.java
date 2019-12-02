@@ -5,6 +5,12 @@ public class PlayerRequestDto {
     private String email;
     private String password;
 
+    public PlayerRequestDto(final String nickname, final String email, final String password) {
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+    }
+
     public String getNickname() {
         return nickname;
     }
