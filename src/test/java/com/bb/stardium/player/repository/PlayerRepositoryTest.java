@@ -30,16 +30,15 @@ class PlayerRepositoryTest {
     @DisplayName("이메일로 플레이어 1명 찾기")
     void findByEmail() {
         final Player player = playerRepository.save(samplePlayer);
-//        final Player actual = playerRepository.findByEmail(email);
-//        assertThat(player).isEqualTo(actual);
-//        assertThat(player).isEqualTo(actual);
+        final Player actual = playerRepository.findByEmail(email).get();
+        assertThat(player).isEqualTo(actual);
+        assertThat(player).isEqualTo(actual);
     }
 
     @Test
     @DisplayName("없는 플레이어 찾기")
     void findNotExistPlayerByEmail() {
-//        final Player actual = playerRepository.findByEmail("doesn't exist player");
-//        assertThat(actual).isNull();
+        assertThat(playerRepository.findByEmail("doesn't exist player").isEmpty()).isTrue();
     }
 
     @Test
