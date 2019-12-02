@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragment/head :: headFragment"/>
+</head>
+
+<body>
+<div class="ui top aligned center aligned">
+    <h1 class="ui violet header">회원가입</h1>
+    <form class="ui form">
+        <div class="field">
+            <div class="ui left icon input">
+                <i class="envelope icon"></i>
+                <input type="text" name="email" placeholder="이메일 입력"/>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui left icon input">
+                <i class="lock icon"></i>
+                <input type="password" name="password" placeholder="비밀번호 입력">
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui left icon input">
+                <i class="lock icon"></i>
+                <input type="password" name="password" placeholder="비밀번호 재입력">
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui left icon input">
+                <i class="user icon"></i>
+                <input type="password" name="confirmPassword" placeholder="닉네임 입력">
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui basic fluid violet large submit button">가입 완료</div>
+        </div>
+    </form>
+</div>
+<th:block th:replace="fragment/script :: scriptFragment"/>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragment/head :: headFragment"/>
+</head>
+
+<body>
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <img src="../images/login.png" class="ui huge image" alt="login.png">
+        <div class="ui large form">
+            <h1 class="ui violet header"> Stardium</h1>
+            <div class="ui segment">
+                <form>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="envelope icon"></i>
+                            <input type="text" name="email" placeholder="이메일">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="password" placeholder="비밀번호">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui fluid large violet submit button">Login</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="ui message">
+            처음이신가요? <a href="#">회원가입</a>
+        </div>
+    </div>
+</div>
+<th:block th:replace="fragment/script :: scriptFragment"/>
+</body>
+</html>

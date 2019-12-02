@@ -1,0 +1,16 @@
+body {
+    margin: 1rem;
+}
+
+body > .grid {
+    height: 100%;
+}
+
+.column {
+    max-width: 450px;
+}
+
+.div_signup {
+    margin-top: 2rem;
+    text-align: center;
+}
