@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+<!--    <link href="/semantic.css" rel="stylesheet">-->
+<!--    <link href="/semantic.min.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>    ​
+    <title>방 만들기</title>
+</head>
+<body>
+​
+<div class="ui container">
+    <h1 class="ui header">방 만들기</h1>
+    <form class="ui form" id="room-save-form">
+        <div class="field">
+            <h4 class="ui dividing header">제목</h4>
+            <input id="title" name="title" placeholder="제목" type="text">
+        </div>
+        <div class="field">
+            <h4 class="ui dividing header">주소</h4>
+            <div class="fields">
+                <div class="field">
+                    <label>시</label>
+                    <input id="city" name="city" placeholder="시" type="text">
+                </div>
+                <div class="field">
+                    <label>구</label>
+                    <input id="gu" name="gu" placeholder="구" type="text">
+                </div>
+            </div>
+            <div class="field">
+                <label>더 자세히</label>
+                <input id="detail" name="detail" placeholder="더 자세히" type="text">
+            </div>
+        </div>
+        <div class="field">
+            <h4 class="ui dividing header">게임 시간</h4>
+            <label>시작 시간</label>
+            <input id="startTime" name="startTime" type="datetime-local">
+            <label>끝나는 시간</label>
+            <input id="endTime" name="endTime" type="datetime-local">
+        </div>
+        <div class="field">
+            <h4 class="ui dividing header">인원 수</h4>
+            <input id="playerNumbers" max="100" min="1" name="playerNumbers" type="number">
+        </div>
+        ​
+        <div class="field">
+            <h4 class="ui dividing header">방 소개</h4>
+            <textarea form="room-save-form" id="intro" name="intro"></textarea>
+        </div>
+        ​
+        ​
+        <button class="ui button" id="signUp">Submit</button>
+    </form>
+</div>
+​
+<script src="/semantic.js"></script>
+<script src="/semantic.min.js"></script>
+<script src="/fetchApi.js"></script>
+<script src="/room.js"></script>
+​
+​
+</body>
+</html>
