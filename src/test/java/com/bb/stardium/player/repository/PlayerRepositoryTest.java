@@ -32,7 +32,6 @@ class PlayerRepositoryTest {
         final Player player = playerRepository.save(samplePlayer);
         final Player actual = playerRepository.findByEmail(email).get();
         assertThat(player).isEqualTo(actual);
-        assertThat(player).isEqualTo(actual);
     }
 
     @Test
