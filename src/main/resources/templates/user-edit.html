@@ -2,8 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:replace="fragment/head :: headFragment"/>
-    <th:block th:replace="fragment/script :: scriptFragment"/>
-    <link rel="stylesheet" type="text/css" href="../css/user-edit.css">
+    <link rel="stylesheet" type="text/css" href="/css/user-edit.css">
 </head>
 
 <body>
@@ -47,5 +46,6 @@
         </form>
     </div>
 </div>
+<th:block th:replace="fragment/script :: scriptFragment"/>
 </body>
 </html>
