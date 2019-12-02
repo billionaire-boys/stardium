@@ -21,7 +21,7 @@ public class PlayerService {
         playerRepository
                 .findByEmail(email)
                 .ifPresent(player -> { throw new AlreadyExistEmailException(); });
-        return playerRepository.save(new Player(requestDto));
+        return playerRepository.save(requestDto.ofEntity());
     }
 
     public Player findByPlayerEmail(final String email) {
@@ -34,7 +34,7 @@ public class PlayerService {
 
     public Player login(final PlayerRequestDto requestDto) {
         final Player player = findByPlayerRequestDto(requestDto);
-        if (player.isMatchPassword(requestDto)) {
+        if (player.isMatchPassword(requestDto.getPassword())) {
             return player;
         }
         throw new AuthenticationFailException();

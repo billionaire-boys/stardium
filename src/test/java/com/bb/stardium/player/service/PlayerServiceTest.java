@@ -34,7 +34,7 @@ class PlayerServiceTest {
     @BeforeEach
     void setUp() {
         requestDto = new PlayerRequestDto("nickname", "email", "password");
-        player = new Player(requestDto);
+        player = requestDto.ofEntity();
     }
 
     @Test
