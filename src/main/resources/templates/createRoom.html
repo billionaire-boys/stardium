@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <th:block th:replace="fragment/head :: headFragment"/>
     <title>방 만들기</title>
 </head>
@@ -52,12 +51,8 @@
         <button class="ui violet button" id="signUp">Submit</button>
     </form>
 </div>
-​
-<th:block th:replace="fragment/script :: scriptFragment"/>
-
-<script src="/fetchApi.js"></script>
-<script src="/room.js"></script>
-​
-​
+<th:block th:replace="fragment/script"/>
+<script src="/js/fetchApi.js"></script>
+<script src="/js/room.js"></script>
 </body>
 </html>

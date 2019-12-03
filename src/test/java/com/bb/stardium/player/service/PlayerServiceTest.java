@@ -1,9 +1,9 @@
 package com.bb.stardium.player.service;
 
 import com.bb.stardium.player.domain.Player;
+import com.bb.stardium.player.domain.repository.PlayerRepository;
 import com.bb.stardium.player.dto.PlayerRequestDto;
-import com.bb.stardium.player.exception.NotExistPlayerException;
-import com.bb.stardium.player.repository.PlayerRepository;
+import com.bb.stardium.player.service.exception.NotExistPlayerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,19 +22,17 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 class PlayerServiceTest {
-    private Player player;
-    private PlayerRequestDto requestDto;
-
     @Mock
     PlayerRepository playerRepository;
-
     @InjectMocks
     PlayerService playerService;
+    private Player player;
+    private PlayerRequestDto requestDto;
 
     @BeforeEach
     void setUp() {
         requestDto = new PlayerRequestDto("nickname", "email", "password");
-        player = requestDto.ofEntity();
+        player = requestDto.toEntity();
     }
 
     @Test

@@ -11,25 +11,25 @@
         <div class="field">
             <div class="ui left icon input">
                 <i class="envelope icon"></i>
-                <input type="email" name="email" placeholder="이메일 입력"/>
+                <input name="email" placeholder="이메일 입력" type="email"/>
             </div>
         </div>
         <div class="field">
             <div class="ui left icon input">
                 <i class="lock icon"></i>
-                <input type="password" name="password" placeholder="비밀번호 입력">
+                <input name="password" placeholder="비밀번호 입력" type="password">
             </div>
         </div>
         <div class="field">
             <div class="ui left icon input">
                 <i class="lock icon"></i>
-                <input type="password" name="password-confirm" placeholder="비밀번호 재입력">
+                <input name="password-confirm" placeholder="비밀번호 재입력" type="password">
             </div>
         </div>
         <div class="field">
             <div class="ui left icon input">
                 <i class="user icon"></i>
-                <input type="text" name="nickname" placeholder="닉네임 입력">
+                <input name="nickname" placeholder="닉네임 입력" type="text">
             </div>
         </div>
         <div class="field">
@@ -37,6 +37,6 @@
         </div>
     </form>
 </div>
-<th:block th:replace="fragment/script :: scriptFragment"/>
+<th:block th:replace="fragment/script"/>
 </body>
 </html>

@@ -8,50 +8,37 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class RoomService {
-
-    private RoomRepository roomRepository;
+    private final RoomRepository roomRepository;
 
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 
-    @Transactional
-    public Long create(RoomRequestDto roomRequest) {
-        Room room = toRoomEntity(roomRequest);
-        Room saveRoom = roomRepository.save(room);
+    public long create(RoomRequestDto roomRequest) {
+        Room saveRoom = roomRepository.save(roomRequest.toEntity());
         return saveRoom.getId();
     }
 
-    @Transactional
-    public Long update(Long roomId, RoomRequestDto roomRequestDto) {
+    public long update(long roomId, RoomRequestDto roomRequestDto) {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(NotFoundRoomException::new);
         room.update(roomRequestDto);
         return room.getId();
     }
 
-    @Transactional
-    public void delete(Long roomId) {
+    public boolean delete(long roomId) {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(NotFoundRoomException::new);
         roomRepository.delete(room);
+        return true;
     }
 
-    public Room findRoom(Long roomId) {
+    @Transactional(readOnly = true)
+    public Room findRoom(long roomId) {
         return roomRepository.findById(roomId)
                 .orElseThrow(NotFoundRoomException::new);
     }
 
-    private Room toRoomEntity(RoomRequestDto roomRequest) {
-        return Room.builder()
-                .title(roomRequest.getTitle())
-                .intro(roomRequest.getIntro())
-                .address(roomRequest.getAddress())
-                .startTime(roomRequest.getStartTime())
-                .endTime(roomRequest.getEndTime())
-                .playersLimit(roomRequest.getPlayersLimit())
-                .build();
-    }
 }

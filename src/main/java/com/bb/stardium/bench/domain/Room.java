@@ -1,6 +1,5 @@
 package com.bb.stardium.bench.domain;
 
-import com.bb.stardium.bench.dto.Address;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,11 +12,13 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder @Getter
+@Builder
+@Getter
 public class Room {
 
-    @Id @GeneratedValue
-    @Column(name="room_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "room_id")
     private Long id;
 
     private String title;
