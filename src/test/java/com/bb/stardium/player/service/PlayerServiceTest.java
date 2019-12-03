@@ -4,6 +4,8 @@ import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.domain.repository.PlayerRepository;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
+import com.bb.stardium.player.service.exception.AuthenticationFailException;
+import com.bb.stardium.player.service.exception.EmailAlreadyExistException;
 import com.bb.stardium.player.service.exception.EmailNotExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,6 +49,15 @@ class PlayerServiceTest {
     }
 
     @Test
+    @DisplayName("이미 가입된 이메일로 가입 시도")
+    void alreadyRegistered() {
+        given(playerRepository.findByEmail(anyString())).willReturn(Optional.of(player));
+
+        assertThatThrownBy(() -> playerService.register(requestDto))
+                .isInstanceOf(EmailAlreadyExistException.class);
+    }
+
+    @Test
     @DisplayName("로그인 성공")
     void login() {
         given(playerRepository.findByEmail("email")).willReturn(Optional.of(player));
@@ -63,5 +74,15 @@ class PlayerServiceTest {
 
         assertThatThrownBy(() -> playerService.login(requestDto))
                 .isInstanceOf(EmailNotExistException.class);
+    }
+
+    @Test
+    @DisplayName("잘못된 패스워드로 로그인 시도")
+    void wrongPassword() {
+        PlayerRequestDto wrongPasswordDto = new PlayerRequestDto("nickname", "email", "wrong");
+        given(playerRepository.findByEmail(anyString())).willReturn(Optional.of(player));
+
+        assertThatThrownBy(() -> playerService.login(wrongPasswordDto))
+                .isInstanceOf(AuthenticationFailException.class);
     }
 }

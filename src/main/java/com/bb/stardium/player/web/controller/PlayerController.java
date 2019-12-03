@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/players")
+@RequestMapping("/player")
 public class PlayerController {
     private static final String REDIRECT_ROOT = "redirect:/";
     private static final String REDIRECT_LOGIN = "redirect:login";
