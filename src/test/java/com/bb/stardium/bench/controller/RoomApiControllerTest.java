@@ -1,6 +1,5 @@
 package com.bb.stardium.bench.controller;
 
-import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.Address;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import org.junit.jupiter.api.BeforeEach;

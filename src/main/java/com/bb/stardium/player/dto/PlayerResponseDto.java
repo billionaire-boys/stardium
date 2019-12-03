@@ -2,19 +2,17 @@ package com.bb.stardium.player.dto;
 
 import com.bb.stardium.player.domain.Player;
 
-public class PlayerRequestDto {
+public class PlayerResponseDto {
     private String nickname;
     private String email;
-    private String password;
 
-    public PlayerRequestDto(final String nickname, final String email, final String password) {
+    public PlayerResponseDto(final String nickname, final String email) {
         this.nickname = nickname;
         this.email = email;
-        this.password = password;
     }
 
-    public Player ofEntity() {
-        return new Player(nickname, email, password);
+    public PlayerResponseDto(final Player player) {
+        this(player.getNickname(), player.getEmail());
     }
 
     public String getNickname() {
@@ -33,20 +31,11 @@ public class PlayerRequestDto {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-
     @Override
     public String toString() {
-        return "PlayerRequestDto {" +
+        return "PlayerResponseDto {" +
                 "nickname: \"" + nickname + "\"" +
                 ", email: \"" + email + "\"" +
-                ", password: \"" + password + "\"" +
                 "}";
     }
 }

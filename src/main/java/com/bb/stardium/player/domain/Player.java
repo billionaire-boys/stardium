@@ -1,6 +1,5 @@
 package com.bb.stardium.player.domain;
 
-import com.bb.stardium.player.dto.PlayerRequestDto;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -41,10 +40,6 @@ public class Player {
         this.password = password;
     }
 
-    public Player(final PlayerRequestDto dto) {
-        this(dto.getNickname(), dto.getEmail(), dto.getPassword());
-    }
-
     public Long getId() {
         return id;
     }
@@ -75,6 +70,10 @@ public class Player {
         this.password = newPlayer.password;
         this.updatedDateTime = newPlayer.updatedDateTime;
         return this;
+    }
+
+    public boolean isMatchPassword(final String password) {
+        return this.password.equals(password);
     }
 
     @Override
