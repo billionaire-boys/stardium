@@ -7,11 +7,11 @@ const FETCH_APP = (() => {
         const PUT = 'PUT';
         const DELETE = 'DELETE';
 
-        const fetchTemplate = (requestUrl, method, header, body, ifSucceed) => {
+        const fetchTemplate = (requestUrl, method, headers, body, ifSucceed) => {
             fetch(requestUrl, {
-                method: method,
-                headers: header,
-                body: body
+                method,
+                headers,
+                body
             }).then(response => {
                 if (response.status === 200) {
                     return ifSucceed(response);
@@ -24,7 +24,7 @@ const FETCH_APP = (() => {
 
         const fetchTemplateWithoutBody = (requestUrl, method, ifSucceed) => {
             fetch(requestUrl, {
-                method: method,
+                method,
                 headers: {
                     'Content-Type': 'application/json; charset=UTF-8',
                     'Accept': 'application/json'
@@ -47,16 +47,16 @@ const FETCH_APP = (() => {
         };
 
         return {
-            GET: GET,
-            POST: POST,
-            PUT: PUT,
-            DELETE: DELETE,
-            fetchTemplate: fetchTemplate,
-            fetchTemplateWithoutBody: fetchTemplateWithoutBody,
+            GET,
+            POST,
+            PUT,
+            DELETE,
+            fetchTemplate,
+            fetchTemplateWithoutBody,
         }
     };
 
     return {
-        FetchApi: FetchApi
+        FetchApi
     }
 })();

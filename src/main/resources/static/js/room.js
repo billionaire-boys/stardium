@@ -51,15 +51,12 @@ const ROOM_APP = (() => {
                 intro: intro.value
             };
 
-            const ifSucceed = (response) => {
-                response.json().then(data => {
-                    alert("방 만들기 성공!");
-                    window.location.href = `/api/rooms/` + data;
-                })
+            const ifSucceed = () => {
+                alert("방 만들기 성공!");
+                window.location.href = `/rooms/1`;
             };
 
-
-            connector.fetchTemplate('/api/rooms',
+            connector.fetchTemplate('/rooms',
                 connector.POST,
                 header,
                 JSON.stringify(roomBasicInfo),

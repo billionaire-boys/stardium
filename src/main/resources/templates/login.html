@@ -7,7 +7,7 @@
 <body>
 <div class="ui middle aligned center aligned grid">
     <div class="column">
-        <img alt="login.png" class="ui huge image" src="../images/login.png">
+        <img alt="login.png" class="ui huge image" src="/images/login.png">
         <div class="ui large form">
             <h1 class="ui violet header"> Stardium</h1>
             <div class="ui segment">
@@ -15,7 +15,7 @@
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="envelope icon"></i>
-                            <input name="email" placeholder="이메일" type="text">
+                            <input name="email" placeholder="이메일" type="email">
                         </div>
                     </div>
                     <div class="field">
@@ -35,6 +35,6 @@
         </div>
     </div>
 </div>
-<th:block th:replace="fragment/script :: scriptFragment"/>
+<th:block th:replace="fragment/script"/>
 </body>
 </html>
