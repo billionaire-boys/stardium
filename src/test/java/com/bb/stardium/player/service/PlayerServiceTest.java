@@ -7,10 +7,9 @@ import com.bb.stardium.player.service.exception.NotExistPlayerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
@@ -20,7 +19,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class PlayerServiceTest {
     @Mock
     PlayerRepository playerRepository;
@@ -42,6 +41,7 @@ class PlayerServiceTest {
         given(playerRepository.save(player)).willReturn(player);
 
         Player savedPlayer = playerService.register(requestDto);
+
         verify(playerRepository, times(1)).save(savedPlayer);
     }
 
@@ -51,6 +51,7 @@ class PlayerServiceTest {
         given(playerRepository.findByEmail("email")).willReturn(Optional.of(player));
 
         Player logindPlayer = playerService.login(requestDto);
+
         verify(playerRepository).findByEmail("email");
     }
 
