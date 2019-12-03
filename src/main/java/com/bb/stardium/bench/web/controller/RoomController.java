@@ -22,8 +22,13 @@ public class RoomController {
         return "createRoom";
     }
 
+    @GetMapping("/updateForm")
+    public String updateForm() {
+        return "updateRoom";
+    }
+
     @PostMapping()
-    public String crate(@RequestBody RoomRequestDto roomRequest) {
+    public String create(@RequestBody RoomRequestDto roomRequest) {
         Long roomId = roomService.create(roomRequest);
         return "redirect:/rooms/" + roomId;
     }
