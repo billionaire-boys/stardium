@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <th:block th:replace="fragment/head :: headFragment"/>
-    <title>방 만들기</title>
+    <title>방 업데이트</title>
 </head>
 <body>
+
 <th:block th:replace="fragment/header"/>
+
 ​
-<div class="ui container">
-    <h1 class="ui violet header">방 만들기</h1>
+<div class="ui main container">
+    <h1 class="ui violet header">방 업데이트</h1>
     <form class="ui form" id="room-save-form">
         <div class="field">
             <h4 class="ui dividing header">제목</h4>
@@ -49,11 +52,15 @@
         </div>
         ​
         ​
-        <button class="ui violet button" id="signUp">Submit</button>
+        <button class="ui violet button" id="update-room-button">Submit</button>
     </form>
 </div>
-<th:block th:replace="fragment/script"/>
+​
+<th:block th:replace="fragment/script :: scriptFragment"/>
+
 <script src="/js/fetchApi.js"></script>
 <script src="/js/room.js"></script>
+​
+​
 </body>
 </html>
