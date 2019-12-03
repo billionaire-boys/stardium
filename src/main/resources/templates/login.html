@@ -1,40 +1,42 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <th:block th:replace="fragment/head :: headFragment"/>
-</head>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main_layout">
 
-<body>
-<div class="ui middle aligned center aligned grid">
-    <div class="column">
-        <img alt="login.png" class="ui huge image" src="/images/login.png">
-        <div class="ui large form">
-            <h1 class="ui violet header"> Stardium</h1>
-            <div class="ui segment">
-                <form>
-                    <div class="field">
-                        <div class="ui left icon input">
-                            <i class="envelope icon"></i>
-                            <input name="email" placeholder="이메일" type="email">
+<th:block layout:fragment="custom_header">
+    <title>로그인</title>
+</th:block>
+
+<th:block layout:fragment="content_body">
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <img alt="login.png" class="ui huge image" src="/images/login.png">
+            <div class="ui large form">
+                <h1 class="ui violet header"> Stardium</h1>
+                <div class="ui segment">
+                    <form>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="envelope icon"></i>
+                                <input name="email" placeholder="이메일" type="email">
+                            </div>
                         </div>
-                    </div>
-                    <div class="field">
-                        <div class="ui left icon input">
-                            <i class="lock icon"></i>
-                            <input name="password" placeholder="비밀번호" type="password">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input name="password" placeholder="비밀번호" type="password">
+                            </div>
                         </div>
-                    </div>
-                    <div class="field">
-                        <div class="ui fluid large violet submit button">Login</div>
-                    </div>
-                </form>
+                        <div class="field">
+                            <div class="ui fluid large violet submit button">Login</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="ui message">
+                처음이신가요? <a href="#">회원가입</a>
             </div>
         </div>
-        <div class="ui message">
-            처음이신가요? <a href="#">회원가입</a>
-        </div>
     </div>
-</div>
-<th:block th:replace="fragment/script"/>
-</body>
+</th:block>
 </html>
