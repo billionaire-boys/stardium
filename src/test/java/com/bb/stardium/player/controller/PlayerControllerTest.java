@@ -32,7 +32,7 @@ class PlayerControllerTest {
                         .with("email", "asdf@mail.net")
                         .with("password", "1q2w3e4r!"))
                 .exchange()
-                .expectStatus().isCreated();
+                .expectStatus().isFound();
     }
 
     @Test

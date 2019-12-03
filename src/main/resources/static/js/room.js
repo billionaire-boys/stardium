@@ -52,11 +52,11 @@ const ROOM_APP = (() => {
             };
 
             const ifSucceed = () => {
-                alert("방 만들기 성공!")
-                window.location.href = `/api/rooms/1`;
+                alert("방 만들기 성공!");
+                window.location.href = `/rooms/1`;
             };
 
-            connector.fetchTemplate('/api/rooms',
+            connector.fetchTemplate('/rooms',
                 connector.POST,
                 header,
                 JSON.stringify(roomBasicInfo),
