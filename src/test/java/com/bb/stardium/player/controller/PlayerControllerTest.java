@@ -1,7 +1,7 @@
 package com.bb.stardium.player.controller;
 
 import com.bb.stardium.player.domain.Player;
-import com.bb.stardium.player.repository.PlayerRepository;
+import com.bb.stardium.player.domain.repository.PlayerRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

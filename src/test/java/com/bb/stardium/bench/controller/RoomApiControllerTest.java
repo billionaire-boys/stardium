@@ -1,6 +1,6 @@
 package com.bb.stardium.bench.controller;
 
-import com.bb.stardium.bench.dto.Address;
+import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +21,8 @@ public class RoomApiControllerTest {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private RoomRequestDto roomRequest;
+    @Autowired
+    private WebTestClient webTestClient;
 
     @BeforeEach
     void setUp() {
@@ -29,9 +31,6 @@ public class RoomApiControllerTest {
         endTime = LocalDateTime.of(2020, 11, 30, 13, 0);
         roomRequest = new RoomRequestDto("title", "intro", address, startTime, endTime, 10);
     }
-
-    @Autowired
-    private WebTestClient webTestClient;
 
     @DisplayName("방 만들기 성공 테스트")
     @Test
