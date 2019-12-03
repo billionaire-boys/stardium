@@ -3,6 +3,7 @@ package com.bb.stardium.player.service;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.domain.repository.PlayerRepository;
 import com.bb.stardium.player.dto.PlayerRequestDto;
+import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.exception.NotExistPlayerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -50,7 +51,7 @@ class PlayerServiceTest {
     void login() {
         given(playerRepository.findByEmail("email")).willReturn(Optional.of(player));
 
-        Player logindPlayer = playerService.login(requestDto);
+        PlayerResponseDto responseDto = playerService.login(requestDto);
 
         verify(playerRepository).findByEmail("email");
     }

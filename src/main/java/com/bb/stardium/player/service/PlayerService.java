@@ -3,6 +3,7 @@ package com.bb.stardium.player.service;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.domain.repository.PlayerRepository;
 import com.bb.stardium.player.dto.PlayerRequestDto;
+import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.exception.AlreadyExistEmailException;
 import com.bb.stardium.player.service.exception.AuthenticationFailException;
 import com.bb.stardium.player.service.exception.NotExistPlayerException;
@@ -38,10 +39,10 @@ public class PlayerService {
         return findByPlayerEmail(requestDto.getEmail());
     }
 
-    public Player login(final PlayerRequestDto requestDto) {
+    public PlayerResponseDto login(final PlayerRequestDto requestDto) {
         final Player player = findByPlayerRequestDto(requestDto);
         if (player.isMatchPassword(requestDto.getPassword())) {
-            return player;
+            return new PlayerResponseDto(player);
         }
         throw new AuthenticationFailException();
     }

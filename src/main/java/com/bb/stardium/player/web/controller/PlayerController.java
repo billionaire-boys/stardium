@@ -1,6 +1,5 @@
 package com.bb.stardium.player.web.controller;
 
-import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
@@ -16,15 +15,25 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/players")
 public class PlayerController {
-    private static final String IS_LOGIN_SUCCESS = "isLoginSuccess";
     private static final String REDIRECT_ROOT = "redirect:/";
     private static final String REDIRECT_LOGIN = "redirect:login";
-    private static final String LOGIN_PLAYER = "LoginPlayer";
+    private static final String IS_LOGIN_SUCCESS = "isLoginSuccess";
+    private static final String LOGIN = "Login";
 
     private final PlayerService playerService;
 
     public PlayerController(final PlayerService playerService) {
         this.playerService = playerService;
+    }
+
+    @GetMapping("/new")
+    public String signupPage() {
+        return "signup.html";
+    }
+
+    @GetMapping("/edit")
+    public String editPage() {
+        return "user-edit.html";
     }
 
     @PostMapping
@@ -37,9 +46,8 @@ public class PlayerController {
     public String login(final PlayerRequestDto requestDto, final HttpSession session,
                         final RedirectAttributes redirectAttributes) {
         try {
-            final Player player = playerService.login(requestDto);
-            final PlayerResponseDto responseDto = new PlayerResponseDto(player);
-            session.setAttribute(LOGIN_PLAYER, responseDto);
+            final PlayerResponseDto responseDto = playerService.login(requestDto);
+            session.setAttribute(LOGIN, responseDto);
             redirectAttributes.addFlashAttribute(IS_LOGIN_SUCCESS, true);
             return REDIRECT_ROOT;
         } catch (final AuthenticationFailException exception) {

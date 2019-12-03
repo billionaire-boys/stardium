@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 
 @Entity
 @Getter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class Player {
 
@@ -29,6 +29,7 @@ public class Player {
     private String nickname;
 
     @Column(name = "email", length = 64, nullable = false, unique = true)
+    @EqualsAndHashCode.Include
     private String email;
 
     @Column(name = "password", length = 64, nullable = false)
