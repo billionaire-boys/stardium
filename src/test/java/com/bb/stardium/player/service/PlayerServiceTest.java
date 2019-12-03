@@ -4,7 +4,7 @@ import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.domain.repository.PlayerRepository;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
-import com.bb.stardium.player.service.exception.NotExistPlayerException;
+import com.bb.stardium.player.service.exception.EmailNotExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,6 +62,6 @@ class PlayerServiceTest {
         given(playerRepository.findByEmail(anyString())).willReturn(Optional.empty());
 
         assertThatThrownBy(() -> playerService.login(requestDto))
-                .isInstanceOf(NotExistPlayerException.class);
+                .isInstanceOf(EmailNotExistException.class);
     }
 }

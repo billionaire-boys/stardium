@@ -4,9 +4,9 @@ import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.domain.repository.PlayerRepository;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
-import com.bb.stardium.player.service.exception.AlreadyExistEmailException;
 import com.bb.stardium.player.service.exception.AuthenticationFailException;
-import com.bb.stardium.player.service.exception.NotExistPlayerException;
+import com.bb.stardium.player.service.exception.EmailAlreadyExistException;
+import com.bb.stardium.player.service.exception.EmailNotExistException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +21,7 @@ public class PlayerService {
 
     @Transactional(readOnly = true)
     public Player findByPlayerEmail(final String email) {
-        return playerRepository.findByEmail(email).orElseThrow(NotExistPlayerException::new);
+        return playerRepository.findByEmail(email).orElseThrow(EmailNotExistException::new);
     }
 
     public Player register(final PlayerRequestDto requestDto) {
@@ -29,7 +29,7 @@ public class PlayerService {
         playerRepository
                 .findByEmail(email)
                 .ifPresent(player -> {
-                    throw new AlreadyExistEmailException();
+                    throw new EmailAlreadyExistException();
                 });
         return playerRepository.save(requestDto.toEntity());
     }
