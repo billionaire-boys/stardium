@@ -1,5 +1,7 @@
 package com.bb.stardium.bench.dto;
 
+import com.bb.stardium.bench.domain.Address;
+import com.bb.stardium.bench.domain.Room;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,4 +33,15 @@ public class RoomRequestDto {
 
     @Min(value = 2)
     private int playersLimit;
+
+    public Room toEntity() {
+        return Room.builder()
+                .title(title)
+                .intro(intro)
+                .address(address)
+                .startTime(startTime)
+                .endTime(endTime)
+                .playersLimit(playersLimit)
+                .build();
+    }
 }

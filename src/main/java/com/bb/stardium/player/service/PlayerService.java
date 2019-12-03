@@ -1,14 +1,17 @@
 package com.bb.stardium.player.service;
 
 import com.bb.stardium.player.domain.Player;
+import com.bb.stardium.player.domain.repository.PlayerRepository;
 import com.bb.stardium.player.dto.PlayerRequestDto;
-import com.bb.stardium.player.exception.AlreadyExistEmailException;
-import com.bb.stardium.player.exception.AuthenticationFailException;
-import com.bb.stardium.player.exception.NotExistPlayerException;
-import com.bb.stardium.player.repository.PlayerRepository;
+import com.bb.stardium.player.dto.PlayerResponseDto;
+import com.bb.stardium.player.service.exception.AuthenticationFailException;
+import com.bb.stardium.player.service.exception.EmailAlreadyExistException;
+import com.bb.stardium.player.service.exception.EmailNotExistException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class PlayerService {
     private final PlayerRepository playerRepository;
 
@@ -16,26 +19,30 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
+    @Transactional(readOnly = true)
+    public Player findByPlayerEmail(final String email) {
+        return playerRepository.findByEmail(email).orElseThrow(EmailNotExistException::new);
+    }
+
     public Player register(final PlayerRequestDto requestDto) {
         final String email = requestDto.getEmail();
         playerRepository
                 .findByEmail(email)
-                .ifPresent(player -> { throw new AlreadyExistEmailException(); });
-        return playerRepository.save(requestDto.ofEntity());
+                .ifPresent(player -> {
+                    throw new EmailAlreadyExistException();
+                });
+        return playerRepository.save(requestDto.toEntity());
     }
 
-    public Player findByPlayerEmail(final String email) {
-        return playerRepository.findByEmail(email).orElseThrow(NotExistPlayerException::new);
-    }
-
+    @Transactional(readOnly = true)
     public Player findByPlayerRequestDto(final PlayerRequestDto requestDto) {
         return findByPlayerEmail(requestDto.getEmail());
     }
 
-    public Player login(final PlayerRequestDto requestDto) {
+    public PlayerResponseDto login(final PlayerRequestDto requestDto) {
         final Player player = findByPlayerRequestDto(requestDto);
         if (player.isMatchPassword(requestDto.getPassword())) {
-            return player;
+            return new PlayerResponseDto(player);
         }
         throw new AuthenticationFailException();
     }

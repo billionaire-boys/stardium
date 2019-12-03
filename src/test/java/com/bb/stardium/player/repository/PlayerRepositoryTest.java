@@ -1,6 +1,7 @@
 package com.bb.stardium.player.repository;
 
 import com.bb.stardium.player.domain.Player;
+import com.bb.stardium.player.domain.repository.PlayerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,9 +44,9 @@ class PlayerRepositoryTest {
     @Test
     @DisplayName("모든 플레이어 찾기")
     void findAllPlayers() {
-        playerRepository.save(new Player("nickname", "A", "password"));
-        playerRepository.save(new Player("nickname", "B", "password"));
-        playerRepository.save(new Player("nickname", "C", "password"));
+        playerRepository.save(new Player("nickname1", "A", "password"));
+        playerRepository.save(new Player("nickname2", "B", "password"));
+        playerRepository.save(new Player("nickname3", "C", "password"));
         final List<Player> players = playerRepository.findAll();
         assertThat(players).hasSize(3);
     }
