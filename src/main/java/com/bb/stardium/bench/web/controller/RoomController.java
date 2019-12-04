@@ -3,6 +3,7 @@ package com.bb.stardium.bench.web.controller;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.service.RoomService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +28,11 @@ public class RoomController {
         return "updateRoom";
     }
 
-    @PostMapping()
-    public String create(@RequestBody RoomRequestDto roomRequest) {
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity create(@RequestBody RoomRequestDto roomRequest) {
         Long roomId = roomService.create(roomRequest);
-        return "redirect:/rooms/" + roomId;
+        return ResponseEntity.ok(roomId);
     }
 
     @GetMapping("/{roomId}")

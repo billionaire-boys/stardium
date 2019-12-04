@@ -51,9 +51,10 @@ const ROOM_APP = (() => {
                 intro: intro.value
             };
 
-            const ifSucceed = () => {
-                alert("방 만들기 성공!");
-                window.location.href = `/rooms/1`;
+            const ifSucceed = (response) => {
+                response.json().then(data => {
+                    window.location.href = `/rooms/${data}`
+                })
             };
 
             connector.fetchTemplate('/rooms',
