@@ -43,9 +43,10 @@ public class RoomController {
     }
 
     @PutMapping("/{roomId}")
-    public String update(@PathVariable Long roomId, @RequestBody RoomRequestDto roomRequestDto) {
+    @ResponseBody
+    public ResponseEntity update(@PathVariable Long roomId, @RequestBody RoomRequestDto roomRequestDto) {
         Long updatedRoomId = roomService.update(roomId, roomRequestDto);
-        return "redirect:/rooms/" + updatedRoomId;
+        return ResponseEntity.ok(updatedRoomId);
     }
 
     @DeleteMapping("/{roomId}")

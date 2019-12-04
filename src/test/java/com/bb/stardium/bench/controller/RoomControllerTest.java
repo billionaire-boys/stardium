@@ -52,7 +52,7 @@ public class RoomControllerTest {
                 .body(Mono.just(updateRequest), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()
-                .is3xxRedirection();
+                .isOk();
     }
 
     @DisplayName("방 삭제 성공 테스트")

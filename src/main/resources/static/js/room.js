@@ -9,12 +9,18 @@ const ROOM_APP = (() => {
             signUpButton ? signUpButton.addEventListener('click', roomService.saveRoom) : undefined;
         };
 
+        const update = () => {
+            const updateButton = document.getElementById('update-room-button');
+            updateButton ? updateButton.addEventListener('click', roomService.updateRoom) : undefined;
+        }
+
         const init = () => {
             signUp();
+            update();
         };
 
         return {
-            init: init
+            init
         }
     };
 
@@ -65,8 +71,41 @@ const ROOM_APP = (() => {
             );
         };
 
+        const updateRoom = event => {
+            event.preventDefault();
+
+            const roomBasicInfo = {
+                title: title.value,
+                address: {
+                    city: city.value,
+                    gu: gu.value,
+                    detail: detail.value
+                },
+                startTime: startTime.value,
+                endTime: endTime.value,
+                playerNumbers: playerNumbers.value,
+                intro: intro.value
+            };
+
+            const ifSucceed = (response) => {
+                response.json().then(data => {
+                    window.location.href = `/rooms/${data}`
+                })
+            };
+            const roomId = document.getElementById('roomId').value;
+
+
+            connector.fetchTemplate('/rooms/' + roomId,
+                connector.PUT,
+                header,
+                JSON.stringify(roomBasicInfo),
+                ifSucceed
+            );
+        };
+
         return {
-            saveRoom: saveRoom,
+            saveRoom,
+            updateRoom,
         }
     };
 
@@ -76,7 +115,7 @@ const ROOM_APP = (() => {
     };
 
     return {
-        init: init,
+        init,
     }
 })();
 
