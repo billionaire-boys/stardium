@@ -1,6 +1,5 @@
 package com.bb.stardium.player.controller;
 
-import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.domain.repository.PlayerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,7 +42,7 @@ class PlayerControllerTest {
     @DisplayName("회원가입")
     void register() {
         client.post()
-                .uri("/player")
+                .uri("/player/new")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters
                         .fromFormData("nickname", "noname01")
@@ -51,45 +50,5 @@ class PlayerControllerTest {
                         .with("password", "1q2w3e4r!"))
                 .exchange()
                 .expectStatus().isFound();
-    }
-
-    @Test
-    @DisplayName("로그인")
-    void login() {
-        playerRepository.save(new Player("nickname", "nick@name.com", "1q2w3e4r!"));
-
-        client.post()
-                .uri("/player/login")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .body(BodyInserters
-                        .fromFormData("email", "nick@name.com")
-                        .with("password", "1q2w3e4r!"))
-                .exchange()
-                .expectStatus().is3xxRedirection();
-    }
-
-    @Test
-    @DisplayName("로그인 실패 - 비밀번호 불일치")
-    void loginFailure() {
-        playerRepository.save(new Player("nickname", "nick@name.com", "1q2w3e4r!"));
-
-        client.post()
-                .uri("/player/login")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .body(BodyInserters
-                        .fromFormData("email", "nick@name.com")
-                        .with("password", "wrong!"))
-                .exchange()
-                .expectStatus().is3xxRedirection()
-                .expectHeader().valueMatches("Location", ".*\\/player\\/login.*");
-    }
-
-    @Test
-    @DisplayName("로그아웃")
-    void logout() {
-        client.get()
-                .uri("/player/logout")
-                .exchange()
-                .expectStatus().is3xxRedirection();
     }
 }
