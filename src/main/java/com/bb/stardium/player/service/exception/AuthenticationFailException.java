@@ -8,12 +8,4 @@ public class AuthenticationFailException extends RuntimeException {
     public AuthenticationFailException(final String message) {
         super(message);
     }
-
-    public AuthenticationFailException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    public AuthenticationFailException(final Throwable cause) {
-        super(cause);
-    }
 }

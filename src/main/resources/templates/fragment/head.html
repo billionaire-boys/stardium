@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <th:block th:fragment="headFragment">
-        <meta charset="UTF-8">
-        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0" name="viewport">
+<head th:fragment="headFragment" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <meta charset="UTF-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0" name="viewport">
 
-        <link href="/css/semantic.css" rel="stylesheet" type="text/css">
+    <link href="/css/semantic.css" rel="stylesheet" type="text/css">
 
-        <link href="/css/main.css" rel="stylesheet" type="text/css">
-        <link href="data:;base64,iVBORw0KGgo=" rel="icon">
+    <link href="/css/main.css" rel="stylesheet" type="text/css">
+    <link href="data:;base64,iVBORw0KGgo=" rel="icon">
 
-        <title>Stardium</title>
-    </th:block>
+    <th:block layout:fragment="custom_header"></th:block>
 </head>
-</html>

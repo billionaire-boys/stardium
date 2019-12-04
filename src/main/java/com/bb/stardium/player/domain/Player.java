@@ -1,6 +1,8 @@
 package com.bb.stardium.player.domain;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -9,8 +11,7 @@ import java.time.OffsetDateTime;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class Player {
 
@@ -24,16 +25,22 @@ public class Player {
     @UpdateTimestamp
     private OffsetDateTime updatedDateTime;
 
-    @Column(name = "nickname", length = 64, nullable = false)
+    @Column(name = "nickname", length = 64, nullable = false, unique = true)
     private String nickname;
 
     @Column(name = "email", length = 64, nullable = false, unique = true)
+    @EqualsAndHashCode.Include
     private String email;
 
     @Column(name = "password", length = 64, nullable = false)
     private String password;
 
+    protected Player() {
+        this.updatedDateTime = OffsetDateTime.now();
+    }
+
     public Player(final String nickname, final String email, final String password) {
+        this();
         this.nickname = nickname;
         this.email = email;
         this.password = password;
