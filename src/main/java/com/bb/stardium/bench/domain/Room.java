@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,18 +29,20 @@ public class Room {
     @Embedded
     private Address address;
 
+    @Future
     private LocalDateTime startTime;
 
+    @Future
     private LocalDateTime endTime;
 
     private int playersLimit;
 
-    public void update(RoomRequestDto roomRequestDto) {
-        this.title = roomRequestDto.getTitle();
-        this.intro = roomRequestDto.getIntro();
-        this.address = roomRequestDto.getAddress();
-        this.startTime = roomRequestDto.getStartTime();
-        this.endTime = roomRequestDto.getEndTime();
-        this.playersLimit = roomRequestDto.getPlayersLimit();
+    public void update(Room updatedRoom) {
+        this.title = updatedRoom.getTitle();
+        this.intro = updatedRoom.getIntro();
+        this.address = updatedRoom.getAddress();
+        this.startTime = updatedRoom.getStartTime();
+        this.endTime = updatedRoom.getEndTime();
+        this.playersLimit = updatedRoom.getPlayersLimit();
     }
 }

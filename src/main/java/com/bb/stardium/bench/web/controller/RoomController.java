@@ -1,11 +1,14 @@
 package com.bb.stardium.bench.web.controller;
 
 import com.bb.stardium.bench.domain.Room;
+import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.service.RoomService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/rooms")
@@ -15,6 +18,13 @@ public class RoomController {
 
     public RoomController(RoomService roomService) {
         this.roomService = roomService;
+    }
+
+    @GetMapping
+    public String mainRoomList(Model model) {
+        List<RoomResponseDto> rooms = roomService.findAllRooms();
+        model.addAttribute("rooms", rooms);
+        return "mainRooms";
     }
 
     @GetMapping("/createForm")

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main_layout">
+<th:block layout:fragment="custom_header">
+    <title>방 목록</title>
+    <link href="/css/room.css" rel="stylesheet" type="text/css">
+</th:block>
+<th:block layout:fragment="content_body">
+    <div class="ui three item menu">
+        <a href="/rooms/createForm" id="make-room" class="violet item">방 만들기</a>
+        <a href="/rooms" id="room-list" class="violet item">방 목록</a>
+        <a id="my-room" class="violet item">나의 방</a>
+    </div>
+    <div class="ui card" style="width: 100%" th:if="${!rooms.isEmpty()}" th:each="room : ${rooms}">
+        <div class="content">
+            <div class="header" th:text="${room.title}">Project Timeline</div>
+        </div>
+        <div class="content">
+            <h4 class="ui sub header">Master NickName</h4>
+            <div class="ui small feed">
+                <div class="event">
+                    <div class="content">
+                        <div class="summary" th:text="${room.intro}">
+                            Room introduction contents
+                        </div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="content">
+                        <div class="summary" th:text="'장소 : ' + ${room.address}">
+                            장소 : 어디서 농구 할 것인가
+                        </div>
+                        <div class="summary" th:text="'일시 : ' +${room.playTime}">
+                            일시 : 언제 농구 할 것인가
+                        </div>
+                        <div class="summary" th:text="'인원 : ' +${room.playLimits}">
+                            인원 : 10명
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="extra content">
+            <button class="ui violet button right floated">Join Team</button>
+        </div>
+    </div>
+</th:block>
+</html>

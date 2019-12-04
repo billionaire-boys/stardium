@@ -4,6 +4,7 @@ import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.domain.repository.RoomRepository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,6 +34,7 @@ class RoomServiceTest {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Room room;
+    private Room room2;
 
     @BeforeEach
     void setUp() {
@@ -39,6 +42,7 @@ class RoomServiceTest {
         startTime = LocalDateTime.of(2020, 11, 30, 10, 0);
         endTime = LocalDateTime.of(2020, 11, 30, 13, 0);
         room = new Room(1L, "title", "intro", address, startTime, endTime, 10);
+        room2 = new Room(2L, "title2", "intro2", address, startTime, endTime, 12);
     }
 
     @DisplayName("create method 성공")
@@ -87,6 +91,19 @@ class RoomServiceTest {
         roomService.findRoom(room.getId());
 
         verify(roomRepository).findById(any());
+    }
+
+    @DisplayName("findAllRoom method 성공")
+    @Test
+    public void findAllRoom() throws Exception {
+        // given
+        given(roomRepository.findAll()).willReturn(Lists.newArrayList(room, room2));
+
+        // when
+        roomService.findAllRooms();
+
+        // then
+        verify(roomRepository).findAll();
     }
 
 }
