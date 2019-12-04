@@ -39,7 +39,7 @@ public class LoginController {
             return REDIRECT + "/";
         } catch (final AuthenticationFailException | EmailNotExistException exception) {
             redirectAttributes.addFlashAttribute(IS_LOGIN_SUCCESS, false);
-            return REDIRECT + "login";
+            return REDIRECT + "/login";
         }
     }
 

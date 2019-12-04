@@ -12,7 +12,7 @@
     <div class="ui top aligned center aligned grid">
         <div class="column">
             <h1 class="ui violet header">회원 정보 수정</h1>
-            <form>
+            <form accept-charset="UTF-8" action="/player/edit" method="post">
                 <div class="ui form">
                     <div class="field">
                         <img alt="profile_img" class="ui image user_profile" src="../images/default_profile_img.png"/>
@@ -24,7 +24,8 @@
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input name="email" placeholder="닉네임 입력" type="text"/>
+                            <input name="nickname" placeholder="닉네임 입력" type="text"/>
+                            <input name="email" type="hidden" th:value="${session.login.email}" />
                         </div>
                     </div>
                     <div class="field">
@@ -43,7 +44,7 @@
                         <textarea name="statusMessage" placeholder="상태 메세지" type="password"></textarea>
                     </div>
                     <div class="field">
-                        <div class="ui fluid violet large submit button">수정 완료</div>
+                        <button type="submit" class="ui fluid violet large submit button">수정 완료</button>
                     </div>
                 </div>
             </form>
