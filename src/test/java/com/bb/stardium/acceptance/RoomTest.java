@@ -24,17 +24,22 @@ public class RoomTest extends BaseAcceptanceTest {
     @Test
     @DisplayName("사용자가 방을 만들고 들어가고 나올 수 있다")
     void joinRoom() {
-        PlayerRequestDto dto = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg");
+        PlayerRequestDto createPlayer = new PlayerRequestDto("test", "create@room.com", "A!1bcdefg");
+        String roomUri = newSessionPost(createPlayer, "/rooms/new")
+                .body(Mono.just(roomRequestDto), RoomRequestDto.class)
+                .exchange()
+                .expectStatus()
+                .is3xxRedirection()
+                .returnResult(String.class).getRequestHeaders().getFirst("Location");
 
-        String roomUri = createRoom();
-
-        newSessionPost(dto, roomUri)
-                .body(Mono.just(dto), PlayerRequestDto.class)
+        PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg");
+        newSessionPost(joinPlayer, roomUri)
+                .body(Mono.just(joinPlayer), PlayerRequestDto.class)
                 .exchange()
                 .expectStatus()
                 .isOk();
 
-        loginSessionPost(dto, roomUri + "/quit")
+        loginSessionPost(joinPlayer, roomUri + "/quit")
                 .exchange()
                 .expectStatus()
                 .is3xxRedirection();
@@ -59,15 +64,5 @@ public class RoomTest extends BaseAcceptanceTest {
                 .exchange()
                 .expectStatus()
                 .isNotFound();
-    }
-
-    private String createRoom() {
-        PlayerRequestDto dto = new PlayerRequestDto("test", "create@room.com", "A!1bcdefg");
-        return newSessionPost(dto, "/rooms/new")
-                .body(Mono.just(roomRequestDto), RoomRequestDto.class)
-                .exchange()
-                .expectStatus()
-                .is3xxRedirection()
-                .returnResult(String.class).getRequestHeaders().getFirst("Location");
     }
 }
