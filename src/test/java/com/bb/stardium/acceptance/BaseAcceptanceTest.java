@@ -20,17 +20,10 @@ public abstract class BaseAcceptanceTest {
     @Autowired
     protected WebTestClient webTestClient;
 
-    private Player player;
-    private String sessionId;
-
     protected BaseAcceptanceTest() {
-        player = createPlayer();
-        sessionId = getCookie();
     }
 
-
-    private Player createPlayer() {
-        PlayerRequestDto playerRequestDto = new PlayerRequestDto("test", "test@test.com", "1234");
+    private Player createPlayer(PlayerRequestDto playerRequestDto) {
         webTestClient.post().uri("/users/new")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(Mono.just(playerRequestDto), PlayerRequestDto.class)
@@ -38,38 +31,55 @@ public abstract class BaseAcceptanceTest {
         return playerRequestDto.toEntity();
     }
 
-    private String getCookie() {
-        return webTestClient.post().uri("/login")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .body(BodyInserters.fromFormData("email", "test@test.com")
-                        .with("password", "A!1bcdefg"))
-                .exchange()
-                .returnResult(String.class).getResponseHeaders().getFirst("Set-Cookie");
-    }
-
-    protected WebTestClient.RequestBodySpec post(String uri) {
-        String cookie = getCookie();
+    protected WebTestClient.RequestBodySpec newSessionPost(PlayerRequestDto dto, String uri) {
+        String cookie = getNewCookie(dto);
         return webTestClient.post()
                 .uri(uri)
                 .header("Cookie", cookie)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED);
     }
 
-    protected WebTestClient.RequestBodySpec put(String uri) {
-        String cookie = getCookie();
+    protected WebTestClient.RequestBodySpec newSessionPut(PlayerRequestDto dto, String uri) {
+        String cookie = getNewCookie(dto);
         return webTestClient.put()
                 .uri(uri)
                 .header("Cookie", cookie)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED);
     }
 
-    protected WebTestClient.RequestHeadersSpec get(String uri) {
-        String cookie = getCookie();
+    protected WebTestClient.RequestHeadersSpec newSessionGet(PlayerRequestDto dto, String uri) {
+        String cookie = getNewCookie(dto);
         return webTestClient.get().uri(uri).header("Cookie", cookie);
     }
 
-    protected WebTestClient.RequestHeadersSpec delete(String uri) {
-        String cookie = getCookie();
+    protected WebTestClient.RequestHeadersSpec newSessionDelete(PlayerRequestDto dto, String uri) {
+        String cookie = getNewCookie(dto);
+        return webTestClient.delete().uri(uri).header("Cookie", cookie);
+    }
+
+    protected WebTestClient.RequestBodySpec loginSessionPost(PlayerRequestDto dto, String uri) {
+        String cookie = getLoginCookie(dto);
+        return webTestClient.post()
+                .uri(uri)
+                .header("Cookie", cookie)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED);
+    }
+
+    protected WebTestClient.RequestBodySpec loginSessionPut(PlayerRequestDto dto, String uri) {
+        String cookie = getLoginCookie(dto);
+        return webTestClient.put()
+                .uri(uri)
+                .header("Cookie", cookie)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED);
+    }
+
+    protected WebTestClient.RequestHeadersSpec loginSessionGet(PlayerRequestDto dto, String uri) {
+        String cookie = getLoginCookie(dto);
+        return webTestClient.get().uri(uri).header("Cookie", cookie);
+    }
+
+    protected WebTestClient.RequestHeadersSpec loginSessionDelete(PlayerRequestDto dto, String uri) {
+        String cookie = getLoginCookie(dto);
         return webTestClient.delete().uri(uri).header("Cookie", cookie);
     }
 
@@ -81,7 +91,22 @@ public abstract class BaseAcceptanceTest {
         return body;
     }
 
-    protected Player getPlayer() {
-        return this.player;
+    private String getLoginCookie(PlayerRequestDto playerRequestDto) {
+        return webTestClient.post().uri("/login")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(BodyInserters.fromFormData("email", playerRequestDto.getEmail())
+                        .with("password", playerRequestDto.getPassword()))
+                .exchange()
+                .returnResult(String.class).getResponseHeaders().getFirst("Set-Cookie");
+    }
+
+    private String getNewCookie(PlayerRequestDto playerRequestDto) {
+        createPlayer(playerRequestDto);
+        return webTestClient.post().uri("/login")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(BodyInserters.fromFormData("email", playerRequestDto.getEmail())
+                        .with("password", playerRequestDto.getPassword()))
+                .exchange()
+                .returnResult(String.class).getResponseHeaders().getFirst("Set-Cookie");
     }
 }
