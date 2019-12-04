@@ -18,7 +18,7 @@ public class RoomTest extends BaseAcceptanceTest {
     void setUp() {
         roomRequestDto = new RoomRequestDto("title", "intro",
                 new Address("서울시", "송파구", "루터회관"),
-                LocalDateTime.now(), LocalDateTime.now().plusHours(1L), 6);
+                LocalDateTime.now(), LocalDateTime.now().plusHours(1L), 3);
     }
 
     @Test
@@ -64,5 +64,37 @@ public class RoomTest extends BaseAcceptanceTest {
                 .exchange()
                 .expectStatus()
                 .isNotFound();
+    }
+
+    @Test
+    @DisplayName("방 주인만이 방 정보를 수정할 수 있다")
+    void updateRoom() {
+        PlayerRequestDto masterPlayer = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg");
+
+        String roomUri = newSessionPost(masterPlayer, "/rooms/new")
+                .body(Mono.just(roomRequestDto), RoomRequestDto.class)
+                .exchange()
+                .expectStatus()
+                .is3xxRedirection()
+                .returnResult(String.class).getRequestHeaders().getFirst("Location");
+
+        PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg");
+        newSessionPost(joinPlayer, roomUri)
+                .body(Mono.just(joinPlayer), PlayerRequestDto.class)
+                .exchange()
+                .expectStatus()
+                .isOk();
+
+        loginSessionPut(masterPlayer, roomUri)
+                .body(Mono.just(roomRequestDto), RoomRequestDto.class)
+                .exchange()
+                .expectStatus()
+                .is3xxRedirection();
+
+        loginSessionPut(joinPlayer, roomUri)
+                .body(Mono.just(roomRequestDto), RoomRequestDto.class)
+                .exchange()
+                .expectStatus()
+                .isUnauthorized();
     }
 }
