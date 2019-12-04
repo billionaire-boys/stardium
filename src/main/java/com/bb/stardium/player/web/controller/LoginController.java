@@ -4,6 +4,7 @@ import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
 import com.bb.stardium.player.service.exception.AuthenticationFailException;
+import com.bb.stardium.player.service.exception.EmailNotExistException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +37,7 @@ public class LoginController {
             session.setAttribute(LOGIN, responseDto);
             redirectAttributes.addFlashAttribute(IS_LOGIN_SUCCESS, true);
             return REDIRECT + "/";
-        } catch (final AuthenticationFailException exception) {
+        } catch (final AuthenticationFailException | EmailNotExistException exception) {
             redirectAttributes.addFlashAttribute(IS_LOGIN_SUCCESS, false);
             return REDIRECT + "login";
         }
