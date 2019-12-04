@@ -33,7 +33,7 @@ class PlayerServiceTest {
 
     @BeforeEach
     void setUp() {
-        requestDto = new PlayerRequestDto("nickname", "email", "password");
+        requestDto = new PlayerRequestDto("nickname", "email", "password", "별일 없이 산다");
         player = requestDto.toEntity();
     }
 
@@ -79,7 +79,7 @@ class PlayerServiceTest {
     @Test
     @DisplayName("잘못된 패스워드로 로그인 시도")
     void wrongPassword() {
-        PlayerRequestDto wrongPasswordDto = new PlayerRequestDto("nickname", "email", "wrong");
+        PlayerRequestDto wrongPasswordDto = new PlayerRequestDto("nickname", "email", "wrong", "핫하 죽어라");
         given(playerRepository.findByEmail(anyString())).willReturn(Optional.of(player));
 
         assertThatThrownBy(() -> playerService.login(wrongPasswordDto))
