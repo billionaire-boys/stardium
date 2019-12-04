@@ -35,6 +35,9 @@ public class Player {
     @Column(name = "password", length = 64, nullable = false)
     private String password;
 
+    @Column(name = "statusMessage")
+    private String statusMessage = "";
+
     protected Player() {
         this.updatedDateTime = OffsetDateTime.now();
     }
@@ -46,11 +49,17 @@ public class Player {
         this.password = password;
     }
 
+    public Player(final String nickname, final String email, final String password, final String statusMessage) {
+        this(nickname, email, password);
+        this.statusMessage = statusMessage;
+    }
+
     public Player update(final Player newPlayer) {
         this.nickname = newPlayer.nickname;
         this.email = newPlayer.email;
         this.password = newPlayer.password;
-        this.updatedDateTime = newPlayer.updatedDateTime;
+        this.statusMessage = newPlayer.statusMessage;
+        this.updatedDateTime = OffsetDateTime.now();
         return this;
     }
 

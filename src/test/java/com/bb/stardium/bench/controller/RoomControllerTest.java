@@ -12,9 +12,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
@@ -43,7 +40,7 @@ public class RoomControllerTest {
                 .body(Mono.just(roomRequest), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()
-                .is3xxRedirection();
+                .isOk();
     }
 
     @DisplayName("방 정보 수정 성공 테스트")
@@ -56,7 +53,7 @@ public class RoomControllerTest {
                 .body(Mono.just(updateRequest), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()
-                .is3xxRedirection();
+                .isOk();
     }
 
     @DisplayName("방 삭제 성공 테스트")
@@ -95,19 +92,13 @@ public class RoomControllerTest {
 
     // TODO : 리팩토링 필요
     private Long createRoom(RoomRequestDto roomRequest) {
-        List<Long> roomIdList = new ArrayList<>();
 
-        webTestClient.post().uri("/rooms")
+        return webTestClient.post().uri("/rooms")
                 .body(Mono.just(roomRequest), RoomRequestDto.class)
                 .exchange()
-                .expectBody()
-                .consumeWith(response -> {
-                    String url = Objects.requireNonNull(response.getResponseHeaders().get("Location")).get(0);
-                    String roomId = url.substring(url.lastIndexOf("/") + 1);
-                    Long roomIdLong = Long.valueOf(roomId);
-                    roomIdList.add(roomIdLong);
-                });
+                .expectBody(Long.class)
+                .returnResult()
+                .getResponseBody();
 
-        return roomIdList.get(0);
     }
 }

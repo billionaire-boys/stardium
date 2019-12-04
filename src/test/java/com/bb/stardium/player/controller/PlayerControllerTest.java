@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @AutoConfigureWebTestClient
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PlayerControllerTest {
@@ -24,7 +26,9 @@ class PlayerControllerTest {
 
     @BeforeEach
     void setUp() {
+        Player player = new Player("nickname", "email", "password");
         playerRepository.deleteAll();
+        playerRepository.save(player);
     }
 
     @Test
@@ -34,16 +38,9 @@ class PlayerControllerTest {
     }
 
     @Test
-    @DisplayName("회원정보 수정 페이지 접속")
-    void userEditPage() {
-        client.get().uri("/player/edit").exchange().expectStatus().isOk();
-    }
-
-    @Test
     @DisplayName("회원가입")
     void register() {
-        client.post()
-                .uri("/player")
+        client.post().uri("/player/new")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters
                         .fromFormData("nickname", "noname01")
@@ -54,42 +51,72 @@ class PlayerControllerTest {
     }
 
     @Test
-    @DisplayName("로그인")
-    void login() {
-        playerRepository.save(new Player("nickname", "nick@name.com", "1q2w3e4r!"));
+    @DisplayName("로그인 상태에서 회원정보 수정 페이지 접속")
+    void userEditPageLoggedIn() {
+        final String cookie = getLoginCookie();
 
-        client.post()
-                .uri("/player/login")
+        client.get().uri("/player/edit")
+                .header("Cookie", cookie)
+                .exchange().expectStatus().isOk();
+    }
+
+    private String getLoginCookie() {
+        return client.post().uri("/login")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters
-                        .fromFormData("email", "nick@name.com")
-                        .with("password", "1q2w3e4r!"))
+                        .fromFormData("email", "email")
+                        .with("password", "password"))
                 .exchange()
-                .expectStatus().is3xxRedirection();
+                .returnResult(String.class).getResponseHeaders().getFirst("Set-Cookie");
     }
 
     @Test
-    @DisplayName("로그인 실패 - 비밀번호 불일치")
-    void loginFailure() {
-        playerRepository.save(new Player("nickname", "nick@name.com", "1q2w3e4r!"));
-
-        client.post()
-                .uri("/player/login")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .body(BodyInserters
-                        .fromFormData("email", "nick@name.com")
-                        .with("password", "wrong!"))
-                .exchange()
-                .expectStatus().is3xxRedirection()
-                .expectHeader().valueMatches("Location", ".*\\/player\\/login.*");
-    }
-
-    @Test
-    @DisplayName("로그아웃")
-    void logout() {
+    @DisplayName("로그인하지 않은 상태에서 회원정보 수정 페이지 접속")
+    void userEditPageNotLoggedIn() {
         client.get()
-                .uri("/player/logout")
-                .exchange()
-                .expectStatus().is3xxRedirection();
+                .uri("/player/edit")
+                .exchange().expectStatus().is3xxRedirection()
+                .expectHeader().valueMatches("Location", ".*\\/login.*");
+    }
+
+    @Test
+    @DisplayName("로그인한 상태에서 회원 정보 수정")
+    void userEdit() {
+        final String cookie = getLoginCookie();
+
+        client.post().uri("/player/edit")
+                .header("Cookie", cookie)
+                .body(BodyInserters
+                        .fromFormData("nickname", "noname01")
+                        .with("email", "email")
+                        .with("password", "1q2w3e4r!")
+                        .with("statusMessage", "야호!!"))
+                .exchange().expectStatus().is3xxRedirection();
+
+        final Player player = playerRepository.findByEmail("email")
+                .orElseGet(() -> new Player("", "", ""));
+        assertThat(player.getNickname()).isEqualTo("noname01");
+        assertThat(player.getEmail()).isEqualTo("email");
+        assertThat(player.getPassword()).isEqualTo("1q2w3e4r!");
+        assertThat(player.getStatusMessage()).isEqualTo("야호!!");
+    }
+
+    @Test
+    @DisplayName("로그인하지 않은 상태에서 회원 정보 수정")
+    void userEditNotLoggedIn() {
+        client.post().uri("/player/edit")
+                .body(BodyInserters
+                        .fromFormData("nickname", "noname01")
+                        .with("email", "email")
+                        .with("password", "1q2w3e4r!")
+                        .with("statusMessage", "야호!!"))
+                .exchange().expectStatus().is3xxRedirection();
+
+        final Player player = playerRepository.findByEmail("email")
+                .orElseGet(() -> new Player("", "", ""));
+        assertThat(player.getNickname()).isEqualTo("nickname");
+        assertThat(player.getEmail()).isEqualTo("email");
+        assertThat(player.getPassword()).isEqualTo("password");
+        assertThat(player.getStatusMessage()).isEqualTo("");
     }
 }

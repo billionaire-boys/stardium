@@ -14,8 +14,9 @@ public class PlayerRequestDto {
     private String nickname;
     private String email;
     private String password;
+    private String statusMessage;
 
     public Player toEntity() {
-        return new Player(nickname, email, password);
+        return new Player(nickname, email, password, statusMessage);
     }
 }

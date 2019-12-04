@@ -33,16 +33,19 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "com.h2database:h2"
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
+
     annotationProcessor 'org.projectlombok:lombok'
+
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit', module: 'junit'
+        exclude module: 'junit'
     }
-    implementation "com.h2database:h2"
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.2.0"
-    testCompile "org.junit.jupiter:junit-jupiter-params:5.2.0"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.2.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.2.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.2.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:5.2.0"
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 

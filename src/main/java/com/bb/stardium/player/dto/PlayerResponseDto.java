@@ -13,8 +13,9 @@ import lombok.ToString;
 public class PlayerResponseDto {
     private String nickname;
     private String email;
+    private String statusMessage;
 
     public PlayerResponseDto(final Player player) {
-        this(player.getNickname(), player.getEmail());
+        this(player.getNickname(), player.getEmail(), player.getStatusMessage());
     }
 }

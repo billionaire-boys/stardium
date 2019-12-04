@@ -47,6 +47,16 @@ public class PlayerService {
         throw new AuthenticationFailException();
     }
 
-    // TODO: 사용자 정보 수정
+    public PlayerResponseDto update(final PlayerRequestDto requestDto, final PlayerResponseDto sessionDto) {
+        final Player player = findByPlayerRequestDto(requestDto);
+        if (!player.getEmail().equals(sessionDto.getEmail())) {
+            throw new AuthenticationFailException();
+        }
+        final Player updatedPlayer = requestDto.toEntity();
+        player.update(updatedPlayer);
+        playerRepository.save(player);
+        return new PlayerResponseDto(player);
+    }
+
     // TODO: 사용자 정보 삭제
 }

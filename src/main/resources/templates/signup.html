@@ -2,14 +2,14 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout/main_layout">
-<th:block layout:fragment="custom_header">
+<th:block layout:fragment="custom_head">
     <title>회원가</title>
 </th:block>
 
 <th:block layout:fragment="content_body">
     <div class="ui top aligned center aligned">
         <h1 class="ui violet header">회원가입</h1>
-        <form class="ui form">
+        <form class="ui form" accept-charset="UTF-8" action="/player/new" method="post">
             <div class="field">
                 <div class="ui left icon input">
                     <i class="envelope icon"></i>
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="field">
-                <div class="ui basic fluid violet large submit button">가입 완료</div>
+                <button type="submit" class="ui basic fluid violet large submit button">가입 완료</button>
             </div>
         </form>
     </div>
