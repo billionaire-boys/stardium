@@ -27,7 +27,7 @@ const ROOM_APP = (() => {
 
         const title = document.getElementById('title');
         const city = document.getElementById('city');
-        const gu = document.getElementById('gu');
+        const section = document.getElementById('section');
         const detail = document.getElementById('detail');
         const startTime = document.getElementById('startTime');
         const endTime = document.getElementById('endTime');
@@ -42,7 +42,7 @@ const ROOM_APP = (() => {
                 title: title.value,
                 address: {
                     city: city.value,
-                    gu: gu.value,
+                    section: section.value,
                     detail: detail.value
                 },
                 startTime: startTime.value,
