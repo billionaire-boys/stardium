@@ -2,69 +2,58 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout/main_layout">
-<th:block layout:fragment="custom_header">
+
+<th:block layout:fragment="custom_head">
     <title>게임 방</title>
 </th:block>
+
 <th:block layout:fragment="content_body">
-    <h1 class="ui violet header">[제목] 제목이 오는 곳입니다!!</h1>
-    <div class="chat-room">
-    </div>
-    <br>
-    <div class="ui action input">
-        <input placeholder="내용을 입력하세요" type="text">
-        <button class="ui violet button">입력</button>
-    </div>
-    <h2 class="ui violet header">팀 소개</h2>
-    <p>
-        팀 소개 컨텐츠가 오는 곳임. 농구를 좋아하는데 같이 할 사람이 없네요ㅜㅜ 같이 하면 좋겠어요!! 저 포함해서 10명 5대5 하려고 합니다!
-    </p>
-    <br>
-    <div class="ui middle aligned center aligned grid">
-        <div class="column">
-            <p>장소 : 루터회관</p>
-            <p>일시 : 2019-11-30</p>
-            <p>시간 : 10:00 ~ 12:00</p>
+    <h1 class="ui violet header">[제목] 우리함께 농구해요!</h1>
+
+    <div class="ui stacked segments basic_padding">
+        <div class="field">
+            <h3 class="ui grey header">팀 소개</h3>
+            <p> 팀 소개 컨텐츠가 오는 곳임. 농구를 좋아하는데 같이 할 사람이 없네요ㅜㅜ
+                같이 하면 좋겠어요!! 저 포함해서 10명 5대5 하려고 합니다!</p>
         </div>
-    </div>
-    <br>
-    <h2 class="ui violet header">Member</h2>
-    <div class="ui two cards">
-        <div class="card">
-            <div class="image">
-                <img alt="player-profile" src="/images/ybh.png">
-            </div>
-            <div class="content">
-                <div class="header">강백호</div>
-                <div class="description">
-                    안녕하세요! 산곡동에서 강백호를 맡고 있는 무늘보라고 합니다!
+
+        <br>
+
+        <div class="field">
+            <div class="ui middle aligned center aligned grid">
+                <div class="column">
+                    <p>장소 : 루터회관</p>
+                    <p>일시 : 2019-11-30</p>
+                    <p>시간 : 10:00 ~ 12:00</p>
                 </div>
             </div>
-            <div class="extra content">
-                        <span>
-                            <i class="basketball ball icon"></i>
-                            75 plays
-                        </span>
-            </div>
         </div>
-        <div class="card">
-            <div class="image">
-                <img alt="player-profile" src="/images/ybh.png">
-            </div>
-            <div class="content">
-                <div class="heder">서태웅</div>
-                <div class="description">
-                    안녕하세요! 산곡동에서 강백호를 맡고 있는 무늘보라고 합니다! 주로 센터를 보지만 포워드도 괜찮습니다
+    </div>
+
+    <div class="basic_padding">
+        <h3 class="ui grey header">Member</h3>
+        <div class="ui two cards">
+            <div class="card">
+                <div class="image">
+                    <img alt="player-profile" src="/images/ybh.png">
                 </div>
-            </div>
-            <div class="extra content">
-                        <span>
-                            <i class="basketball ball icon"></i>
-                            75 plays
-                        </span>
+                <div class="content">
+                    <div class="header">강백호</div>
+                    <div class="description">
+                        안녕하세요!
+                    </div>
+                </div>
+                <div class="extra content">
+                <span>
+                    <i class="basketball ball icon"></i>
+                        75 plays
+                </span>
+                </div>
             </div>
         </div>
     </div>
-    <br>
+
     <div class="ui fluid large violet submit button">나가기</div>
 </th:block>
+
 </html>
