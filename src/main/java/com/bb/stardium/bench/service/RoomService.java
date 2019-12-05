@@ -96,4 +96,12 @@ public class RoomService {
         room.addPlayer(player);
         return player.addRoom(room);
     }
+
+    public Room quit(String email, Long roomId) {
+        Player player = playerService.findByPlayerEmail(email);
+        Room room = findRoom(roomId);
+
+        room.removePlayer(player);
+        return player.removeRoom(room);
+    }
 }

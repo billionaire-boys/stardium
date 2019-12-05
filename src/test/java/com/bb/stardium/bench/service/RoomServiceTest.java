@@ -123,5 +123,19 @@ class RoomServiceTest {
         given(roomRepository.findById(1L)).willReturn(Optional.of(room));
 
         roomService.join(PLAYER_EMAIL, room.getId());
+
+        assertThat(room.getPlayers().contains(player)).isTrue();
+        assertThat(player.getRooms().contains(room)).isTrue();
+    }
+
+    @Test
+    void quit() {
+        given(playerService.findByPlayerEmail(any())).willReturn(player);
+        given(roomRepository.findById(1L)).willReturn(Optional.of(room));
+
+        roomService.quit(PLAYER_EMAIL, room.getId());
+        assertThat(room.getPlayers().contains(player)).isFalse();
+        assertThat(player.getRooms().contains(room)).isFalse();
+
     }
 }

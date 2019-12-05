@@ -77,4 +77,9 @@ public class Player {
         rooms.add(room);
         return room;
     }
+
+    public Room removeRoom(Room room) {
+        rooms.remove(room);
+        return room;
+    }
 }
