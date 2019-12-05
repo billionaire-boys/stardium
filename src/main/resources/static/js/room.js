@@ -16,13 +16,19 @@ const ROOM_APP = (() => {
 
         const join = () => {
             const roomList = document.getElementById('room-list');
-            roomList.addEventListener('click', roomService.joinRoom);
+            roomList ? roomList.addEventListener('click', roomService.joinRoom) : undefined;
+        }
+
+        const quit = () => {
+            const quitButton = document.getElementById('quit-button');
+            quitButton ? quitButton.addEventListener('click', roomService.quitRoom) : undefined;
         }
 
         const init = () => {
             signUp();
             update();
             join();
+            quit();
         };
 
         return {
@@ -129,10 +135,27 @@ const ROOM_APP = (() => {
             }
         }
 
+        const quitRoom = (event) => {
+
+            const ifSucceed = (response) => {
+                response.json().then(data => {
+                    alert("나가는 데 성공했습니다!");
+                    window.location.href = `/rooms/`
+                })
+            };
+            const roomId = document.getElementById('roomId').value;
+
+            connector.fetchTemplateWithoutBody('/rooms/quit/' + roomId,
+                connector.POST,
+                ifSucceed
+            );
+        }
+
         return {
             saveRoom,
             updateRoom,
-            joinRoom
+            joinRoom,
+            quitRoom
         }
     };
 
