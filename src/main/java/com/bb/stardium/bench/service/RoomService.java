@@ -84,6 +84,7 @@ public class RoomService {
                 room.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
                 room.getEndTime().format(DateTimeFormatter.ofPattern("dd"))))
             .playLimits(room.getPlayersLimit())
+                .id(room.getId())
             .build();
     }
 

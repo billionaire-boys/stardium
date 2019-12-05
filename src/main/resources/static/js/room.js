@@ -14,9 +14,15 @@ const ROOM_APP = (() => {
             updateButton ? updateButton.addEventListener('click', roomService.updateRoom) : undefined;
         }
 
+        const join = () => {
+            const roomList = document.getElementById('room-list');
+            roomList.addEventListener('click', roomService.joinRoom);
+        }
+
         const init = () => {
             signUp();
             update();
+            join();
         };
 
         return {
@@ -103,9 +109,30 @@ const ROOM_APP = (() => {
             );
         };
 
+        const joinRoom = (event) => {
+            const targetButton = event.target
+            if (targetButton.classList.contains("room-join-button")) {
+                let roomId = targetButton.dataset.roomId
+
+                const ifSucceed = (response) => {
+                    alert("방에 입장되었습니다!");
+                    response.json().then(data => {
+                        window.location.href = `/rooms/${data}`
+                    })
+                };
+
+                connector.fetchTemplateWithoutBody('/rooms/join/' + roomId,
+                    connector.POST,
+                    ifSucceed
+                );
+
+            }
+        }
+
         return {
             saveRoom,
             updateRoom,
+            joinRoom
         }
     };
 

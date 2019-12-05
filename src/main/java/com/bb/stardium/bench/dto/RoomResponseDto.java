@@ -1,12 +1,17 @@
 package com.bb.stardium.bench.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
 @Builder
 @Getter @Setter
 public class RoomResponseDto {
+    @NotBlank
+    private long id;
+
     @NotBlank
     private String  title;
 
