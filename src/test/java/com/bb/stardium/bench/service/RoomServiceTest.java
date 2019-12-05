@@ -4,6 +4,7 @@ import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.domain.repository.RoomRepository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
+import com.bb.stardium.player.domain.Player;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,14 +36,17 @@ class RoomServiceTest {
     private LocalDateTime endTime;
     private Room room;
     private Room room2;
+    private Player master;
+
 
     @BeforeEach
     void setUp() {
+        master = new Player("nick", "email", "password");
         address = new Address("서울시", "송파구", "루터회관 앞");
         startTime = LocalDateTime.of(2020, 11, 30, 10, 0);
         endTime = LocalDateTime.of(2020, 11, 30, 13, 0);
-        room = new Room(1L, "title", "intro", address, startTime, endTime, 10);
-        room2 = new Room(2L, "title2", "intro2", address, startTime, endTime, 12);
+        room = new Room(1L, "title", "intro", address, startTime, endTime, 10, master, new ArrayList<>());
+        room2 = new Room(2L, "title2", "intro2", address, startTime, endTime, 12, master, new ArrayList<>());
     }
 
     @DisplayName("create method 성공")
