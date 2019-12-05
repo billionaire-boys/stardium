@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -64,7 +65,7 @@ class RoomServiceTest {
                 .playersLimit(10).master(masterPlayer1)
                 .players(List.of(masterPlayer1, masterPlayer2)).build();
         room4 = Room.builder().id(4L).title("title4").intro("intro").address(address)
-                .startTime(startTime).endTime(endTime)
+                .startTime(startTime.plusHours(5)).endTime(endTime.plusHours(5))
                 .playersLimit(2).master(masterPlayer2)
                 .players(List.of(masterPlayer1, masterPlayer2)).build();
     }
@@ -134,6 +135,18 @@ class RoomServiceTest {
 
         List<RoomResponseDto> actual = roomService.findAllUnexpiredRooms();
         List<RoomResponseDto> expected = List.of(room1, room2).stream()
+                .map(this::toResponseDto).collect(Collectors.toList());
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @DisplayName("자신이 참가한 방을 찾기")
+    @Test
+    void findPlayerJoinedRoom() {
+        given(roomRepository.findByPlayers_Email(anyString())).willReturn(List.of(room1, room2, room4));
+
+        List<RoomResponseDto> actual = roomService.findPlayerJoinedRoom(masterPlayer1);
+        List<RoomResponseDto> expected = List.of(room1, room2, room4).stream()
                 .map(this::toResponseDto).collect(Collectors.toList());
 
         assertThat(actual).isEqualTo(expected);

@@ -5,6 +5,7 @@ import com.bb.stardium.bench.domain.repository.RoomRepository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.exception.NotFoundRoomException;
+import com.bb.stardium.player.domain.Player;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -98,6 +99,13 @@ public class RoomService {
                 .filter(this::isUnexpiredRoom)
                 .filter(this::hasRemainingSeat)
                 .sorted(Comparator.comparing(Room::getStartTime)) // TODO: 추후 추출? 혹은 쿼리 등 다른 방법?
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<RoomResponseDto> findPlayerJoinedRoom(Player player) {
+        return roomRepository.findByPlayers_Email(player.getEmail()).stream()
+                .sorted(Comparator.comparing(Room::getStartTime))
                 .map(this::toResponseDto)
                 .collect(Collectors.toList());
     }
