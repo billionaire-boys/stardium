@@ -14,9 +14,21 @@ const ROOM_APP = (() => {
             updateButton ? updateButton.addEventListener('click', roomService.updateRoom) : undefined;
         }
 
+        const join = () => {
+            const roomList = document.getElementById('room-list');
+            roomList ? roomList.addEventListener('click', roomService.joinRoom) : undefined;
+        }
+
+        const quit = () => {
+            const quitButton = document.getElementById('quit-button');
+            quitButton ? quitButton.addEventListener('click', roomService.quitRoom) : undefined;
+        }
+
         const init = () => {
             signUp();
             update();
+            join();
+            quit();
         };
 
         return {
@@ -103,9 +115,47 @@ const ROOM_APP = (() => {
             );
         };
 
+        const joinRoom = (event) => {
+            const targetButton = event.target
+            if (targetButton.classList.contains("room-join-button")) {
+                let roomId = targetButton.dataset.roomId
+
+                const ifSucceed = (response) => {
+                    alert("방에 입장되었습니다!");
+                    response.json().then(data => {
+                        window.location.href = `/rooms/${data}`
+                    })
+                };
+
+                connector.fetchTemplateWithoutBody('/rooms/join/' + roomId,
+                    connector.POST,
+                    ifSucceed
+                );
+
+            }
+        }
+
+        const quitRoom = (event) => {
+
+            const ifSucceed = (response) => {
+                response.json().then(data => {
+                    alert("나가는 데 성공했습니다!");
+                    window.location.href = `/rooms/`
+                })
+            };
+            const roomId = document.getElementById('roomId').value;
+
+            connector.fetchTemplateWithoutBody('/rooms/quit/' + roomId,
+                connector.POST,
+                ifSucceed
+            );
+        }
+
         return {
             saveRoom,
             updateRoom,
+            joinRoom,
+            quitRoom
         }
     };
 

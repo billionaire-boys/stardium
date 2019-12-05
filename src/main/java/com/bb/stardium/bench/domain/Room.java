@@ -1,11 +1,11 @@
 package com.bb.stardium.bench.domain;
 
-import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.player.domain.Player;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -40,14 +40,14 @@ public class Room {
 
     private int playersLimit;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "master_id")
     private Player master;
 
     @ManyToMany
     @JoinTable(name = "player_room",
-            joinColumns = @JoinColumn(name = "room_id"),
-            inverseJoinColumns = @JoinColumn(name = "player_id"))
+            joinColumns = @JoinColumn(name = "player_id"),
+            inverseJoinColumns = @JoinColumn(name = "room_id"))
     private List<Player> players = new ArrayList<>();
 
     public void update(Room updatedRoom) {
@@ -57,5 +57,19 @@ public class Room {
         this.startTime = updatedRoom.getStartTime();
         this.endTime = updatedRoom.getEndTime();
         this.playersLimit = updatedRoom.getPlayersLimit();
+    }
+
+    public Player addPlayer(Player player) {
+        players.add(player);
+        return player;
+    }
+
+    public boolean hasPlayer(Player player) {
+        return players.contains(player);
+    }
+
+    public Player removePlayer(Player player) {
+        players.remove(player);
+        return player;
     }
 }

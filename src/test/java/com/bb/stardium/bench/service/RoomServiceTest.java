@@ -6,11 +6,14 @@ import com.bb.stardium.bench.domain.repository.RoomRepository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.player.domain.Player;
+import com.bb.stardium.player.service.PlayerService;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -27,13 +30,19 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
+@Disabled
 class RoomServiceTest {
+
+    private static final String PLAYER_EMAIL = "email2";
 
     @Autowired
     private RoomService roomService;
 
     @MockBean
     private RoomRepository roomRepository;
+
+    @MockBean
+    private PlayerService playerService;
 
     private Address address;
     private LocalDateTime startTime;
@@ -52,6 +61,7 @@ class RoomServiceTest {
         endTime = LocalDateTime.now().plusDays(1).plusHours(2);
         masterPlayer1 = new Player("master1", "master1@mail.net", "password");
         masterPlayer2 = new Player("master2", "master2@mail.net", "password");
+
         room1 = Room.builder().id(1L).title("title1").intro("intro").address(address)
                 .startTime(startTime).endTime(endTime)
                 .playersLimit(10).master(masterPlayer1)
@@ -128,6 +138,27 @@ class RoomServiceTest {
         verify(roomRepository).findAll();
     }
 
+    @Test
+    void join() {
+        given(playerService.findByPlayerEmail(any())).willReturn(masterPlayer1);
+        given(roomRepository.findById(1L)).willReturn(Optional.of(room1));
+
+        roomService.join(PLAYER_EMAIL, room1.getId());
+
+        assertThat(room1.getPlayers().contains(masterPlayer1)).isTrue();
+        assertThat(masterPlayer1.getRooms().contains(room1)).isTrue();
+    }
+
+    @Test
+    void quit() {
+        given(playerService.findByPlayerEmail(any())).willReturn(masterPlayer1);
+        given(roomRepository.findById(1L)).willReturn(Optional.of(room1));
+
+        roomService.quit(PLAYER_EMAIL, room1.getId());
+        assertThat(room1.getPlayers().contains(masterPlayer1)).isFalse();
+        assertThat(masterPlayer1.getRooms().contains(room1)).isFalse();
+
+    }
     @DisplayName("현재 시간 이후이고 참가가능 인원이 남아 있는 방을 찾기")
     @Test
     void findAllUnexpiredRooms() {

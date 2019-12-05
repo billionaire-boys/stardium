@@ -12,6 +12,7 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -45,7 +46,7 @@ public class RoomRequestDto {
                 .startTime(startTime)
                 .endTime(endTime)
                 .playersLimit(playersLimit)
-                .master(master)
+                .players(new ArrayList<>())
                 .build();
     }
 }

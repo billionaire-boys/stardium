@@ -1,9 +1,6 @@
 package com.bb.stardium.bench.dto;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
@@ -11,6 +8,9 @@ import javax.validation.constraints.NotBlank;
 @Getter @Setter
 @EqualsAndHashCode
 public class RoomResponseDto {
+    @NotBlank
+    private long id;
+
     @NotBlank
     private String title;
 
@@ -25,4 +25,7 @@ public class RoomResponseDto {
 
     @NotBlank
     private int playLimits;
+
+    @NotBlank
+    private int playerCount;
 }

@@ -7,10 +7,6 @@
     <title>방 만들기</title>
 </th:block>
 
-<th:block layout:fragment="content_header">
-    <th:block th:replace="fragment/header"/>
-</th:block>
-
 <th:block layout:fragment="content_body">
     <div class="ui container">
         <h1 class="ui violet header">방 만들기</h1>
@@ -21,7 +17,7 @@
             </div>
             <div class="field">
                 <h4 class="ui dividing header">주소</h4>
-                <div class="fields">
+                <div class="fields grid">
                     <div class="field">
                         <label>시</label>
                         <input id="city" name="city" placeholder="시" type="text">
@@ -45,15 +41,15 @@
             </div>
             <div class="field">
                 <h4 class="ui dividing header">인원 수</h4>
-                <input id="playersLimit" max="100" min="1" name="playersLimit" type="number">
+                <input id="playersLimit" max="100" min="1" name="playersLimit" type="number" placeholder="명">
             </div>
             ​
             <div class="field">
                 <h4 class="ui dividing header">방 소개</h4>
-                <textarea form="room-save-form" id="intro" name="intro"></textarea>
+                <textarea form="room-save-form" id="intro" name="intro" placeholder="같이 게임 하실래요??"></textarea>
             </div>
             ​
-            <button type="submit" class="ui violet button" id="signUp">Submit</button>
+            <button class="ui fluid violet button" id="signUp">Submit</button>
         </form>
     </div>
 </th:block>
