@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -24,9 +23,13 @@ public abstract class BaseAcceptanceTest {
     }
 
     private Player createPlayer(PlayerRequestDto playerRequestDto) {
-        webTestClient.post().uri("/users/new")
+        webTestClient.post().uri("/player/new")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .body(Mono.just(playerRequestDto), PlayerRequestDto.class)
+                .body(BodyInserters
+                        .fromFormData("nickname", playerRequestDto.getNickname())
+                        .with("email", playerRequestDto.getEmail())
+                        .with("password", playerRequestDto.getPassword())
+                        .with("status", playerRequestDto.getStatusMessage()))
                 .exchange();
         return playerRequestDto.toEntity();
     }
