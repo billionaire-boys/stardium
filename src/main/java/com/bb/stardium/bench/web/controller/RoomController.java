@@ -61,6 +61,19 @@ public class RoomController {
         return ResponseEntity.ok(roomId);
     }
 
+    @PostMapping("/quit/{roomId}")
+    @ResponseBody
+    public ResponseEntity quit(@PathVariable Long roomId, final HttpSession session) {
+        PlayerResponseDto playerResponseDto = (PlayerResponseDto) session.getAttribute("login");
+        if (playerResponseDto == null) {
+            throw new AuthenticationFailException();
+        }
+
+        roomService.quit(playerResponseDto.getEmail(), roomId);
+
+        return ResponseEntity.ok(roomId);
+    }
+
     @GetMapping("/{roomId}")
     public String get(@PathVariable Long roomId, Model model) {
         Room room = roomService.findRoom(roomId);

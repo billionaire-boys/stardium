@@ -49,7 +49,7 @@ public class RoomTest extends BaseAcceptanceTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus()
-                .is3xxRedirection();
+                .isOk();
     }
 
     @Test
