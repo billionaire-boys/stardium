@@ -73,7 +73,7 @@ class RoomServiceTest {
     @Test
     void createRoom() {
         RoomRequestDto roomRequest =
-                new RoomRequestDto("title", "intro", address, startTime, endTime, 10);
+                new RoomRequestDto("title", "intro", address, startTime, endTime, 10, masterPlayer1);
         given(roomRepository.save(any())).willReturn(room1);
 
         roomService.create(roomRequest);
@@ -87,7 +87,7 @@ class RoomServiceTest {
         given(roomRepository.findById(any())).willReturn(Optional.of(room1));
 
         RoomRequestDto updateRequest = new RoomRequestDto("updatedTitle",
-                "updatedIntro", address, startTime, endTime, 5);
+                "updatedIntro", address, startTime, endTime, 5, masterPlayer1);
         Long roomNumber = roomService.update(room1.getId(), updateRequest);
 
         Room updatedRoom = roomRepository.findById(roomNumber).orElseThrow();
