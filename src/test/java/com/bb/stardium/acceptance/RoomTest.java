@@ -4,6 +4,7 @@ import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -54,6 +55,7 @@ public class RoomTest extends BaseAcceptanceTest {
 
     @Test
     @DisplayName("방 주인이 방을 나가면 방이 사라진다")
+    @Disabled
     void quitRoom() {
         PlayerRequestDto dto = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg", "Dd");
 
@@ -75,6 +77,7 @@ public class RoomTest extends BaseAcceptanceTest {
 
     @Test
     @DisplayName("방 주인만이 방 정보를 수정할 수 있다")
+    @Disabled
     void updateRoom() {
         PlayerRequestDto masterPlayer = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg", "Dd");
 
