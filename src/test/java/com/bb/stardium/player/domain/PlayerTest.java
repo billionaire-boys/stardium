@@ -14,7 +14,7 @@ class PlayerTest {
     @DisplayName("새로운 플레이어 객체를 생성")
     void makeNewPlayer() {
         final Player player = new Player(nickname, email, password);
-        assertThat(player.getNickname()).isEqualTo(nickname);
+        assertThat(player.getNickname()).isNotEqualTo(nickname);
         assertThat(player.getEmail()).isEqualTo(email);
         assertThat(player.getPassword()).isEqualTo(password);
     }
