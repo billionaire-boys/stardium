@@ -30,7 +30,7 @@ public class RoomController {
 
     @GetMapping("/createForm")
     public String createFrom() {
-        return "createRoom";
+        return "create_room";
     }
 
     @GetMapping("/updateForm")

@@ -8,6 +8,11 @@ public class MainPageController {
 
     @GetMapping("/")
     public String homepage() {
-        return "login.html";
+        return "main_all_room.html";
+    }
+
+    @GetMapping("/myRoom")
+    public String myRoomPage() {
+        return "main_my_room.html";
     }
 }
