@@ -1,6 +1,5 @@
 package com.bb.stardium.bench.domain;
 
-import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.player.domain.Player;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,5 +56,19 @@ public class Room {
         this.startTime = updatedRoom.getStartTime();
         this.endTime = updatedRoom.getEndTime();
         this.playersLimit = updatedRoom.getPlayersLimit();
+    }
+
+    public Player addPlayer(Player player) {
+        players.add(player);
+        return player;
+    }
+
+    public boolean hasPlayer(Player player) {
+        return players.contains(player);
+    }
+
+    public Player removePlayer(Player player) {
+        players.remove(player);
+        return player;
     }
 }
