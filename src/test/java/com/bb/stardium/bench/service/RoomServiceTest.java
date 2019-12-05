@@ -4,6 +4,8 @@ import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.domain.repository.RoomRepository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
+import com.bb.stardium.bench.dto.RoomResponseDto;
+import com.bb.stardium.player.domain.Player;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,8 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,24 +37,44 @@ class RoomServiceTest {
     private Address address;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Room room;
+    private Room room1;
     private Room room2;
+    private Room room3;
+    private Room room4;
+    private Player masterPlayer1;
+    private Player masterPlayer2;
 
     @BeforeEach
     void setUp() {
         address = new Address("서울시", "송파구", "루터회관 앞");
-        startTime = LocalDateTime.of(2020, 11, 30, 10, 0);
-        endTime = LocalDateTime.of(2020, 11, 30, 13, 0);
-        room = new Room(1L, "title", "intro", address, startTime, endTime, 10);
-        room2 = new Room(2L, "title2", "intro2", address, startTime, endTime, 12);
+        startTime = LocalDateTime.now().plusDays(1);
+        endTime = LocalDateTime.now().plusDays(1).plusHours(2);
+        masterPlayer1 = new Player("master1", "master1@mail.net", "password");
+        masterPlayer2 = new Player("master2", "master2@mail.net", "password");
+        room1 = Room.builder().id(1L).title("title1").intro("intro").address(address)
+                .startTime(startTime).endTime(endTime)
+                .playersLimit(10).master(masterPlayer1)
+                .players(List.of(masterPlayer1)).build();
+        room2 = Room.builder().id(2L).title("title2").intro("intro").address(address)
+                .startTime(startTime.plusHours(3)).endTime(endTime.plusHours(3))
+                .playersLimit(10).master(masterPlayer2)
+                .players(List.of(masterPlayer2)).build();
+        room3 = Room.builder().id(3L).title("title3").intro("intro").address(address)
+                .startTime(startTime.minusDays(4)).endTime(endTime.minusDays(4))
+                .playersLimit(10).master(masterPlayer1)
+                .players(List.of(masterPlayer1, masterPlayer2)).build();
+        room4 = Room.builder().id(4L).title("title4").intro("intro").address(address)
+                .startTime(startTime).endTime(endTime)
+                .playersLimit(2).master(masterPlayer2)
+                .players(List.of(masterPlayer1, masterPlayer2)).build();
     }
 
     @DisplayName("create method 성공")
     @Test
-    public void createRoom() throws Exception {
+    void createRoom() {
         RoomRequestDto roomRequest =
                 new RoomRequestDto("title", "intro", address, startTime, endTime, 10);
-        given(roomRepository.save(any())).willReturn(room);
+        given(roomRepository.save(any())).willReturn(room1);
 
         roomService.create(roomRequest);
 
@@ -59,12 +83,12 @@ class RoomServiceTest {
 
     @DisplayName("update method 성공")
     @Test
-    public void updateRoom() throws Exception {
-        given(roomRepository.findById(any())).willReturn(Optional.of(room));
+    void updateRoom() {
+        given(roomRepository.findById(any())).willReturn(Optional.of(room1));
 
         RoomRequestDto updateRequest = new RoomRequestDto("updatedTitle",
                 "updatedIntro", address, startTime, endTime, 5);
-        Long roomNumber = roomService.update(room.getId(), updateRequest);
+        Long roomNumber = roomService.update(room1.getId(), updateRequest);
 
         Room updatedRoom = roomRepository.findById(roomNumber).orElseThrow();
         assertThat(updatedRoom.getId()).isEqualTo(roomNumber);
@@ -75,35 +99,58 @@ class RoomServiceTest {
 
     @DisplayName("delete method 성공")
     @Test
-    public void deleteRoom() throws Exception {
-        given(roomRepository.findById(any())).willReturn(Optional.ofNullable(room));
+    void deleteRoom() {
+        given(roomRepository.findById(any())).willReturn(Optional.ofNullable(room1));
 
-        roomService.delete(room.getId());
+        roomService.delete(room1.getId());
 
         verify(roomRepository).delete(any());
     }
 
     @DisplayName("find method 성공")
     @Test
-    public void findRoom() throws Exception {
-        given(roomRepository.findById(any())).willReturn(Optional.ofNullable(room));
+    void findRoom() {
+        given(roomRepository.findById(any())).willReturn(Optional.ofNullable(room1));
 
-        roomService.findRoom(room.getId());
+        roomService.findRoom(room1.getId());
 
         verify(roomRepository).findById(any());
     }
 
     @DisplayName("findAllRoom method 성공")
     @Test
-    public void findAllRoom() throws Exception {
-        // given
-        given(roomRepository.findAll()).willReturn(Lists.newArrayList(room, room2));
+    void findAllRoom() {
+        given(roomRepository.findAll()).willReturn(Lists.newArrayList(room1, room2));
 
-        // when
         roomService.findAllRooms();
 
-        // then
         verify(roomRepository).findAll();
     }
 
+    @DisplayName("현재 시간 이후이고 참가가능 인원이 남아 있는 방을 찾기")
+    @Test
+    void findAllUnexpiredRooms() {
+        given(roomRepository.findAll()).willReturn(List.of(room1, room2, room3, room4));
+
+        List<RoomResponseDto> actual = roomService.findAllUnexpiredRooms();
+        List<RoomResponseDto> expected = List.of(room1, room2).stream()
+                .map(this::toResponseDto).collect(Collectors.toList());
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    private RoomResponseDto toResponseDto(Room room) {
+        return RoomResponseDto.builder()
+                .title(room.getTitle())
+                .intro(room.getIntro())
+                .address(String.format("%s %s %s",
+                        room.getAddress().getCity(),
+                        room.getAddress().getSection(),
+                        room.getAddress().getDetail()))
+                .playTime(String.format("%s - %s",
+                        room.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                        room.getEndTime().format(DateTimeFormatter.ofPattern("dd"))))
+                .playLimits(room.getPlayersLimit())
+                .build();
+    }
 }

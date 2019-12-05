@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
 
 
-public class RoomTest extends BaseAcceptanceTest {
+class RoomTest extends BaseAcceptanceTest {
     private RoomRequestDto roomRequestDto;
 
     @BeforeEach
@@ -24,7 +24,7 @@ public class RoomTest extends BaseAcceptanceTest {
     @Test
     @DisplayName("사용자가 방을 만들고 들어가고 나올 수 있다")
     void joinRoom() {
-        PlayerRequestDto createPlayer = new PlayerRequestDto("test", "create@room.com", "A!1bcdefg");
+        PlayerRequestDto createPlayer = new PlayerRequestDto("test", "create@room.com", "A!1bcdefg", "");
         String roomUri = newSessionPost(createPlayer, "/rooms/new")
                 .body(Mono.just(roomRequestDto), RoomRequestDto.class)
                 .exchange()
@@ -32,7 +32,7 @@ public class RoomTest extends BaseAcceptanceTest {
                 .is3xxRedirection()
                 .returnResult(String.class).getRequestHeaders().getFirst("Location");
 
-        PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg");
+        PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg", "");
         newSessionPost(joinPlayer, roomUri)
                 .body(Mono.just(joinPlayer), PlayerRequestDto.class)
                 .exchange()
@@ -48,7 +48,7 @@ public class RoomTest extends BaseAcceptanceTest {
     @Test
     @DisplayName("방 주인이 방을 나가면 방이 사라진다")
     void quitRoom() {
-        PlayerRequestDto dto = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg");
+        PlayerRequestDto dto = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg", "");
 
         String roomUri = newSessionPost(dto, "/rooms/new")
                 .body(Mono.just(roomRequestDto), RoomRequestDto.class)
@@ -69,7 +69,7 @@ public class RoomTest extends BaseAcceptanceTest {
     @Test
     @DisplayName("방 주인만이 방 정보를 수정할 수 있다")
     void updateRoom() {
-        PlayerRequestDto masterPlayer = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg");
+        PlayerRequestDto masterPlayer = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg", "");
 
         String roomUri = newSessionPost(masterPlayer, "/rooms/new")
                 .body(Mono.just(roomRequestDto), RoomRequestDto.class)
@@ -78,7 +78,7 @@ public class RoomTest extends BaseAcceptanceTest {
                 .is3xxRedirection()
                 .returnResult(String.class).getRequestHeaders().getFirst("Location");
 
-        PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg");
+        PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg", "");
         newSessionPost(joinPlayer, roomUri)
                 .body(Mono.just(joinPlayer), PlayerRequestDto.class)
                 .exchange()

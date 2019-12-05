@@ -2,13 +2,15 @@ package com.bb.stardium.bench.service;
 
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.domain.repository.RoomRepository;
-import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.dto.RoomRequestDto;
+import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.exception.NotFoundRoomException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,5 +83,22 @@ public class RoomService {
                 room.getEndTime().format(DateTimeFormatter.ofPattern("dd"))))
             .playLimits(room.getPlayersLimit())
             .build();
+    }
+
+    private boolean isUnexpiredRoom(Room room) {
+        return room.getStartTime().isAfter(LocalDateTime.now());
+    }
+
+    private boolean hasRemainingSeat(Room room) {
+        return (room.getPlayersLimit() - room.getPlayers().size()) > 0;
+    }
+
+    public List<RoomResponseDto> findAllUnexpiredRooms() {
+        return roomRepository.findAll().stream()
+                .filter(this::isUnexpiredRoom)
+                .filter(this::hasRemainingSeat)
+                .sorted(Comparator.comparing(Room::getStartTime)) // TODO: 추후 추출? 혹은 쿼리 등 다른 방법?
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
     }
 }
