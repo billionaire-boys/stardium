@@ -1,6 +1,5 @@
 package com.bb.stardium.bench.domain;
 
-import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.player.domain.Player;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,7 +39,7 @@ public class Room {
 
     private int playersLimit;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "master_id")
     private Player master;
 
@@ -48,7 +47,7 @@ public class Room {
     @JoinTable(name = "player_room",
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "player_id"))
-    private List<Player> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<Player>();
 
     public void update(Room updatedRoom) {
         this.title = updatedRoom.getTitle();
@@ -57,5 +56,14 @@ public class Room {
         this.startTime = updatedRoom.getStartTime();
         this.endTime = updatedRoom.getEndTime();
         this.playersLimit = updatedRoom.getPlayersLimit();
+    }
+
+    public boolean isNotMaster(Player masterPlayer) {
+        return this.master != masterPlayer;
+    }
+
+    public void addPlayer(Player player) {
+        this.players.add(player);
+        player.addRoom(this);
     }
 }

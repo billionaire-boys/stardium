@@ -72,4 +72,8 @@ public class Player {
     public boolean isMatchPassword(final String password) {
         return this.password.equals(password);
     }
+
+    public void addRoom(Room room) {
+        this.rooms.add(room);
+    }
 }

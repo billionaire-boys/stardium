@@ -4,6 +4,8 @@ import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.domain.repository.RoomRepository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
+import com.bb.stardium.player.domain.Player;
+import com.bb.stardium.player.dto.PlayerRequestDto;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,24 +36,27 @@ class RoomServiceTest {
     private LocalDateTime endTime;
     private Room room;
     private Room room2;
+    private PlayerRequestDto playerRequestDto;
+    private Player player;
 
     @BeforeEach
     void setUp() {
         address = new Address("서울시", "송파구", "루터회관 앞");
         startTime = LocalDateTime.of(2020, 11, 30, 10, 0);
         endTime = LocalDateTime.of(2020, 11, 30, 13, 0);
-        room = new Room(1L, "title", "intro", address, startTime, endTime, 10);
-        room2 = new Room(2L, "title2", "intro2", address, startTime, endTime, 12);
+        playerRequestDto = new PlayerRequestDto("nickname", "email", "password", "별일 없이 산다");
+        player = playerRequestDto.toEntity();
+        room = new Room(2L, "title", "intro", address, startTime, endTime, 10, player, Lists.newArrayList(player));
+        room2 = new Room(3L, "title2", "intro2", address, startTime, endTime, 12, player, Lists.newArrayList(player));
     }
 
     @DisplayName("create method 성공")
     @Test
     public void createRoom() throws Exception {
-        RoomRequestDto roomRequest =
-                new RoomRequestDto("title", "intro", address, startTime, endTime, 10);
+        RoomRequestDto roomRequest = new RoomRequestDto("title", "intro", address, startTime, endTime, 10);
         given(roomRepository.save(any())).willReturn(room);
 
-        roomService.create(roomRequest);
+        roomService.create(roomRequest, player);
 
         verify(roomRepository).save(any());
     }
@@ -64,7 +68,7 @@ class RoomServiceTest {
 
         RoomRequestDto updateRequest = new RoomRequestDto("updatedTitle",
                 "updatedIntro", address, startTime, endTime, 5);
-        Long roomNumber = roomService.update(room.getId(), updateRequest);
+        Long roomNumber = roomService.update(room.getId(), updateRequest, player);
 
         Room updatedRoom = roomRepository.findById(roomNumber).orElseThrow();
         assertThat(updatedRoom.getId()).isEqualTo(roomNumber);

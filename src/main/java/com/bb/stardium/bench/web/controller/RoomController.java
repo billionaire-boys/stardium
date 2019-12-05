@@ -4,11 +4,16 @@ import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.service.RoomService;
+import com.bb.stardium.player.domain.Player;
+import com.bb.stardium.player.dto.PlayerRequestDto;
+import com.bb.stardium.player.dto.PlayerResponseDto;
+import com.bb.stardium.player.service.PlayerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -16,9 +21,11 @@ import java.util.List;
 public class RoomController {
 
     private RoomService roomService;
+    private PlayerService playerService;
 
-    public RoomController(RoomService roomService) {
+    public RoomController(RoomService roomService, PlayerService playerService) {
         this.roomService = roomService;
+        this.playerService = playerService;
     }
 
     @GetMapping
@@ -40,8 +47,10 @@ public class RoomController {
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity create(@RequestBody RoomRequestDto roomRequest) {
-        Long roomId = roomService.create(roomRequest);
+    public ResponseEntity create(@RequestBody final RoomRequestDto roomRequest, final HttpSession session) {
+        PlayerResponseDto loginPlayerDto = (PlayerResponseDto) session.getAttribute("login");
+        Player loginPlayer = playerService.findByPlayerEmail(loginPlayerDto.getEmail());
+        Long roomId = roomService.create(roomRequest, loginPlayer);
         return ResponseEntity.ok(roomId);
     }
 
@@ -54,8 +63,10 @@ public class RoomController {
 
     @PutMapping("/{roomId}")
     @ResponseBody
-    public ResponseEntity update(@PathVariable Long roomId, @RequestBody RoomRequestDto roomRequestDto) {
-        Long updatedRoomId = roomService.update(roomId, roomRequestDto);
+    public ResponseEntity update(@PathVariable Long roomId, @RequestBody RoomRequestDto roomRequestDto, HttpSession httpSession) {
+        PlayerResponseDto loginPlayerDto = (PlayerResponseDto) httpSession.getAttribute("login");
+        Player player = playerService.findByPlayerEmail(loginPlayerDto.getEmail());
+        Long updatedRoomId = roomService.update(roomId, roomRequestDto, player);
         return ResponseEntity.ok(updatedRoomId);
     }
 

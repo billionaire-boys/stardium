@@ -2,13 +2,17 @@ package com.bb.stardium.bench.service;
 
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.domain.repository.RoomRepository;
-import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.dto.RoomRequestDto;
+import com.bb.stardium.bench.dto.RoomResponseDto;
+import com.bb.stardium.bench.service.exception.MasterAndRoomNotMatchedException;
 import com.bb.stardium.bench.service.exception.NotFoundRoomException;
+import com.bb.stardium.player.domain.Player;
+import com.bb.stardium.player.domain.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,27 +25,25 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public long create(RoomRequestDto roomRequest) {
-        Room saveRoom = roomRepository.save(roomRequest.toEntity());
+    public long create(RoomRequestDto roomRequest, Player player) {
+        Room room = toEntity(roomRequest, player);
+        room.addPlayer(player);
+        Room saveRoom = roomRepository.save(room);
         return saveRoom.getId();
     }
 
-    public long update(long roomId, RoomRequestDto roomRequestDto) {
-        Room room = roomRepository.findById(roomId)
-                .orElseThrow(NotFoundRoomException::new);
-        room.update(toEntity(roomRequestDto));
+    public long update(long roomId, RoomRequestDto roomRequestDto, final Player player) {
+        Room room = roomRepository.findById(roomId).orElseThrow(NotFoundRoomException::new);
+        checkRoomMaster(player, room);
+
+        room.update(toEntity(roomRequestDto, player));
         return room.getId();
     }
 
-    private Room toEntity(RoomRequestDto roomRequestDto) {
-        return Room.builder()
-                .title(roomRequestDto.getTitle())
-                .intro(roomRequestDto.getIntro())
-                .address(roomRequestDto.getAddress())
-                .startTime(roomRequestDto.getStartTime())
-                .endTime(roomRequestDto.getEndTime())
-                .playersLimit(roomRequestDto.getPlayersLimit())
-                .build();
+    private void checkRoomMaster(Player player, Room room) {
+        if (room.isNotMaster(player)) {
+            throw new MasterAndRoomNotMatchedException();
+        }
     }
 
     public boolean delete(long roomId) {
@@ -62,24 +64,38 @@ public class RoomService {
         return toResponseDtos(rooms);
     }
 
+    private Room toEntity(RoomRequestDto roomRequestDto, Player player) {
+        return Room.builder()
+                .title(roomRequestDto.getTitle())
+                .intro(roomRequestDto.getIntro())
+                .address(roomRequestDto.getAddress())
+                .startTime(roomRequestDto.getStartTime())
+                .endTime(roomRequestDto.getEndTime())
+                .playersLimit(roomRequestDto.getPlayersLimit())
+                .master(player)
+                .players(new ArrayList<>())
+                .build();
+    }
+
     private List<RoomResponseDto> toResponseDtos(List<Room> rooms) {
         return rooms.stream()
                 .map(this::toResponseDto)
                 .collect(Collectors.toList());
     }
 
+    // TODO : service에서 뷰를 고려해서 만들어 보내주는 게 어색함. 리팩토링 필요할듯
     private RoomResponseDto toResponseDto(Room room) {
         return RoomResponseDto.builder()
-            .title(room.getTitle())
-            .intro(room.getIntro())
-            .address(String.format("%s %s %s",
-                room.getAddress().getCity(),
-                room.getAddress().getSection(),
-                room.getAddress().getDetail()))
-            .playTime(String.format("%s - %s",
-                room.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                room.getEndTime().format(DateTimeFormatter.ofPattern("dd"))))
-            .playLimits(room.getPlayersLimit())
-            .build();
+                .title(room.getTitle())
+                .intro(room.getIntro())
+                .address(String.format("%s %s %s",
+                        room.getAddress().getCity(),
+                        room.getAddress().getSection(),
+                        room.getAddress().getDetail()))
+                .playTime(String.format("%s - %s",
+                        room.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                        room.getEndTime().format(DateTimeFormatter.ofPattern("dd"))))
+                .playLimits(room.getPlayersLimit())
+                .build();
     }
 }
