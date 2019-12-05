@@ -32,16 +32,17 @@
                         <div class="content">
                             <div class="summary" th:text="'장소 : ' + ${room.address}">
                                 장소 : 어디서 농구 할 것인가
-
-                                <div class="summary" th:text="'일시 : ' +${room.playTime}">
-                                    일시 : 언제 농구 할 것인가
-                                </div>
-                                <div class="summary" th:text="'인원제한 : ' +${room.playLimits}">
-                                    인원 : 10명
-                                </div>
-                                <div class="summary" th:text="'들어온 인원: ' + ${room.get}"
-
                             </div>
+                            <div class="summary" th:text="'일시 : ' +${room.playTime}">
+                                일시 : 언제 농구 할 것인가
+                            </div>
+                            <div class="summary" th:text="'인원제한 : ' +${room.playLimits}">
+                                인원 : 10명
+                            </div>
+                            <div class="summary" th:text="'들어온 인원: ' + ${room.playerCount}">
+                                들어온 인원: 1명
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -50,8 +51,8 @@
                         Join Team
                     </button>
                 </div>
+            </div>
         </div>
-    </div>
 </th:block>
 
 <th:block layout:fragment="custom_js">
