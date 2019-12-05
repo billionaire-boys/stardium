@@ -2,6 +2,7 @@ package com.bb.stardium.acceptance;
 
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.dto.RoomRequestDto;
+import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,15 +11,16 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
-
 class RoomTest extends BaseAcceptanceTest {
     private RoomRequestDto roomRequestDto;
+    private Player masterPlayer1;
 
     @BeforeEach
     void setUp() {
+        masterPlayer1 = new Player("master1", "master1@mail.net", "password");
         roomRequestDto = new RoomRequestDto("title", "intro",
                 new Address("서울시", "송파구", "루터회관"),
-                LocalDateTime.now(), LocalDateTime.now().plusHours(1L), 3);
+                LocalDateTime.now(), LocalDateTime.now().plusHours(1L), 3, masterPlayer1);
     }
 
     @Test

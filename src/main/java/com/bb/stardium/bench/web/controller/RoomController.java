@@ -4,14 +4,12 @@ import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.RoomService;
-import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -46,9 +44,7 @@ public class RoomController {
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity create(@RequestBody RoomRequestDto roomRequest, HttpSession session) {
-        PlayerResponseDto masterDto = (PlayerResponseDto) session.getAttribute("login");
-        roomRequest.setMaster(playerService.findByPlayerEmail(masterDto.getEmail()));
+    public ResponseEntity create(@RequestBody RoomRequestDto roomRequest) {
         Long roomId = roomService.create(roomRequest);
         return ResponseEntity.ok(roomId);
     }
