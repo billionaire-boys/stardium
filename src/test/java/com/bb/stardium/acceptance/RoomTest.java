@@ -45,7 +45,7 @@ public class RoomTest extends BaseAcceptanceTest {
                 .expectStatus()
                 .isOk();
 
-        loginSessionPost(joinPlayer, "rooms/quit" + roomNumber)
+        loginSessionPost(joinPlayer, "rooms/quit/" + roomNumber)
                 .contentType(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus()
