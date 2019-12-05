@@ -1,5 +1,6 @@
 package com.bb.stardium.player.domain;
 
+import com.bb.stardium.bench.domain.Room;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -8,6 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,6 +40,9 @@ public class Player {
 
     @Column(name = "statusMessage")
     private String statusMessage = "";
+
+    @ManyToMany(mappedBy = "players")
+    private List<Room> rooms = new ArrayList<>();
 
     protected Player() {
         this.updatedDateTime = OffsetDateTime.now();

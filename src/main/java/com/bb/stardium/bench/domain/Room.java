@@ -1,6 +1,7 @@
 package com.bb.stardium.bench.domain;
 
 import com.bb.stardium.bench.dto.RoomRequestDto;
+import com.bb.stardium.player.domain.Player;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -36,6 +39,16 @@ public class Room {
     private LocalDateTime endTime;
 
     private int playersLimit;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "master_id")
+    private Player master;
+
+    @ManyToMany
+    @JoinTable(name = "player_room",
+            joinColumns = @JoinColumn(name = "room_id"),
+            inverseJoinColumns = @JoinColumn(name = "player_id"))
+    private List<Player> players = new ArrayList<>();
 
     public void update(Room updatedRoom) {
         this.title = updatedRoom.getTitle();
