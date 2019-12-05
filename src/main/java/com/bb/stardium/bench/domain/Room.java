@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -65,5 +66,14 @@ public class Room {
     public void addPlayer(Player player) {
         this.players.add(player);
         player.addRoom(this);
+    }
+
+    public boolean hasPlayer(Player player) {
+        return players.contains(player);
+    }
+
+    public Player removePlayer(Player player) {
+        players.remove(player);
+        return player;
     }
 }

@@ -37,7 +37,7 @@ public class PlayerController {
         if (Objects.isNull(session.getAttribute("login"))) {
             return "redirect:/login";
         }
-        return "user-edit.html";
+        return "user_edit.html";
     }
 
     @PostMapping("/edit")

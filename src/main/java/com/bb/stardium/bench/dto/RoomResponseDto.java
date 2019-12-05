@@ -6,9 +6,13 @@ import javax.validation.constraints.NotBlank;
 
 @Builder
 @Getter @Setter
+@EqualsAndHashCode
 public class RoomResponseDto {
     @NotBlank
-    private String  title;
+    private long id;
+
+    @NotBlank
+    private String title;
 
     @NotBlank
     private String intro;
@@ -21,4 +25,7 @@ public class RoomResponseDto {
 
     @NotBlank
     private int playLimits;
+
+    @NotBlank
+    private int playerCount;
 }

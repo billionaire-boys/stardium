@@ -74,6 +74,11 @@ public class Player {
     }
 
     public void addRoom(Room room) {
-        this.rooms.add(room);
+        rooms.add(room);
+    }
+
+    public Room removeRoom(Room room) {
+        rooms.remove(room);
+        return room;
     }
 }

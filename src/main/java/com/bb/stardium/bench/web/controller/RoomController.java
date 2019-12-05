@@ -8,6 +8,7 @@ import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
+import com.bb.stardium.player.service.exception.AuthenticationFailException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +21,8 @@ import java.util.List;
 @RequestMapping("/rooms")
 public class RoomController {
 
-    private RoomService roomService;
     private PlayerService playerService;
+    private RoomService roomService;
 
     public RoomController(RoomService roomService, PlayerService playerService) {
         this.roomService = roomService;
@@ -30,14 +31,14 @@ public class RoomController {
 
     @GetMapping
     public String mainRoomList(Model model) {
-        List<RoomResponseDto> rooms = roomService.findAllRooms();
+        List<RoomResponseDto> rooms = roomService.findAllUnexpiredRooms();
         model.addAttribute("rooms", rooms);
-        return "mainRooms";
+        return "main_my_room";
     }
 
     @GetMapping("/createForm")
     public String createFrom() {
-        return "createRoom";
+        return "create_room";
     }
 
     @GetMapping("/updateForm")
@@ -51,6 +52,32 @@ public class RoomController {
         PlayerResponseDto loginPlayerDto = (PlayerResponseDto) session.getAttribute("login");
         Player loginPlayer = playerService.findByPlayerEmail(loginPlayerDto.getEmail());
         Long roomId = roomService.create(roomRequest, loginPlayer);
+        return ResponseEntity.ok(roomId);
+    }
+
+    @PostMapping("/join/{roomId}")
+    @ResponseBody
+    public ResponseEntity join(@PathVariable Long roomId, final HttpSession session) {
+        PlayerResponseDto playerResponseDto = (PlayerResponseDto) session.getAttribute("login");
+        if (playerResponseDto == null) {
+            throw new AuthenticationFailException();
+        }
+
+        roomService.join(playerResponseDto.getEmail(), roomId);
+
+        return ResponseEntity.ok(roomId);
+    }
+
+    @PostMapping("/quit/{roomId}")
+    @ResponseBody
+    public ResponseEntity quit(@PathVariable Long roomId, final HttpSession session) {
+        PlayerResponseDto playerResponseDto = (PlayerResponseDto) session.getAttribute("login");
+        if (playerResponseDto == null) {
+            throw new AuthenticationFailException();
+        }
+
+        roomService.quit(playerResponseDto.getEmail(), roomId);
+
         return ResponseEntity.ok(roomId);
     }
 

@@ -2,6 +2,7 @@ package com.bb.stardium.bench.dto;
 
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
+import com.bb.stardium.player.domain.Player;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,6 +36,8 @@ public class RoomRequestDto {
     @Min(value = 2)
     private int playersLimit;
 
+    private Player master;
+
     public Room toEntity() {
         return Room.builder()
                 .title(title)
@@ -42,6 +46,7 @@ public class RoomRequestDto {
                 .startTime(startTime)
                 .endTime(endTime)
                 .playersLimit(playersLimit)
+                .players(new ArrayList<>())
                 .build();
     }
 }
