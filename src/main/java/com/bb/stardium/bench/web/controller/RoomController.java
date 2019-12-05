@@ -28,7 +28,7 @@ public class RoomController {
     public String mainRoomList(Model model) {
         List<RoomResponseDto> rooms = roomService.findAllRooms();
         model.addAttribute("rooms", rooms);
-        return "mainRooms";
+        return "main_my_room";
     }
 
     @GetMapping("/createForm")
