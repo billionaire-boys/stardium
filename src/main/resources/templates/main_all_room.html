@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main_layout">
+
+<th:block layout:fragment="custom_head">
+    <title>스타디움</title>
+</th:block>
+
+<th:block layout:fragment="content_menu">
+    <th:block th:replace="fragment/menu"/>
+</th:block>
+
+<th:block layout:fragment="content_header">
+    <th:block th:replace="fragment/main_header"/>
+</th:block>
+
+<th:block layout:fragment="content_body">
+    <div class="ui segments">
+        <div class="ui segment">
+            <div class="ui cards">
+                <div class="card" style="width: 100%;">
+                    <div class="content">
+                        <img class="right floated mini ui image" src="/images/default_profile_img.png">
+                        <div class="header">
+                            방 제목
+                        </div>
+                        <div class="meta">
+                            닉네임
+                        </div>
+                        <br>
+                        <div class="description" th:text="intro">
+                            Room introduction contents
+                        </div>
+                        <br>
+                        <div class="summary" th:text="'장소 : '">
+                            장소 : 어디서 농구 할 것인가
+                        </div>
+                        <div class="summary" th:text="'일시 : '">
+                            일시 : 언제 농구 할 것인가
+                        </div>
+                        <div class="summary" th:text="'인원 : '">
+                            인원 : 10명
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <button class="ui fluid violet button">참여하기</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="custom_js">
+    <script src="/js/main.js"></script>
+</th:block>
+</html>
