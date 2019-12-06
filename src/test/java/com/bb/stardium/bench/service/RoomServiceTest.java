@@ -189,6 +189,8 @@ class RoomServiceTest {
                         room.getEndTime().format(DateTimeFormatter.ofPattern("dd"))))
                 .playLimits(room.getPlayersLimit())
                 .master(room.getMaster())
+                .playerCount(room.getPlayers().size())
+                .id(room.getId())
                 .build();
     }
 

@@ -9,10 +9,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class RoomTest extends BaseAcceptanceTest {
     private RoomRequestDto roomRequestDto;
     private Player masterPlayer1;
@@ -38,7 +40,6 @@ class RoomTest extends BaseAcceptanceTest {
                 .expectBody(Long.class)
                 .returnResult()
                 .getResponseBody();
-
 
         PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg", "dd");
         newSessionPost(joinPlayer, "rooms/join/" + roomNumber)
