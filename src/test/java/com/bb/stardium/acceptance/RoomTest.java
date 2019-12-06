@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
-@Disabled
 class RoomTest extends BaseAcceptanceTest {
     private RoomRequestDto roomRequestDto;
     private Player masterPlayer1;
@@ -23,7 +22,7 @@ class RoomTest extends BaseAcceptanceTest {
         masterPlayer1 = new Player("master1", "master1@mail.net", "password");
         roomRequestDto = new RoomRequestDto("title", "intro",
                 new Address("서울시", "송파구", "루터회관"),
-                LocalDateTime.now(), LocalDateTime.now().plusHours(1L), 3, masterPlayer1);
+                LocalDateTime.now().plusHours(2L), LocalDateTime.now().plusHours(3L), 3, masterPlayer1);
     }
 
     @Test
