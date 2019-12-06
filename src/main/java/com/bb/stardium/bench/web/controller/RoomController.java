@@ -1,11 +1,10 @@
 package com.bb.stardium.bench.web.controller;
 
 import com.bb.stardium.bench.domain.Room;
-import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.dto.RoomRequestDto;
+import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.RoomService;
 import com.bb.stardium.player.domain.Player;
-import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
 import com.bb.stardium.player.service.exception.AuthenticationFailException;
@@ -90,7 +89,9 @@ public class RoomController {
 
     @PutMapping("/{roomId}")
     @ResponseBody
-    public ResponseEntity update(@PathVariable Long roomId, @RequestBody RoomRequestDto roomRequestDto, HttpSession httpSession) {
+    public ResponseEntity update(@PathVariable Long roomId,
+                                 @RequestBody RoomRequestDto roomRequestDto,
+                                 HttpSession httpSession) {
         PlayerResponseDto loginPlayerDto = (PlayerResponseDto) httpSession.getAttribute("login");
         Player player = playerService.findByPlayerEmail(loginPlayerDto.getEmail());
         Long updatedRoomId = roomService.update(roomId, roomRequestDto, player);
