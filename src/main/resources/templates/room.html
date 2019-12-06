@@ -8,6 +8,8 @@
 </th:block>
 
 <th:block layout:fragment="content_body">
+    <input id="roomId" name="roomId" th:value="${room.id}" type=hidden>
+
     <h1 class="ui violet header" th:text="${room.title}">[제목] 우리함께 농구해요!</h1>
 
     <div class="ui stacked segments basic_padding">
@@ -51,7 +53,12 @@
         </div>
     </div>
 
-    <div class="ui fluid large violet submit button">나가기</div>
+    <div class="ui fluid large violet submit button" id="quit-button">나가기</div>
+</th:block>
+
+<th:block layout:fragment="custom_js">
+    <script src="/js/fetchApi.js"></script>
+    <script src="/js/room.js"></script>
 </th:block>
 
 </html>
