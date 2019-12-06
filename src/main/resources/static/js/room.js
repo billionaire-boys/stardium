@@ -12,17 +12,17 @@ const ROOM_APP = (() => {
         const update = () => {
             const updateButton = document.getElementById('update-room-button');
             updateButton ? updateButton.addEventListener('click', roomService.updateRoom) : undefined;
-        }
+        };
 
         const join = () => {
-            const roomList = document.getElementById('room-list');
+            const roomList = document.getElementsByClassName('join-room');
             roomList ? roomList.addEventListener('click', roomService.joinRoom) : undefined;
-        }
+        };
 
         const quit = () => {
             const quitButton = document.getElementById('quit-button');
             quitButton ? quitButton.addEventListener('click', roomService.quitRoom) : undefined;
-        }
+        };
 
         const init = () => {
             signUp();
@@ -43,30 +43,36 @@ const ROOM_APP = (() => {
             'Accept': 'application/json'
         };
 
-        const title = document.getElementById('title');
-        const city = document.getElementById('city');
-        const section = document.getElementById('section');
-        const detail = document.getElementById('detail');
-        const startTime = document.getElementById('startTime');
-        const endTime = document.getElementById('endTime');
-        const playersLimit = document.getElementById('playersLimit');
-        const intro = document.getElementById('intro');
-
-
         const saveRoom = event => {
+            const title = document.getElementById('title').value;
+            const city = document.getElementById('city').value;
+            const section = document.getElementById('section').value;
+            const detail = document.getElementById('detail').value;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+            const playersLimit = document.getElementById('playersLimit').value;
+            const intro = document.getElementById('intro').value;
+
             event.preventDefault();
+            console.log(title, city, section, detail, startTime, endTime, playersLimit, intro);
+
+            if (title === "" || city === "" || section === "" || detail === "" ||
+                startTime === "" || endTime === "" || playersLimit === "" && intro === "") {
+                alert('모든 항목을 입력해주세요!');
+                return;
+            }
 
             const roomBasicInfo = {
-                title: title.value,
+                title: title,
                 address: {
-                    city: city.value,
-                    section: section.value,
-                    detail: detail.value
+                    city: city,
+                    section: section,
+                    detail: detail,
                 },
-                startTime: startTime.value,
-                endTime: endTime.value,
-                playersLimit: playersLimit.value,
-                intro: intro.value
+                startTime: startTime,
+                endTime: endTime,
+                playersLimit: playersLimit,
+                intro: intro,
             };
 
             const ifSucceed = (response) => {
@@ -116,24 +122,20 @@ const ROOM_APP = (() => {
         };
 
         const joinRoom = (event) => {
-            const targetButton = event.target
-            if (targetButton.classList.contains("room-join-button")) {
-                let roomId = targetButton.dataset.roomId
+            const roomId = event.target.getAttribute("data-room-id");
 
-                const ifSucceed = (response) => {
-                    alert("방에 입장되었습니다!");
-                    response.json().then(data => {
-                        window.location.href = `/rooms/${data}`
-                    })
-                };
+            const ifSucceed = (response) => {
+                alert("방에 입장되었습니다!");
+                response.json().then(data => {
+                    window.location.href = `/rooms/${data}`
+                })
+            };
 
-                connector.fetchTemplateWithoutBody('/rooms/join/' + roomId,
-                    connector.POST,
-                    ifSucceed
-                );
-
-            }
-        }
+            connector.fetchTemplateWithoutBody('/rooms/join/' + roomId,
+                connector.POST,
+                ifSucceed
+            );
+        };
 
         const quitRoom = (event) => {
 

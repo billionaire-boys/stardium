@@ -4,10 +4,10 @@ import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.domain.repository.RoomRepository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.dto.RoomResponseDto;
+import com.bb.stardium.bench.service.exception.AlreadyJoinedException;
 import com.bb.stardium.bench.service.exception.MasterAndRoomNotMatchedException;
 import com.bb.stardium.bench.service.exception.NotFoundRoomException;
 import com.bb.stardium.player.domain.Player;
-import com.bb.stardium.player.domain.repository.PlayerRepository;
 import com.bb.stardium.player.service.PlayerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,15 +101,18 @@ public class RoomService {
                         room.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
                         room.getEndTime().format(DateTimeFormatter.ofPattern("dd"))))
                 .playLimits(room.getPlayersLimit())
+                .master(room.getMaster())
                 .build();
     }
 
     public void join(String email, Long roomId) {
         Player player = playerService.findByPlayerEmail(email);
         Room room = findRoom(roomId);
+        if (room.hasPlayer(player)) {
+            throw new AlreadyJoinedException();
+        }
 
         room.addPlayer(player);
-        player.addRoom(room);
     }
 
     public Room quit(String email, Long roomId) {
@@ -143,4 +146,5 @@ public class RoomService {
                 .map(this::toResponseDto)
                 .collect(Collectors.toList());
     }
+
 }

@@ -8,23 +8,21 @@
 </th:block>
 
 <th:block layout:fragment="content_body">
-    <h1 class="ui violet header">[제목] 우리함께 농구해요!</h1>
+    <h1 class="ui violet header" th:text="${room.title}">[제목] 우리함께 농구해요!</h1>
 
     <div class="ui stacked segments basic_padding">
         <div class="field">
             <h3 class="ui grey header">팀 소개</h3>
-            <p> 팀 소개 컨텐츠가 오는 곳임. 농구를 좋아하는데 같이 할 사람이 없네요ㅜㅜ
+            <p th:text="${room.intro}"> 팀 소개 컨텐츠가 오는 곳임. 농구를 좋아하는데 같이 할 사람이 없네요ㅜㅜ
                 같이 하면 좋겠어요!! 저 포함해서 10명 5대5 하려고 합니다!</p>
         </div>
-
         <br>
-
         <div class="field">
             <div class="ui middle aligned center aligned grid">
                 <div class="column">
-                    <p>장소 : 루터회관</p>
-                    <p>일시 : 2019-11-30</p>
-                    <p>시간 : 10:00 ~ 12:00</p>
+                    <p th:text="${'장소 :' + room.address.city + ' ' + room.address.section + ' ' + room.address.detail}">장소 : 루터회관</p>
+                    <p th:text="${'일시 : ' + room.startTime}">일시 : 2019-11-30</p>
+                    <p th:text="${'시간 : ' + room.endTime}">시간 : 10:00 ~ 12:00</p>
                 </div>
             </div>
         </div>
@@ -32,14 +30,14 @@
 
     <div class="basic_padding">
         <h3 class="ui grey header">Member</h3>
-        <div class="ui two cards">
+        <div class="ui two cards" th:each="player : ${room.players}">
             <div class="card">
                 <div class="image">
                     <img alt="player-profile" src="/images/ybh.png">
                 </div>
                 <div class="content">
-                    <div class="header">강백호</div>
-                    <div class="description">
+                    <div class="header" th:text="${player.nickname}">강백호</div>
+                    <div class="description" th:text="${player.statusMessage}">
                         안녕하세요!
                     </div>
                 </div>

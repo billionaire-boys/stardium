@@ -1,8 +1,10 @@
 package com.bb.stardium.bench.dto;
 
+import com.bb.stardium.player.domain.Player;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Builder
 @Getter @Setter
@@ -28,4 +30,7 @@ public class RoomResponseDto {
 
     @NotBlank
     private int playerCount;
+
+    @NotNull
+    private Player master;
 }
