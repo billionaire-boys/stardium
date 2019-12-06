@@ -15,7 +15,7 @@ const ROOM_APP = (() => {
         };
 
         const join = () => {
-            const roomList = document.getElementsByClassName('join-room');
+            const roomList = document.getElementById('room-list');
             roomList ? roomList.addEventListener('click', roomService.joinRoom) : undefined;
         };
 
@@ -122,19 +122,23 @@ const ROOM_APP = (() => {
         };
 
         const joinRoom = (event) => {
-            const roomId = event.target.getAttribute("data-room-id");
+            const targetButton = event.target;
+            if (targetButton.classList.contains("room-join-button")) {
+                let roomId = targetButton.dataset.roomId;
 
-            const ifSucceed = (response) => {
-                alert("방에 입장되었습니다!");
-                response.json().then(data => {
-                    window.location.href = `/rooms/${data}`
-                })
-            };
+                const ifSucceed = (response) => {
+                    alert("방에 입장되었습니다!");
+                    response.json().then(data => {
+                        window.location.href = `/rooms/${data}`
+                    });
+                };
 
-            connector.fetchTemplateWithoutBody('/rooms/join/' + roomId,
-                connector.POST,
-                ifSucceed
-            );
+                connector.fetchTemplateWithoutBody('/rooms/join/' + roomId,
+                    connector.POST,
+                    ifSucceed
+                );
+
+            }
         };
 
         const quitRoom = (event) => {
