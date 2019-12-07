@@ -1,5 +1,3 @@
-package com.bb.stardium.acceptance;
-
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import java.util.List;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = com.bb.stardium.StardiumApplication.class)
 @AutoConfigureWebTestClient
 public abstract class BaseAcceptanceTest {
     @Autowired

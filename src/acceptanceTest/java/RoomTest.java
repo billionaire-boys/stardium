@@ -1,20 +1,15 @@
-package com.bb.stardium.acceptance;
-
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class RoomTest extends BaseAcceptanceTest {
     private RoomRequestDto roomRequestDto;
     private Player masterPlayer1;
@@ -24,7 +19,7 @@ class RoomTest extends BaseAcceptanceTest {
         masterPlayer1 = new Player("master1", "master1@mail.net", "password");
         roomRequestDto = new RoomRequestDto("title", "intro",
                 new Address("서울시", "송파구", "루터회관"),
-                LocalDateTime.now().plusHours(2L), LocalDateTime.now().plusHours(3L), 3, masterPlayer1);
+                LocalDateTime.now(), LocalDateTime.now().plusHours(1L), 3, masterPlayer1);
     }
 
     @Test
@@ -40,6 +35,7 @@ class RoomTest extends BaseAcceptanceTest {
                 .expectBody(Long.class)
                 .returnResult()
                 .getResponseBody();
+
 
         PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg", "dd");
         newSessionPost(joinPlayer, "rooms/join/" + roomNumber)
@@ -58,7 +54,6 @@ class RoomTest extends BaseAcceptanceTest {
 
     @Test
     @DisplayName("방 주인이 방을 나가면 방이 사라진다")
-    @Disabled
     void quitRoom() {
         PlayerRequestDto dto = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg", "Dd");
 
@@ -80,7 +75,6 @@ class RoomTest extends BaseAcceptanceTest {
 
     @Test
     @DisplayName("방 주인만이 방 정보를 수정할 수 있다")
-    @Disabled
     void updateRoom() {
         PlayerRequestDto masterPlayer = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg", "Dd");
 

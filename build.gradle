@@ -17,6 +17,14 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    acceptanceTestImplementation.extendsFrom(implementation, testImplementation)
+}
+
+sourceSets {
+    acceptanceTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
 }
 
 repositories {
@@ -57,4 +65,16 @@ test {
 asciidoctor {
     inputs.dir snippetsDir
     dependsOn test
+}
+
+task acceptanceTest(type: Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
+    classpath = sourceSets.acceptanceTest.runtimeClasspath
+}
+
+acceptanceTest {
+    useJUnitPlatform()
 }
