@@ -64,7 +64,7 @@ public class RoomService {
                 .orElseThrow(NotFoundRoomException::new);
     }
 
-    public List<RoomResponseDto> findAllRooms() {
+    public List<RoomResponseDto> findAllRooms() { // TODO: 필요한지 논의
         List<Room> rooms = roomRepository.findAll();
         return toResponseDtos(rooms);
     }
@@ -133,6 +133,7 @@ public class RoomService {
         return (room.getPlayersLimit() - room.getPlayers().size()) > 0;
     }
 
+    @Transactional(readOnly = true)
     public List<RoomResponseDto> findAllUnexpiredRooms() {
         return roomRepository.findAll().stream()
                 .filter(this::isUnexpiredRoom)
@@ -142,6 +143,7 @@ public class RoomService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<RoomResponseDto> findPlayerJoinedRoom(Player player) {
         return roomRepository.findByPlayers_Email(player.getEmail()).stream()
                 .sorted(Comparator.comparing(Room::getStartTime))
