@@ -1,6 +1,9 @@
 package com.bb.stardium.player.domain;
 
 import com.bb.stardium.bench.domain.Room;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.OffsetDateTimeSerializer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -22,9 +25,13 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonSerialize(using = OffsetDateTimeSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     @CreationTimestamp
     private OffsetDateTime createdDateTime;
 
+    @JsonSerialize(using = OffsetDateTimeSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     @UpdateTimestamp
     private OffsetDateTime updatedDateTime;
 
