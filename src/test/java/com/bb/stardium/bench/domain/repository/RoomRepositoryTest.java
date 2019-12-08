@@ -60,14 +60,13 @@ class RoomRepositoryTest {
                 .startTime(startTime.plusHours(5)).endTime(endTime.plusHours(5))
                 .playersLimit(2).master(player2)
                 .players(List.of(player1, player2, player3)).build();
-        roomRepository.save(room1);
-        roomRepository.save(room2);
-        roomRepository.save(room3);
-        roomRepository.save(room4);
+        room1 = roomRepository.save(room1);
+        room2 = roomRepository.save(room2);
+        room3 = roomRepository.save(room3);
+        room4 = roomRepository.save(room4);
 
         List<Room> rooms = roomRepository.findByPlayers_Email(player1.getEmail());
-        for (Room room : rooms) {
-            assertThat(room.getPlayers().contains(player1)).isTrue();
-        }
+        assertThat(rooms).contains(room1, room4);
+        assertThat(rooms).doesNotContain(room2, room3);
     }
 }
