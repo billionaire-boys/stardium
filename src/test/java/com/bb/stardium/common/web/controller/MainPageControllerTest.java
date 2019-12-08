@@ -1,6 +1,7 @@
 package com.bb.stardium.common.web.controller;
 
 import com.bb.stardium.bench.service.RoomService;
+import com.bb.stardium.player.service.PlayerService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MainPageControllerTest {
 
     @MockBean
+    private PlayerService playerService;
+
+    @MockBean
     private RoomService roomService;
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-   @DisplayName("메인 페이지 접속")
+    @DisplayName("메인 페이지 접속")
     void homepage() throws Exception {
         mockMvc.perform(get("/"))
                 .andDo(print())
@@ -32,11 +36,11 @@ class MainPageControllerTest {
     }
 
     @Test
-    @DisplayName("마이룸 페이지 접속")
+    @DisplayName("로그인되지 않은 채 마이룸 페이지 접속")
     void myRoomPage() throws Exception {
         mockMvc.perform(get("/myRoom"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(view().name("main_my_room.html"));
+                .andExpect(view().name("login.html"));
     }
 }

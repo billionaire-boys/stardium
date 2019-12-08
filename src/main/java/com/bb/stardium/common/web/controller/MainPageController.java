@@ -28,7 +28,7 @@ public class MainPageController {
         if (null == session.getAttribute("login")) {
             return "login.html";
         }
-        List<RoomResponseDto> allRooms = roomService.findAllRooms();
+        List<RoomResponseDto> allRooms = roomService.findAllUnexpiredRooms();
         model.addAttribute("rooms", allRooms);
         return "main_all_room.html";
     }

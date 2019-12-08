@@ -64,7 +64,7 @@ public class RoomService {
                 .orElseThrow(NotFoundRoomException::new);
     }
 
-    public List<RoomResponseDto> findAllRooms() {
+    public List<RoomResponseDto> findAllRooms() { // TODO: 필요한지 논의
         List<Room> rooms = roomRepository.findAll();
         return toResponseDtos(rooms);
     }
