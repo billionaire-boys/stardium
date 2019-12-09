@@ -1,8 +1,8 @@
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.player.domain.Player;
-import com.bb.stardium.player.dto.PlayerRequestDto;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
+@Disabled
 class RoomTest extends BaseAcceptanceTest {
     private RoomRequestDto roomRequestDto;
     private Player masterPlayer1;

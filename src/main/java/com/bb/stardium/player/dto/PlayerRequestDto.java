@@ -1,22 +1,28 @@
 package com.bb.stardium.player.dto;
 
+import com.bb.stardium.mediafile.MediaFile;
 import com.bb.stardium.player.domain.Player;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class PlayerRequestDto {
     private String nickname;
     private String email;
     private String password;
     private String statusMessage;
+    private String profile;
 
     public Player toEntity() {
-        return new Player(nickname, email, password, statusMessage);
+        return Player.builder()
+                .nickname(nickname)
+                .email(email)
+                .password(password)
+                .statusMessage(statusMessage)
+                .profile(new MediaFile(password))
+                .build();
     }
 }

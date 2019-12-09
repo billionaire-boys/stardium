@@ -1,21 +1,19 @@
 package com.bb.stardium.player.dto;
 
 import com.bb.stardium.player.domain.Player;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
+@NoArgsConstructor
 @Getter
-@Setter
-@ToString
 public class PlayerResponseDto {
     private String nickname;
     private String email;
     private String statusMessage;
 
     public PlayerResponseDto(final Player player) {
-        this(player.getNickname(), player.getEmail(), player.getStatusMessage());
+        this.nickname = player.getNickname();
+        this.email = player.getEmail();
+        this.statusMessage = player.getStatusMessage();
     }
 }
