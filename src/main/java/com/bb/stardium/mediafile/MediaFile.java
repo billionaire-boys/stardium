@@ -28,7 +28,7 @@ public class MediaFile {
     }
 
     private String validUrl(String inputUrl) {
-        if (inputUrl.isEmpty()) {
+        if (inputUrl == null || inputUrl.isEmpty()) {
             return DEFAULT_URL;
         }
         return inputUrl;

@@ -2,13 +2,13 @@ package com.bb.stardium.player.dto;
 
 import com.bb.stardium.mediafile.MediaFile;
 import com.bb.stardium.player.domain.Player2;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class Player2RequestDto {
     private String nickname;
     private String email;

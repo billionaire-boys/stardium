@@ -1,8 +1,8 @@
 package com.bb.stardium.player.web.controller;
 
-import com.bb.stardium.player.dto.PlayerRequestDto;
-import com.bb.stardium.player.dto.PlayerResponseDto;
-import com.bb.stardium.player.service.PlayerService;
+import com.bb.stardium.player.dto.Player2RequestDto;
+import com.bb.stardium.player.dto.Player2ResponseDto;
+import com.bb.stardium.player.service.PlayerService2;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +15,9 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/player")
 public class PlayerController {
-    private final PlayerService playerService;
+    private final PlayerService2 playerService;
 
-    public PlayerController(final PlayerService playerService) {
+    public PlayerController(final PlayerService2 playerService) {
         this.playerService = playerService;
     }
 
@@ -27,7 +27,7 @@ public class PlayerController {
     }
 
     @PostMapping("/new")
-    public String register(final PlayerRequestDto requestDto) {
+    public String register(final Player2RequestDto requestDto) {
         playerService.register(requestDto);
         return "redirect:/login";
     }
@@ -41,13 +41,13 @@ public class PlayerController {
     }
 
     @PostMapping("/edit")
-    public String edit(final PlayerRequestDto requestDto, final HttpSession session,
+    public String edit(final Player2RequestDto requestDto, final HttpSession session,
                        final RedirectAttributes redirectAttributes) {
         if (Objects.isNull(session.getAttribute("login"))) {
             return "redirect:/login";
         }
-        final PlayerResponseDto sessionDto = (PlayerResponseDto) session.getAttribute("login");
-        final PlayerResponseDto responseDto = playerService.update(requestDto, sessionDto);
+        final Player2ResponseDto sessionDto = (Player2ResponseDto) session.getAttribute("login");
+        final Player2ResponseDto responseDto = playerService.update(requestDto, sessionDto);
         redirectAttributes.addFlashAttribute("message", "회원 정보가 수정되었습니다.");
         return "redirect:/";
     }

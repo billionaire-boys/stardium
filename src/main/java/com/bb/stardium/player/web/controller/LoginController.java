@@ -1,8 +1,8 @@
 package com.bb.stardium.player.web.controller;
 
-import com.bb.stardium.player.dto.PlayerRequestDto;
-import com.bb.stardium.player.dto.PlayerResponseDto;
-import com.bb.stardium.player.service.PlayerService;
+import com.bb.stardium.player.dto.Player2RequestDto;
+import com.bb.stardium.player.dto.Player2ResponseDto;
+import com.bb.stardium.player.service.PlayerService2;
 import com.bb.stardium.player.service.exception.AuthenticationFailException;
 import com.bb.stardium.player.service.exception.EmailNotExistException;
 import org.springframework.stereotype.Controller;
@@ -18,9 +18,9 @@ public class LoginController {
     private static final String IS_LOGIN_SUCCESS = "isLoginSuccess";
     private static final String LOGIN = "login";
 
-    private final PlayerService playerService;
+    private final PlayerService2 playerService;
 
-    public LoginController(final PlayerService playerService) {
+    public LoginController(final PlayerService2 playerService) {
         this.playerService = playerService;
     }
 
@@ -30,10 +30,10 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(final PlayerRequestDto requestDto, final HttpSession session,
+    public String login(final Player2RequestDto requestDto, final HttpSession session,
                         final RedirectAttributes redirectAttributes) {
         try {
-            final PlayerResponseDto responseDto = playerService.login(requestDto);
+            final Player2ResponseDto responseDto = playerService.login(requestDto);
             session.setAttribute(LOGIN, responseDto);
             redirectAttributes.addFlashAttribute(IS_LOGIN_SUCCESS, true);
             return REDIRECT + "/";
