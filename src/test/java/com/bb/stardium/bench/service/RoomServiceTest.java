@@ -9,6 +9,7 @@ import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.service.PlayerService;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,6 +132,7 @@ class RoomServiceTest {
     }
 
     @Test
+    @Disabled
     void join() {
         given(playerService.findByPlayerEmail(any())).willReturn(player);
         given(roomRepository.findById(1L)).willReturn(Optional.of(room1));

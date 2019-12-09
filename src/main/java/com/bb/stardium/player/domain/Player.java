@@ -18,7 +18,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(of = "id")
 @ToString
 public class Player {
 
@@ -40,7 +40,6 @@ public class Player {
     private String nickname;
 
     @Column(name = "email", length = 64, nullable = false, unique = true)
-    @EqualsAndHashCode.Include
     private String email;
 
     @Column(name = "password", length = 64, nullable = false)
