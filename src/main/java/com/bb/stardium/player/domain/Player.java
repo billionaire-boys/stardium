@@ -1,6 +1,7 @@
 package com.bb.stardium.player.domain;
 
 import com.bb.stardium.bench.domain.Room;
+import com.bb.stardium.mediafile.MediaFile;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.OffsetDateTimeSerializer;
@@ -50,6 +51,9 @@ public class Player {
 
     @ManyToMany(mappedBy = "players")
     private List<Room> rooms = new ArrayList<>();
+
+    @OneToOne
+    private MediaFile profile;
 
     protected Player() {
         this.updatedDateTime = OffsetDateTime.now();
