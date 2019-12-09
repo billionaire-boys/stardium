@@ -66,4 +66,29 @@ class Player2Test {
 
         assertThat(persist.getProfile()).isNotNull();
     }
+
+    @Test
+    @DisplayName("패스워드를 제대로 검사하는지")
+    void matchPassword() {
+        assertThat(player.isMatchPassword("wrong")).isFalse();
+        assertThat(player.isMatchPassword("abcd")).isTrue();
+    }
+
+    @Test
+    @DisplayName("업데이트가 잘 동작하는지")
+    void update() {
+        em.persist(player);
+
+        Player2 update = Player2.builder()
+                .email("update@update.com")
+                .nickname("update")
+                .password("password")
+                .build();
+
+        player.update(update);
+        em.persist(player);
+
+        assertThat(player.getEmail()).isEqualTo("update@update.com");
+        assertThat(player.getNickname()).isEqualTo("update");
+    }
 }

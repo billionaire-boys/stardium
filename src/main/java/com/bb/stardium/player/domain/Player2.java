@@ -53,4 +53,16 @@ public class Player2 {
     public void updateStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
     }
+
+    public Player2 update(final Player2 newPlayer) {
+        this.nickname = newPlayer.nickname;
+        this.email = newPlayer.email;
+        this.password = newPlayer.password;
+        this.statusMessage = newPlayer.statusMessage;
+        return this;
+    }
+
+    public boolean isMatchPassword(final String password) {
+        return this.password.equals(password);
+    }
 }
