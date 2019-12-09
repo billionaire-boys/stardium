@@ -7,3 +7,13 @@
 .action.input {
     width: 100%;
 }
+
+.input_address {
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.table_title_size {
+    width: 4rem;
+}
