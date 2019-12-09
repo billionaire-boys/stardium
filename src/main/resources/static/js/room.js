@@ -45,8 +45,8 @@ const ROOM_APP = (() => {
 
         const saveRoom = event => {
             const title = document.getElementById('title').value;
-            const city = document.getElementById('administrative_area_level_1').value;
-            const section = document.getElementById('sublocality_level_1').value;
+            const city = document.getElementById('city').value;
+            const section = document.getElementById('section').value;
             const detail = document.getElementById('detail').value;
             const startTime = document.getElementById('startTime').value;
             const endTime = document.getElementById('endTime').value;
