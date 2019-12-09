@@ -56,11 +56,24 @@ class RoomServiceTest {
 
     @BeforeEach
     void setUp() {
-        master = new Player("master", "email", "password");
-        player = new Player("player", PLAYER_EMAIL, "password");
+        master = Player.builder()
+                .nickname("master")
+                .email("master@email.com")
+                .password("password")
+                .rooms(new ArrayList<>())
+                .build();
+
+        player = Player.builder()
+                .nickname("player")
+                .email(PLAYER_EMAIL)
+                .password("password")
+                .rooms(new ArrayList<>())
+                .build();
+
         address = new Address("서울시", "송파구", "루터회관 앞");
         startTime = LocalDateTime.now().plusDays(1);
         endTime = LocalDateTime.now().plusDays(1).plusHours(3);
+
         room1 = new Room(1L, "title", "intro", address, startTime, endTime, 10, master, new ArrayList<>(List.of(master)));
         room2 = new Room(2L, "title2", "intro2", address, startTime, endTime, 12, master, new ArrayList<>(List.of(player)));
         room3 = Room.builder().id(3L).title("title3").intro("intro").address(address)

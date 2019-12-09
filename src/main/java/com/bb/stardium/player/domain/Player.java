@@ -1,12 +1,9 @@
 package com.bb.stardium.player.domain;
 
+
 import com.bb.stardium.bench.domain.Room;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.OffsetDateTimeSerializer;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import com.bb.stardium.mediafile.MediaFile;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,24 +13,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Getter
 @EqualsAndHashCode(of = "id")
-@ToString
 public class Player {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonSerialize(using = OffsetDateTimeSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     @CreationTimestamp
-    private OffsetDateTime createdDateTime;
+    private OffsetDateTime createDateTime;
 
-    @JsonSerialize(using = OffsetDateTimeSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     @UpdateTimestamp
-    private OffsetDateTime updatedDateTime;
+    private OffsetDateTime updateDateTime;
 
     @Column(name = "nickname", length = 64, nullable = false, unique = true)
     private String nickname;
@@ -44,25 +39,17 @@ public class Player {
     @Column(name = "password", length = 64, nullable = false)
     private String password;
 
-    @Column(name = "statusMessage")
+    @Column(name = "statusMessage", length = 255)
     private String statusMessage = "";
 
     @ManyToMany(mappedBy = "players")
     private List<Room> rooms = new ArrayList<>();
 
-    protected Player() {
-        this.updatedDateTime = OffsetDateTime.now();
-    }
 
-    public Player(final String nickname, final String email, final String password) {
-        this();
-        this.nickname = nickname;
-        this.email = email;
-        this.password = password;
-    }
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private MediaFile profile;
 
-    public Player(final String nickname, final String email, final String password, final String statusMessage) {
-        this(nickname, email, password);
+    public void updateStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
     }
 
@@ -71,7 +58,6 @@ public class Player {
         this.email = newPlayer.email;
         this.password = newPlayer.password;
         this.statusMessage = newPlayer.statusMessage;
-        this.updatedDateTime = OffsetDateTime.now();
         return this;
     }
 

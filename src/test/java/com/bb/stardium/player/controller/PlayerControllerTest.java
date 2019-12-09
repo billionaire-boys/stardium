@@ -1,7 +1,7 @@
 package com.bb.stardium.player.controller;
 
-import com.bb.stardium.player.domain.Player2;
-import com.bb.stardium.player.domain.repository.Player2Repository;
+import com.bb.stardium.player.domain.Player;
+import com.bb.stardium.player.domain.repository.PlayerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -24,11 +24,11 @@ class PlayerControllerTest {
     private WebTestClient client;
 
     @Autowired
-    private Player2Repository playerRepository;
+    private PlayerRepository playerRepository;
 
     @BeforeEach
     void setUp() {
-        Player2 player = Player2.builder()
+        Player player = Player.builder()
                 .nickname("nickname")
                 .email("email@email.com")
                 .password("password")
@@ -99,7 +99,7 @@ class PlayerControllerTest {
                         .with("statusMessage", "야호!!"))
                 .exchange().expectStatus().is3xxRedirection();
 
-        final Player2 player = playerRepository.findByEmail("email")
+        final Player player = playerRepository.findByEmail("email")
                 .orElseThrow(() -> new IllegalArgumentException());
         assertThat(player.getNickname()).isEqualTo("noname01");
         assertThat(player.getEmail()).isEqualTo("email");
@@ -118,7 +118,7 @@ class PlayerControllerTest {
                         .with("statusMessage", "야호!!"))
                 .exchange().expectStatus().is3xxRedirection();
 
-        final Player2 player = playerRepository.findByEmail("email")
+        final Player player = playerRepository.findByEmail("email")
                 .orElseThrow(() -> new IllegalArgumentException());
         assertThat(player.getNickname()).isEqualTo("nickname");
         assertThat(player.getEmail()).isEqualTo("email");

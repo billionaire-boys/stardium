@@ -1,6 +1,6 @@
 package com.bb.stardium.player.domain.repository;
 
-import com.bb.stardium.player.domain.Player2;
+import com.bb.stardium.player.domain.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,16 +12,16 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class Player2RepositoryTest {
+class PlayerRepositoryTest {
 
     @Autowired
-    private Player2Repository repository;
+    private PlayerRepository repository;
 
-    private Player2 player;
+    private Player player;
 
     @BeforeEach
     void setUp() {
-        player = Player2.builder()
+        player = Player.builder()
                 .email("a@a.com")
                 .nickname("andole")
                 .password("abcd")
@@ -33,7 +33,7 @@ class Player2RepositoryTest {
     void findByEmail() {
         repository.save(player);
 
-        Optional<Player2> persist = repository.findByEmail("a@a.com");
+        Optional<Player> persist = repository.findByEmail("a@a.com");
 
         assertThat(persist.isPresent()).isTrue();
         assertThat(persist.get().getNickname()).isEqualTo("andole");
