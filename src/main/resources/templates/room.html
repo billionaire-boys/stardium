@@ -9,32 +9,52 @@
 </th:block>
 
 <th:block layout:fragment="content_header">
-
+    <div class="ui small secondary inverted menu" style="margin-bottom: 0">
+        <div class="toc item">
+            <a href="/">
+                <i class="angle double left icon black"></i>
+            </a>
+            <div class="item">
+                <h1 class="ui violet header" th:text="${room.title}">title</h1>
+            </div>
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content_body">
     <input id="roomId" name="roomId" th:value="${room.id}" type=hidden>
 
-    <h1 class="ui violet header" th:text="${room.title}">[제목] 우리함께 농구해요!</h1>
+    <div class="ui container">
+        <div class="ui form">
 
-    <div class="ui stacked segments basic_padding">
-        <div class="field">
-            <h3 class="ui grey header">팀 소개</h3>
-            <p th:text="${room.intro}"> 팀 소개 컨텐츠가 오는 곳임.</p>
-        </div>
-        <br>
-        <div class="field">
-            <div class="ui middle aligned center aligned grid">
-                <div class="column">
-                    <p th:text="${'장소 :' + room.address.city + ' ' + room.address.section + ' ' + room.address.detail}">장소 : 루터회관</p>
-                    <p th:text="${'일시 : ' + room.startTime}">일시 : 2019-11-30</p>
-                    <p th:text="${'시간 : ' + room.endTime}">시간 : 10:00 ~ 12:00</p>
+            <div class="field">
+                <h3 class="ui dividing header">팀 소개</h3>
+                <div class="ui segment">
+                    <span class="label" th:text="${room.intro}"> Intro</span>
                 </div>
             </div>
+
+            <div class="field">
+                <h3 class="ui dividing header">시간</h3>
+                <div class="ui segment center aligned">
+                    <p class="label" th:text="${'일시 : ' + room.startTime}">일시</p>
+                    <p class="label" th:text="${'시간 : ' + room.endTime}">시간</p>
+                </div>
+            </div>
+
+            <div class="field">
+                <h3 class="ui dividing header">장소</h3>
+                <div class="ui middle aligned center aligned grid">
+                    <div class="column">
+                        <p th:text="${'장소 :' + room.address.city + ' ' + room.address.section + ' ' + room.address.detail}">
+                            장소 : 루터회관</p>
+                        <div id="map" class="map_size"></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <div id="map" style="width:500px;height:400px;"></div>
 
     <div class="basic_padding">
         <h3 class="ui grey header">Member</h3>
@@ -65,7 +85,8 @@
 <th:block layout:fragment="custom_js">
     <script type="text/javascript" src="/js/fetchApi.js"></script>
     <script type="text/javascript" src="/js/room.js"></script>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7ce1b570b081a1c8a6e863b061308ff4&libraries=services&"></script>
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7ce1b570b081a1c8a6e863b061308ff4&libraries=services&"></script>
     <script type="text/javascript" src="/js/kakao_map_api.js"></script>
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
