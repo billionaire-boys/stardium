@@ -1,5 +1,6 @@
 package com.bb.stardium.player.dto;
 
+import com.bb.stardium.mediafile.domain.MediaFile;
 import com.bb.stardium.player.domain.Player;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,9 @@ public class PlayerResponseDto {
         this.nickname = player.getNickname();
         this.email = player.getEmail();
         this.statusMessage = player.getStatusMessage();
-        this.profile = player.getProfile().getUrl();
+        MediaFile profile = player.getProfile();
+        if (profile != null) {
+            this.profile = player.getProfile().getUrl();
+        }
     }
 }
