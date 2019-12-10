@@ -5,6 +5,11 @@
 
 <th:block layout:fragment="custom_head">
     <title>게임 방</title>
+    <link href="/css/room.css" rel="stylesheet" type="text/css">
+</th:block>
+
+<th:block layout:fragment="content_header">
+
 </th:block>
 
 <th:block layout:fragment="content_body">
@@ -15,8 +20,7 @@
     <div class="ui stacked segments basic_padding">
         <div class="field">
             <h3 class="ui grey header">팀 소개</h3>
-            <p th:text="${room.intro}"> 팀 소개 컨텐츠가 오는 곳임. 농구를 좋아하는데 같이 할 사람이 없네요ㅜㅜ
-                같이 하면 좋겠어요!! 저 포함해서 10명 5대5 하려고 합니다!</p>
+            <p th:text="${room.intro}"> 팀 소개 컨텐츠가 오는 곳임.</p>
         </div>
         <br>
         <div class="field">
@@ -29,6 +33,8 @@
             </div>
         </div>
     </div>
+
+    <div id="map" style="width:500px;height:400px;"></div>
 
     <div class="basic_padding">
         <h3 class="ui grey header">Member</h3>
@@ -57,8 +63,17 @@
 </th:block>
 
 <th:block layout:fragment="custom_js">
-    <script src="/js/fetchApi.js"></script>
-    <script src="/js/room.js"></script>
+    <script type="text/javascript" src="/js/fetchApi.js"></script>
+    <script type="text/javascript" src="/js/room.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7ce1b570b081a1c8a6e863b061308ff4&libraries=services&"></script>
+    <script type="text/javascript" src="/js/kakao_map_api.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        const FULL_ADDRESS = [[${room.address.city}]] + ' ' + [[${room.address.section}]] + ' ' + [[${room.address.detail}]];
+        /*]]>*/
+
+        MAP_API.init(FULL_ADDRESS);
+    </script>
 </th:block>
 
 </html>

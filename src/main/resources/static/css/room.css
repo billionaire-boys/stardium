@@ -17,3 +17,9 @@
 .table_title_size {
     width: 4rem;
 }
+
+.info_window {
+    width:150px;
+    text-align:center;
+    padding:6px 0;
+}
