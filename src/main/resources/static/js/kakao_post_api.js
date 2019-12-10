@@ -1,25 +1,18 @@
 function getAddress() {
     new daum.Postcode({
-        oncomplete: function(data) {
-            let addr = '';
+        oncomplete: function (data) {
+            let fullAddress = data.address;
+            let address = fullAddress.split(' ');
 
-            if (data.userSelectedType === 'R') {
-                addr = data.roadAddress;
-            } else { // 'J'=지번
-                addr = data.jibunAddress;
-            }
-
-            let address = addr.split(" ");
-
-            if(address[0] !== "서울") {
+            if (address[0] !== "서울") {
                 alert("서울시만 가능합니다.");
                 return;
             }
 
-            document.getElementById("fullAddress").value = addr;
-            document.getElementById("fullAddress").disabled = true;
-            document.getElementById("city").value = address[0];
-            document.getElementById("section").value = address[1];
+            document.querySelector("#fullAddress").value = fullAddress;
+            document.querySelector("#fullAddress").disabled = true;
+            document.querySelector("#city").value = address[0];
+            document.querySelector("#section").value = address[1];
 
             let detailAddress = '';
 
@@ -27,7 +20,7 @@ function getAddress() {
                 detailAddress += address[i] + " ";
             }
 
-            document.getElementById("detail").value = detailAddress;
+            document.querySelector("#detail").value = detailAddress;
         }
     }).open();
 }
