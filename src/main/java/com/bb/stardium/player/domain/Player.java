@@ -58,6 +58,7 @@ public class Player {
         this.email = newPlayer.email;
         this.password = newPlayer.password;
         this.statusMessage = newPlayer.statusMessage;
+        this.profile = newPlayer.profile;
         return this;
     }
 

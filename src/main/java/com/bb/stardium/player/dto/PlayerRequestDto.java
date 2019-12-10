@@ -14,7 +14,7 @@ public class PlayerRequestDto {
     private String email;
     private String password;
     private String statusMessage;
-    private String profile;
+    private String mediaFile;
 
     public PlayerRequestDto(String nickname, String email, String password, String statusMessage) {
         this.nickname = nickname;
@@ -29,7 +29,7 @@ public class PlayerRequestDto {
                 .email(email)
                 .password(password)
                 .statusMessage(statusMessage)
-                .profile(new MediaFile(password))
+                .profile(new MediaFile(mediaFile))
                 .build();
     }
 }

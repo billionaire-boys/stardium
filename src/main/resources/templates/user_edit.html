@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+<html lang="ko" layout:decorator="layout/main_layout"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/main_layout">
+      xmlns:th="http://www.thymeleaf.org">
 
 <th:block layout:fragment="custom_head">
     <title>로그인</title>
@@ -12,20 +12,20 @@
     <div class="ui top aligned center aligned grid">
         <div class="column">
             <h1 class="ui violet header">회원 정보 수정</h1>
-            <form accept-charset="UTF-8" action="/player/edit" method="post">
+            <form accept-charset="UTF-8" action="/player/edit" enctype="multipart/form-data" method="post">
                 <div class="ui form">
                     <div class="field">
-                        <img alt="profile_img" class="ui image user_profile" src="/images/default_profile_img.png"/>
+                        <img alt="profile_img" class="ui image user_profile" th:src="${model.profile}">
                     </div>
                     <div class="field">
-                        <div class="ui violet small submit button">사진 수정</div>
+                        <input name="profile" type="file"/>
                     </div>
 
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
                             <input name="nickname" placeholder="닉네임 입력" type="text"/>
-                            <input name="email" type="hidden" th:value="${session.login.email}" />
+                            <input name="email" th:value="${session.login.email}" type="hidden"/>
                         </div>
                     </div>
                     <div class="field">
@@ -44,7 +44,7 @@
                         <textarea name="statusMessage" placeholder="상태 메세지" type="password"></textarea>
                     </div>
                     <div class="field">
-                        <button type="submit" class="ui fluid violet large submit button">수정 완료</button>
+                        <button class="ui fluid violet large submit button" type="submit">수정 완료</button>
                     </div>
                 </div>
             </form>
