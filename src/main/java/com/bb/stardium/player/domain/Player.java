@@ -2,7 +2,7 @@ package com.bb.stardium.player.domain;
 
 
 import com.bb.stardium.bench.domain.Room;
-import com.bb.stardium.mediafile.MediaFile;
+import com.bb.stardium.mediafile.domain.MediaFile;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;

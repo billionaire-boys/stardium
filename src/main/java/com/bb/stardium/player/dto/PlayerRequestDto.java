@@ -1,6 +1,6 @@
 package com.bb.stardium.player.dto;
 
-import com.bb.stardium.mediafile.MediaFile;
+import com.bb.stardium.mediafile.domain.MediaFile;
 import com.bb.stardium.player.domain.Player;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
