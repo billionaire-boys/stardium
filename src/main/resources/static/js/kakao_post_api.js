@@ -9,13 +9,15 @@ function getAddress() {
                 addr = data.jibunAddress;
             }
 
-            let addressComponent = document.getElementById("fullAddress");
-
-            addressComponent.value = addr;
-            addressComponent.disabled = true;
-
             let address = addr.split(" ");
 
+            if(address[0] !== "서울") {
+                alert("서울시만 가능합니다.");
+                return;
+            }
+
+            document.getElementById("fullAddress").value = addr;
+            document.getElementById("fullAddress").disabled = true;
             document.getElementById("city").value = address[0];
             document.getElementById("section").value = address[1];
 
