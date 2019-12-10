@@ -1,6 +1,6 @@
 package com.bb.stardium.player.domain;
 
-import com.bb.stardium.mediafile.MediaFile;
+import com.bb.stardium.mediafile.domain.MediaFile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -4,6 +4,7 @@ import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.service.RoomService;
+import com.bb.stardium.mediafile.domain.MediaFile;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
@@ -34,6 +35,7 @@ class RoomControllerTest {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final Player mockPlayer = mock(Player.class);
+    private final MediaFile mediaFile = mock(MediaFile.class);
     private final Room mockRoom = mock(Room.class);
     private final Address mockAddress = mock(Address.class);
     private final RoomRequestDto requestDto = new RoomRequestDto(
