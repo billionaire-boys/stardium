@@ -1,27 +1,18 @@
 package com.bb.stardium.chat.controller;
 
-
-import com.bb.stardium.chat.ChatRoom;
-import com.bb.stardium.chat.service.ChatService;
+import com.bb.stardium.chat.domain.ChatMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
 
 @RequiredArgsConstructor
-@RestController
-@RequestMapping("/chat")
+@Controller
 public class ChatController {
-    private final ChatService chatService;
 
-    @PostMapping
-    public ChatRoom createRoom(@RequestParam String name) {
-        return chatService.createRoom(name);
+    @MessageMapping("/chat/{roomId}")
+    @SendTo("/subscribe/chat/{roomId}")
+    public ChatMessage message(final ChatMessage message) {
+        return message;
     }
-
-    @GetMapping
-    public List<ChatRoom> findAllRooms() {
-        return chatService.findAllRooms();
-    }
-
 }
