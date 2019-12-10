@@ -5,6 +5,7 @@ import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.RoomService;
 import com.bb.stardium.player.domain.Player;
+import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
 import com.bb.stardium.player.service.exception.AuthenticationFailException;
@@ -97,9 +98,10 @@ public class RoomController {
     }
 
     @DeleteMapping("/{roomId}")
-    public String delete(@PathVariable Long roomId) {
-        roomService.delete(roomId);
-        return "redirect:/main";
+    public ResponseEntity delete(@PathVariable Long roomId, HttpSession httpSession) {
+        PlayerResponseDto loginPlayer = (PlayerResponseDto) httpSession.getAttribute("login");
+        roomService.delete(roomId, loginPlayer);
+        return ResponseEntity.ok().build();
     }
 
 }

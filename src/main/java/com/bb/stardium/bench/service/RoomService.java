@@ -8,6 +8,8 @@ import com.bb.stardium.bench.service.exception.AlreadyJoinedException;
 import com.bb.stardium.bench.service.exception.MasterAndRoomNotMatchedException;
 import com.bb.stardium.bench.service.exception.NotFoundRoomException;
 import com.bb.stardium.player.domain.Player;
+import com.bb.stardium.player.dto.PlayerRequestDto;
+import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,9 +53,12 @@ public class RoomService {
         }
     }
 
-    public boolean delete(long roomId) {
-        Room room = roomRepository.findById(roomId)
-                .orElseThrow(NotFoundRoomException::new);
+    public boolean delete(long roomId, PlayerResponseDto loginPlayerDto) {
+        Room room = roomRepository.findById(roomId).orElseThrow(NotFoundRoomException::new);
+        Player loginPlayer = playerService.findByPlayerEmail(loginPlayerDto.getEmail());
+        if (room.isNotMaster(loginPlayer)) {
+            throw new MasterAndRoomNotMatchedException();
+        }
         roomRepository.delete(room);
         return true;
     }
