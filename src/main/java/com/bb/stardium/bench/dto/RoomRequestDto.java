@@ -3,6 +3,9 @@ package com.bb.stardium.bench.dto;
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.player.domain.Player;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.*;
 
 import javax.validation.constraints.Future;
@@ -24,9 +27,13 @@ public class RoomRequestDto {
     private Address address;
 
     @Future
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime startTime;
 
     @Future
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime endTime;
 
     @Min(value = 2)

@@ -1,10 +1,7 @@
 package com.bb.stardium.bench.domain;
 
 import com.bb.stardium.player.domain.Player;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -13,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 public class Room {
 
     @Id
@@ -47,7 +45,7 @@ public class Room {
     @JoinTable(name = "player_room",
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "player_id"))
-    private List<Player> players = new ArrayList<Player>();
+    private List<Player> players = new ArrayList<>();
 
     public void update(Room updatedRoom) {
         this.title = updatedRoom.getTitle();

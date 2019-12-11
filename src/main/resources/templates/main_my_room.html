@@ -19,33 +19,37 @@
     <div class="ui segments">
         <div class="ui segment">
             <div class="ui cards">
-                <div class="card" style="width: 100%;">
+                <div class="card" style="width: 100%;" th:if="${!rooms.isEmpty()}" th:each="room : ${rooms}">
                     <div class="content">
                         <img class="right floated mini ui image" src="/images/default_profile_img.png">
-                        <div class="header">
+                        <div class="header" th:text="${room.title}">
                             방 제목
                         </div>
-                        <div class="meta">
+                        <div class="meta" th:text="${room.master.nickname}">
                             닉네임
                         </div>
                         <br>
-                        <div class="description" th:text="intro">
+                        <div class="description" th:text="${room.intro}">
                             Room introduction contents
                         </div>
                         <br>
-                        <div class="summary" th:text="'장소 : '">
+                        <div class="summary" th:text="'장소 : ' + ${room.address}">
                             장소 : 어디서 농구 할 것인가
                         </div>
-                        <div class="summary" th:text="'일시 : '">
+                        <div class="summary" th:text="'일시 : ' +${room.playTime}">
                             일시 : 언제 농구 할 것인가
                         </div>
-                        <div class="summary" th:text="'인원 : '">
+                        <div class="summary" th:text="'인원 : ' +${room.playLimits}">
                             인원 : 10명
+                        </div>
+                        <div class="summary" th:text="'들어온 인원: ' + ${room.playerCount}">
+                            들어온 인원: 1명
                         </div>
                     </div>
                     <div class="extra content">
                         <div class="extra content">
-                            <button class="ui fluid basic violet button">상세 보기</button>
+                            <button class="ui fluid basic violet button"
+                                    th:onclick="'window.location.href=\'/rooms/' + ${room.id} + '\''">상세 보기</button>
                         </div>
                     </div>
                 </div>

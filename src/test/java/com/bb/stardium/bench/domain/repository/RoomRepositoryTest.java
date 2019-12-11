@@ -34,11 +34,26 @@ class RoomRepositoryTest {
     @Test
     @DisplayName("사용자 이메일로 참가한 Room을 찾기")
     void findByPlayers_Email() {
-        Player player1 = new Player("nick1", "email1", "password");
-        Player player2 = new Player("nick2", "email2", "password");
-        Player player3 = new Player("nick3", "email3", "password");
+        Player player1 = Player.builder()
+                .nickname("nick1")
+                .email("email1@email.com")
+                .password("password")
+                .build();
+
+        Player player = Player.builder()
+                .nickname("nick2")
+                .email("email2@email.com")
+                .password("password")
+                .build();
+
+        Player player3 = Player.builder()
+                .nickname("nick3")
+                .email("email3@email.com")
+                .password("password")
+                .build();
+
         testEntityManager.persist(player1);
-        testEntityManager.persist(player2);
+        testEntityManager.persist(player);
         testEntityManager.persist(player3);
 
         Address address = Address.builder()
@@ -53,24 +68,23 @@ class RoomRepositoryTest {
                 .players(List.of(player1)).build();
         Room room2 = Room.builder().id(200L).title("title2").intro("intro").address(address)
                 .startTime(startTime.plusHours(3)).endTime(endTime.plusHours(3))
-                .playersLimit(10).master(player2)
-                .players(List.of(player2, player3)).build();
+                .playersLimit(10).master(player)
+                .players(List.of(player, player3)).build();
         Room room3 = Room.builder().id(300L).title("title3").intro("intro").address(address)
                 .startTime(startTime.plusDays(4)).endTime(endTime.plusDays(4))
                 .playersLimit(10).master(player3)
                 .players(List.of()).build();
         Room room4 = Room.builder().id(400L).title("title4").intro("intro").address(address)
                 .startTime(startTime.plusHours(5)).endTime(endTime.plusHours(5))
-                .playersLimit(2).master(player2)
-                .players(List.of(player1, player2, player3)).build();
-        roomRepository.save(room1);
-        roomRepository.save(room2);
-        roomRepository.save(room3);
-        roomRepository.save(room4);
+                .playersLimit(2).master(player)
+                .players(List.of(player1, player, player3)).build();
+        room1 = roomRepository.save(room1);
+        room2 = roomRepository.save(room2);
+        room3 = roomRepository.save(room3);
+        room4 = roomRepository.save(room4);
 
         List<Room> rooms = roomRepository.findByPlayers_Email(player1.getEmail());
-        for (Room room : rooms) {
-            assertThat(room.getPlayers().contains(player1)).isTrue();
-        }
+        assertThat(rooms).contains(room1, room4);
+        assertThat(rooms).doesNotContain(room2, room3);
     }
 }
