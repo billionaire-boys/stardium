@@ -1,6 +1,5 @@
 package com.bb.stardium.player.web.controller;
 
-import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
 import com.bb.stardium.mediafile.service.MediaFileService;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
@@ -27,7 +26,6 @@ public class PlayerController {
     private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
     private final PlayerService playerService;
     private final MediaFileService mediaFileService;
-    private final MediaFileResourceLocation mediaFileResourceLocation;
 
     @GetMapping("/new")
     public String signupPage() {
@@ -35,9 +33,9 @@ public class PlayerController {
     }
 
     @PostMapping("/new")
-    public String register(final PlayerRequestDto requestDto, MultipartFile file) {
+    public String register(PlayerRequestDto requestDto, MultipartFile file) {
         if (file != null && !file.isEmpty()) {
-            String fileName = mediaFileService.save(mediaFileResourceLocation.getLocation(), file);
+            String fileName = mediaFileService.save(file);
             requestDto.setMediaFile(fileName);
         }
         playerService.register(requestDto);
@@ -45,7 +43,7 @@ public class PlayerController {
     }
 
     @GetMapping("/edit")
-    public String editPage(final HttpSession session, Model model) {
+    public String editPage(HttpSession session, Model model) {
         if (Objects.isNull(session.getAttribute("login"))) {
             return "redirect:/login";
         }
@@ -54,7 +52,7 @@ public class PlayerController {
     }
 
     @PostMapping("/edit")
-    public String edit(final PlayerRequestDto requestDto, final HttpSession session,
+    public String edit(PlayerRequestDto requestDto, HttpSession session,
                        @RequestParam("profile") MultipartFile file, RedirectAttributes redirectAttributes) {
         if (Objects.isNull(session.getAttribute("login"))) {
             return "redirect:/login";
@@ -62,8 +60,7 @@ public class PlayerController {
 
 
         if (file != null && !file.isEmpty()) {
-            log.warn(file.getOriginalFilename());
-            String fileName = mediaFileService.save(mediaFileResourceLocation.getLocation(), file);
+            String fileName = mediaFileService.save(file);
             requestDto.setMediaFile(fileName);
         }
 
