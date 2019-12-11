@@ -18,7 +18,6 @@ public class MediaFileService {
     private static final Logger log = LoggerFactory.getLogger(MediaFileService.class);
 
     public String save(String path, MultipartFile file) {
-        log.warn(path, file.getOriginalFilename());
         String fileName = UUID.randomUUID().toString() + file.getOriginalFilename();
         File dest = new File(path + fileName);
         try {

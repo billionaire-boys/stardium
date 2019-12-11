@@ -1,9 +1,11 @@
 package com.bb.stardium.player.web.controller;
 
+import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
 import com.bb.stardium.mediafile.service.MediaFileService;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -15,23 +17,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
 @Controller
 @RequestMapping("/player")
+@AllArgsConstructor
 public class PlayerController {
     private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
     private final PlayerService playerService;
     private final MediaFileService mediaFileService;
-    private String IMAGE_PATH;
-
-    public PlayerController(PlayerService playerService, MediaFileService mediaFileService, ServletContext context) {
-        this.playerService = playerService;
-        this.mediaFileService = mediaFileService;
-        IMAGE_PATH = context.getRealPath("/images");
-    }
+    private final MediaFileResourceLocation mediaFileResourceLocation;
 
     @GetMapping("/new")
     public String signupPage() {
@@ -41,7 +37,7 @@ public class PlayerController {
     @PostMapping("/new")
     public String register(final PlayerRequestDto requestDto, MultipartFile file) {
         if (file != null && !file.isEmpty()) {
-            String fileName = mediaFileService.save(IMAGE_PATH, file);
+            String fileName = mediaFileService.save(mediaFileResourceLocation.getLocation(), file);
             requestDto.setMediaFile(fileName);
         }
         playerService.register(requestDto);
@@ -67,7 +63,7 @@ public class PlayerController {
 
         if (file != null && !file.isEmpty()) {
             log.warn(file.getOriginalFilename());
-            String fileName = mediaFileService.save(IMAGE_PATH, file);
+            String fileName = mediaFileService.save(mediaFileResourceLocation.getLocation(), file);
             requestDto.setMediaFile(fileName);
         }
 
