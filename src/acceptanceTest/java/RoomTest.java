@@ -18,7 +18,9 @@ class RoomTest extends BaseAcceptanceTest {
     void setUp() {
         masterPlayer1 = new Player("master1", "master1@mail.net", "password");
         roomRequestDto = new RoomRequestDto("title", "intro",
-                new Address("서울시", "송파구", "루터회관"),
+                Address.builder()
+                .city("서울시").section("송파구").detail("루터회관 앞")
+                .build(),
                 LocalDateTime.now(), LocalDateTime.now().plusHours(1L), 3, masterPlayer1);
     }
 
@@ -57,7 +59,7 @@ class RoomTest extends BaseAcceptanceTest {
     void quitRoom() {
         PlayerRequestDto dto = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg", "Dd");
 
-        String roomUri = newSessionPost(dto, "/rooms/new")
+        String roomUri = newSessionPost(dto, "/rooms")
                 .body(Mono.just(roomRequestDto), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()
@@ -78,7 +80,7 @@ class RoomTest extends BaseAcceptanceTest {
     void updateRoom() {
         PlayerRequestDto masterPlayer = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg", "Dd");
 
-        String roomUri = newSessionPost(masterPlayer, "/rooms/new")
+        String roomUri = newSessionPost(masterPlayer, "/rooms")
                 .body(Mono.just(roomRequestDto), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()

@@ -37,14 +37,14 @@
             <div class="field">
                 <h3 class="ui dividing header">시간</h3>
                 <div class="ui segment center aligned">
-                    <p class="label" th:text="${'일시 : ' + room.startTime}">일시</p>
-                    <p class="label" th:text="${'시간 : ' + room.endTime}">시간</p>
+                    <p class="label" th:text="${'시작 시간 : ' + room.startTime}">일시</p>
+                    <p class="label" th:text="${'종료 시간 : ' + room.endTime}">시간</p>
                 </div>
             </div>
 
             <div class="field">
                 <h3 class="ui dividing header">장소</h3>
-                <div class="ui middle aligned center aligned grid">
+                <div class="ui segment middle aligned center aligned grid">
                     <div class="column">
                         <p th:text="${'장소 : ' + room.address.city + ' ' + room.address.section + ' ' + room.address.detail}">
                             장소 : 루터회관</p>

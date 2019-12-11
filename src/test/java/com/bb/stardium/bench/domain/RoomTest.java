@@ -16,7 +16,10 @@ class RoomTest {
 
     private LocalDateTime startTime = LocalDateTime.of(2020, 11, 30, 10, 0);
 
-    private Address address = new Address("서울시", "송파구", "루터회관 앞");
+    private Address address = Address.builder()
+            .city("서울시").section("송파구")
+            .detail("루터회관 앞")
+            .build();
 
     Room room = new Room(1L, "title", "intro", address, startTime, endTime, 10, player, new ArrayList<>());
 

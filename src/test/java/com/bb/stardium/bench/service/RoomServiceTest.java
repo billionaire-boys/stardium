@@ -54,7 +54,9 @@ class RoomServiceTest {
     void setUp() {
         master = new Player("master", "email", "password");
         player = new Player("player", PLAYER_EMAIL, "password");
-        address = new Address("서울시", "송파구", "루터회관 앞");
+        address = Address.builder()
+                .city("서울시").section("송파구").detail("루터회관 앞")
+                .build();
         startTime = LocalDateTime.of(2020, 11, 30, 10, 0);
         endTime = LocalDateTime.of(2020, 11, 30, 13, 0);
 
