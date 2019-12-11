@@ -4,7 +4,7 @@ import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.service.RoomService;
-import com.bb.stardium.mediafile.domain.MediaFile;
+import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -31,11 +32,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @WebMvcTest(controllers = RoomController.class)
+@Import(MediaFileResourceLocation.class)
 class RoomControllerTest {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final Player mockPlayer = mock(Player.class);
-    private final MediaFile mediaFile = mock(MediaFile.class);
     private final Room mockRoom = mock(Room.class);
     private final Address mockAddress = mock(Address.class);
     private final RoomRequestDto requestDto = new RoomRequestDto(
