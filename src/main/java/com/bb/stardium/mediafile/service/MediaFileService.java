@@ -1,5 +1,6 @@
 package com.bb.stardium.mediafile.service;
 
+import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,15 +18,15 @@ import java.util.UUID;
 public class MediaFileService {
     private static final Logger log = LoggerFactory.getLogger(MediaFileService.class);
 
-    public String save(String path, MultipartFile file) {
-        log.warn(path, file.getOriginalFilename());
+    private final MediaFileResourceLocation mediaFileResourceLocation;
+
+    public String save(MultipartFile file) {
         String fileName = UUID.randomUUID().toString() + file.getOriginalFilename();
-        File dest = new File(path + fileName);
+        File dest = new File(mediaFileResourceLocation.getLocation() + fileName);
         try {
             file.transferTo(dest);
-            return fileName;
+            return mediaFileResourceLocation.getUrl() + fileName;
         } catch (IOException e) {
-            log.warn(e.getMessage());
             throw new IllegalStateException("Fail To handle file");
         }
     }
