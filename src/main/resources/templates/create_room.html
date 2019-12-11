@@ -9,7 +9,16 @@
 </th:block>
 
 <th:block layout:fragment="content_header">
-    <th:block th:replace="fragment/room_header"/>
+    <div class="ui small secondary inverted menu" style="margin-bottom: 0">
+        <div class="toc item">
+            <a href="/">
+                <i class="angle double left icon black"></i>
+            </a>
+            <div class="item" >
+                <h1 class="ui violet header">방 만들기</h1>
+            </div>
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content_body">
@@ -68,6 +77,7 @@
                 <h4 class="ui dividing header">방 소개</h4>
                 <textarea form="room-save-form" id="intro" name="intro" placeholder="같이 게임 하실래요??"></textarea>
             </div>
+
             <button class="ui fluid violet button" id="signUp">만들기</button>
         </form>
     </div>

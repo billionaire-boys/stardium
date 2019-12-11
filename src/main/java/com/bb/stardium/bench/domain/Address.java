@@ -39,7 +39,7 @@ public class Address {
     }
 
     private String checkCityName(String city) {
-        if (!city.equals("서울")) {
+        if (!city.contains("서울")) {
             throw new NotAllowCityException("서울시만 가능합니다.");
         }
         return city;

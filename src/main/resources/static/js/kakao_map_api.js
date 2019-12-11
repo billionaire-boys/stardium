@@ -4,7 +4,7 @@ const MAP_API = (() => {
         const mapContainer = document.querySelector('#map'),
             mapOption = {
                 center: new kakao.maps.LatLng(37.515412, 127.103040),
-                level: 3
+                level: 4
             };
         const mapService = new MapService(mapContainer, mapOption);
 
