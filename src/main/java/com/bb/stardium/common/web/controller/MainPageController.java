@@ -44,9 +44,4 @@ public class MainPageController {
         model.addAttribute("rooms", myRooms);
         return "main_my_room.html";
     }
-
-    @GetMapping("/chat-room")
-    public String chatRoom() {
-        return "chat_room.html";
-    }
 }

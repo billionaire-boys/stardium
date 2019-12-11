@@ -8,9 +8,24 @@
 </th:block>
 
 <th:block layout:fragment="content_body">
-    <input id="roomId" name="roomId" th:value="${room.id}" type=hidden>
+    <input id="roomId" name="roomId" th:value="${room.id}" type="hidden">
+    <input id="nickname" th:value="${session.login.nickname}" type="hidden">
 
     <h1 class="ui violet header" th:text="${room.title}">[제목] 우리함께 농구해요!</h1>
+
+    <div class="ui comments raised very padded container segment">
+        <h3 class="ui dividing header">대화방</h3>
+
+        <div id="chat-box" style="overflow-y:scroll; height:30rem;"></div>
+
+        <div class="ui">
+            <div class="ui input action fluid">
+                <input type="text" id="chat-input">
+                <button class="ui primary button active" id="chat-send-button">보내기</button>
+            </div>
+
+        </div>
+    </div>
 
     <div class="ui stacked segments basic_padding">
         <div class="field">
@@ -57,8 +72,13 @@
 </th:block>
 
 <th:block layout:fragment="custom_js">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"
+            integrity="sha256-z4cKT3yF+afIn8eFXJc+nRpGtwcmNEClvf+ikgsZcRo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"
+            integrity="sha256-nkP8cj5xaTdWK/BsZl+57ZCE/Y/i4UNtbNTpgH+6Taw=" crossorigin="anonymous"></script>
     <script src="/js/fetchApi.js"></script>
     <script src="/js/room.js"></script>
+    <script src="/js/chat.js"></script>
 </th:block>
 
 </html>
