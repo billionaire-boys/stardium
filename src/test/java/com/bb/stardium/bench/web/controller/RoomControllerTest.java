@@ -16,6 +16,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -29,7 +31,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(MediaFileResourceLocation.class)
 class RoomControllerTest {
 
-    private final Player mockPlayer = mock(Player.class);
+    private final Player player = Player.builder()
+            .nickname("nickname")
+            .password("password")
+            .email("email@email.com")
+            .build();
+    private final Room room = Room.builder()
+            .id(1L)
+            .title("title")
+            .intro("intro")
+            .startTime(LocalDateTime.now())
+            .startTime(LocalDateTime.now().plusHours(2L))
+            .address(new Address("서울시", "송파구", "루터회관앞"))
+            .playersLimit(10)
+            .master(player)
+            .build();
     private final Room mockRoom = mock(Room.class);
     private final Address mockAddress = mock(Address.class);
 
@@ -46,8 +62,8 @@ class RoomControllerTest {
     void setUp() {
         given(mockRoom.getId()).willReturn(1L);
         given(mockRoom.getAddress()).willReturn(mockAddress);
-        given(roomService.findRoom(anyLong())).willReturn(mockRoom);
-        given(playerService.findByPlayerEmail(anyString())).willReturn(mockPlayer);
+        given(roomService.findRoom(anyLong())).willReturn(room);
+        given(playerService.findByPlayerEmail(anyString())).willReturn(player);
     }
 
     @Test
@@ -77,9 +93,9 @@ class RoomControllerTest {
     @Test
     @DisplayName("방 번호로 특정 방에 들어가기")
     void getRoomById() throws Exception {
-        mockMvc.perform(get("/room/{id}", 1)
-                .sessionAttr("login", new PlayerResponseDto(mockPlayer)))
-                .andExpect(status().isOk());
-        verify(mockRoom).getId();
+        mockMvc.perform(get("/rooms/{id}", 1)
+                .sessionAttr("login", new PlayerResponseDto(player)))
+                .andExpect(status().isOk())
+                .andExpect(view().name("room"));
     }
 }
