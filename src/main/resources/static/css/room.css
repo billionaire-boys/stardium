@@ -1,9 +1,10 @@
 .chat-room {
     min-height: 300px;
     min-width: 100%;
-    border : 1px solid #00b5ad;
+    border: 1px solid #00b5ad;
     border-radius: 30px;
 }
+
 .action.input {
     width: 100%;
 }
@@ -19,9 +20,9 @@
 }
 
 .info_window {
-    width:150px;
-    text-align:center;
-    padding:6px 0;
+    width: 150px;
+    text-align: center;
+    padding: 6px 0;
 }
 
 .map_size {

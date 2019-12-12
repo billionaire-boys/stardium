@@ -26,8 +26,8 @@ class RoomTest extends BaseAcceptanceTest {
 
         roomRequestDto = new RoomRequestDto("title", "intro",
                 Address.builder()
-                .city("서울시").section("송파구").detail("루터회관 앞")
-                .build(),
+                        .city("서울시").section("송파구").detail("루터회관 앞")
+                        .build(),
                 LocalDateTime.now(), LocalDateTime.now().plusHours(1L), 3, masterPlayer);
     }
 

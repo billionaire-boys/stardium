@@ -22,9 +22,24 @@
 </th:block>
 
 <th:block layout:fragment="content_body">
-    <input id="roomId" name="roomId" th:value="${room.id}" type=hidden>
+    <input id="room-id" th:value="${room.id}" type="hidden">
+    <input id="player-id" th:value="${session.login.playerId}" type="hidden">
 
     <div class="ui container">
+        <div class="ui comments raised very padded container segment">
+            <h3 class="ui dividing header">대화방</h3>
+
+            <div id="chat-box" style="overflow-y:scroll; height:30rem;"></div>
+
+            <div class="ui">
+                <div class="ui input action fluid">
+                    <input type="text" id="chat-input">
+                    <button class="ui primary button active" id="chat-send-button">보내기</button>
+                </div>
+
+            </div>
+        </div>
+
         <div class="ui form">
 
             <div class="field">
@@ -52,7 +67,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -61,14 +75,14 @@
         <div class="ui two cards" th:each="player : ${room.players}">
             <div class="card">
                 <div class="image">
-                    <img alt="player-profile" src="/images/ybh.png">
+                    <img alt="player-profile" th:src="${player.profile.url}">
                 </div>
                 <div class="content">
                     <div class="header" th:text="${player.nickname}">강백호</div>
                     <div class="description" th:text="${player.statusMessage}">
                         안녕하세요!
                     </div>
-                </div>w
+                </div>
                 <div class="extra content">
                 <span>
                     <i class="basketball ball icon"></i>
@@ -78,13 +92,20 @@
             </div>
         </div>
     </div>
-
-    <div class="ui fluid large violet submit button" id="quit-button">나가기</div>
+    <div th:if="${session.login.nickname != room.master.nickname}" class="ui fluid large violet submit button" id="quit-button">나가기
+    </div>
+    <div th:if="${session.login.nickname == room.master.nickname}" class="ui fluid large violet submit button" id="delete-room-button">방 없애기
+    </div>
 </th:block>
 
 <th:block layout:fragment="custom_js">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"
+            integrity="sha256-z4cKT3yF+afIn8eFXJc+nRpGtwcmNEClvf+ikgsZcRo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"
+            integrity="sha256-nkP8cj5xaTdWK/BsZl+57ZCE/Y/i4UNtbNTpgH+6Taw=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/js/fetchApi.js"></script>
     <script type="text/javascript" src="/js/room.js"></script>
+    <script type="text/javascript" src="/js/chat.js"></script>
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7ce1b570b081a1c8a6e863b061308ff4&libraries=services&"></script>
     <script type="text/javascript" src="/js/kakao_map_api.js"></script>

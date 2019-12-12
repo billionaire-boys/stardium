@@ -1,13 +1,13 @@
 $(document)
-    .ready(function() {
+    .ready(function () {
         // fix menu when passed
         $('.masthead')
             .visibility({
                 once: false,
-                onBottomPassed: function() {
+                onBottomPassed: function () {
                     $('.fixed.menu').transition('fade in');
                 },
-                onBottomPassedReverse: function() {
+                onBottomPassedReverse: function () {
                     $('.fixed.menu').transition('fade out');
                 }
             });

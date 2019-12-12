@@ -42,7 +42,6 @@ public class RoomRestController {
         }
 
         roomService.join(playerResponseDto.getEmail(), roomId);
-
         return ResponseEntity.ok(roomId);
     }
 
@@ -55,7 +54,6 @@ public class RoomRestController {
         }
 
         roomService.quit(playerResponseDto.getEmail(), roomId);
-
         return ResponseEntity.ok(roomId);
     }
 
@@ -68,5 +66,12 @@ public class RoomRestController {
         Player player = playerService.findByPlayerEmail(loginPlayerDto.getEmail());
         Long updatedRoomId = roomService.update(roomId, roomRequestDto, player);
         return ResponseEntity.ok(updatedRoomId);
+    }
+
+    @DeleteMapping("/{roomId}")
+    public ResponseEntity delete(@PathVariable Long roomId, HttpSession httpSession) {
+        PlayerResponseDto loginPlayer = (PlayerResponseDto) httpSession.getAttribute("login");
+        roomService.delete(roomId, loginPlayer.getEmail());
+        return ResponseEntity.ok().build();
     }
 }

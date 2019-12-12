@@ -35,7 +35,7 @@ class MainPageControllerTest {
         mockMvc.perform(get("/"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(view().name("login.html"));
+                .andExpect(view().name("login"));
     }
 
     @Test
@@ -44,6 +44,6 @@ class MainPageControllerTest {
         mockMvc.perform(get("/myRoom"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(view().name("login.html"));
+                .andExpect(view().name("login"));
     }
 }

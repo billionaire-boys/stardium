@@ -1,26 +1,67 @@
-function getAddress() {
-    new daum.Postcode({
-        oncomplete: function (data) {
-            let fullAddress = data.address;
-            let address = fullAddress.split(' ');
+const POST_API = (() => {
 
-            if (address[0] !== "서울") {
-                alert("서울시만 가능합니다.");
-                return;
-            }
+    const PostController = function() {
+        const postService = new PostService();
 
-            document.querySelector("#fullAddress").value = fullAddress;
-            document.querySelector("#fullAddress").disabled = true;
-            document.querySelector("#city").value = address[0];
-            document.querySelector("#section").value = address[1];
+        const postExecute = () => {
+            document.querySelector("#fullAddress").addEventListener("click", postService.execute);
+        };
 
-            let detailAddress = '';
+        const init = () => {
+            postExecute();
+        };
 
-            for (let i = 2; i < address.length; i++) {
-                detailAddress += address[i] + " ";
-            }
-
-            document.querySelector("#detail").value = detailAddress;
+        return {
+            init
         }
-    }).open();
-}
+    };
+
+    const PostService = function() {
+
+        const executePostApi = function() {
+            getAddress();
+        };
+
+        function getAddress() {
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    let fullAddress = data.address;
+                    let address = fullAddress.split(' ');
+
+                    if (address[0] !== "서울") {
+                        alert("서울시만 가능합니다.");
+                        return;
+                    }
+
+                    document.querySelector("#fullAddress").value = fullAddress;
+                    document.querySelector("#fullAddress").disabled = true;
+                    document.querySelector("#city").value = address[0];
+                    document.querySelector("#section").value = address[1];
+
+                    let detailAddress = '';
+
+                    for (let i = 2; i < address.length; i++) {
+                        detailAddress += address[i] + " ";
+                    }
+
+                    document.querySelector("#detail").value = detailAddress;
+                }
+            }).open();
+        }
+
+        return {
+            execute: executePostApi
+        }
+    };
+
+    const init = () => {
+        const postController = new PostController();
+        postController.init();
+    };
+
+    return {
+        init
+    }
+})();
+
+POST_API.init();

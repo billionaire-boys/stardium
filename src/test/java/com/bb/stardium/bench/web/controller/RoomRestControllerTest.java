@@ -28,7 +28,8 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,11 +40,11 @@ public class RoomRestControllerTest {
 
     private final Player player =
             Player.builder()
-            .nickname("nickname")
-            .password("password")
-            .email("email@email.com")
-            .rooms(new ArrayList<>())
-            .build();
+                    .nickname("nickname")
+                    .password("password")
+                    .email("email@email.com")
+                    .rooms(new ArrayList<>())
+                    .build();
     private final Room mockRoom = mock(Room.class);
     private final Address mockAddress = mock(Address.class);
     private final RoomRequestDto requestDto = new RoomRequestDto(

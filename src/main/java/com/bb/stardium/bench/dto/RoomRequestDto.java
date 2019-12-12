@@ -6,7 +6,10 @@ import com.bb.stardium.player.domain.Player;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
@@ -52,14 +55,15 @@ public class RoomRequestDto {
         this.master = master;
     }
 
-    public Room toEntity() {
+    public Room toEntity(Player player) {
         return Room.builder()
-                .title(title)
-                .intro(intro)
-                .address(address)
-                .startTime(startTime)
-                .endTime(endTime)
-                .playersLimit(playersLimit)
+                .title(this.title)
+                .intro(this.intro)
+                .address(this.address)
+                .startTime(this.startTime)
+                .endTime(this.endTime)
+                .playersLimit(this.playersLimit)
+                .master(player)
                 .players(new ArrayList<>())
                 .build();
     }

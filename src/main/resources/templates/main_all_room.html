@@ -16,12 +16,22 @@
 </th:block>
 
 <th:block layout:fragment="content_body">
+    <div>
+        <select class="ui dropdown right floated" id="selectOption" name="지역">
+            <option>지역</option>
+            <option th:each="section : ${sections}" th:text="${section}"></option>
+        </select>
+        <div class="ui action input">
+            <input type="text" placeholder="Search..." id="search-keyword">
+            <button class="ui button" id="search-button">Search</button>
+        </div>
+    </div>
     <div class="ui segments">
         <div class="ui segment">
             <div class="ui cards" id="room-list">
                 <div class="card" style="width: 100%;" th:if="${!rooms.isEmpty()}" th:each="room : ${rooms}">
                     <div class="content">
-                        <img class="right floated mini ui image" src="/images/default_profile_img.png">
+                        <img class="right floated mini ui image" th:src="${room.master.profile.url}">
                         <div class="header" th:text="${room.title}">
                             방 제목
                         </div>
