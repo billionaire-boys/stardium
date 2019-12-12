@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
     List<Room> findByPlayers_Email(final String email);
+
+    List<Room> findAllByAddressSectionOrderByStartTimeAsc(final String section);
 }

@@ -72,4 +72,12 @@ public class Room {
         players.remove(player);
         return player;
     }
+
+    public boolean isUnexpiredRoom() {
+        return this.getStartTime().isAfter(LocalDateTime.now());
+    }
+
+    public boolean hasRemainingSeat() {
+        return this.playersLimit - players.size() > 0;
+    }
 }

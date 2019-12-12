@@ -8,15 +8,11 @@ import com.bb.stardium.bench.service.exception.AlreadyJoinedException;
 import com.bb.stardium.bench.service.exception.MasterAndRoomNotMatchedException;
 import com.bb.stardium.bench.service.exception.NotFoundRoomException;
 import com.bb.stardium.player.domain.Player;
-import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +39,7 @@ public class RoomService {
         Room room = roomRepository.findById(roomId).orElseThrow(NotFoundRoomException::new);
         checkRoomMaster(player, room);
 
-        room.update(toEntity(roomRequestDto, player));
+        room.update(roomRequestDto.toEntity(player));
         return room.getId();
     }
 
@@ -74,42 +70,10 @@ public class RoomService {
         return toResponseDtos(rooms);
     }
 
-    private Room toEntity(RoomRequestDto roomRequestDto, Player player) {
-        return Room.builder()
-                .title(roomRequestDto.getTitle())
-                .intro(roomRequestDto.getIntro())
-                .address(roomRequestDto.getAddress())
-                .startTime(roomRequestDto.getStartTime())
-                .endTime(roomRequestDto.getEndTime())
-                .playersLimit(roomRequestDto.getPlayersLimit())
-                .master(player)
-                .players(new ArrayList<>())
-                .build();
-    }
-
     private List<RoomResponseDto> toResponseDtos(List<Room> rooms) {
         return rooms.stream()
-                .map(this::toResponseDto)
+                .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
-    }
-
-    // TODO : service에서 뷰를 고려해서 만들어 보내주는 게 어색함. 리팩토링 필요할듯
-    private RoomResponseDto toResponseDto(Room room) {
-        return RoomResponseDto.builder()
-                .title(room.getTitle())
-                .intro(room.getIntro())
-                .address(String.format("%s %s %s",
-                        room.getAddress().getCity(),
-                        room.getAddress().getSection(),
-                        room.getAddress().getDetail()))
-                .playTime(String.format("%s - %s",
-                        room.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                        room.getEndTime().format(DateTimeFormatter.ofPattern("dd"))))
-                .playLimits(room.getPlayersLimit())
-                .master(room.getMaster())
-                .id(room.getId())
-                .playerCount(room.getPlayers().size())
-                .build();
     }
 
     public void join(String email, Long roomId) {
@@ -130,21 +94,13 @@ public class RoomService {
         return player.removeRoom(room);
     }
 
-    private boolean isUnexpiredRoom(Room room) {
-        return room.getStartTime().isAfter(LocalDateTime.now());
-    }
-
-    private boolean hasRemainingSeat(Room room) {
-        return (room.getPlayersLimit() - room.getPlayers().size()) > 0;
-    }
-
     @Transactional(readOnly = true)
     public List<RoomResponseDto> findAllUnexpiredRooms() {
         return roomRepository.findAll().stream()
-                .filter(this::isUnexpiredRoom)
-                .filter(this::hasRemainingSeat)
+                .filter(Room::isUnexpiredRoom)
+                .filter(Room::hasRemainingSeat)
                 .sorted(Comparator.comparing(Room::getStartTime)) // TODO: 추후 추출? 혹은 쿼리 등 다른 방법?
-                .map(this::toResponseDto)
+                .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -152,8 +108,15 @@ public class RoomService {
     public List<RoomResponseDto> findPlayerJoinedRoom(Player player) {
         return roomRepository.findByPlayers_Email(player.getEmail()).stream()
                 .sorted(Comparator.comparing(Room::getStartTime))
-                .map(this::toResponseDto)
+                .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<RoomResponseDto> findRoomsFilterBySection(String section) {
+        return roomRepository.findAllByAddressSectionOrderByStartTimeAsc(section).stream()
+                .filter(Room::isUnexpiredRoom)
+                .map(RoomResponseDto::new)
+                .collect(Collectors.toList());
+    }
 }

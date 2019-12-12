@@ -29,12 +29,18 @@ const ROOM_APP = (() => {
             deleteButton ? deleteButton.addEventListener('click', roomService.deleteRoom) : undefined;
         };
 
+        const findRoom = () => {
+            const sectionOption = document.getElementById('selectOption');
+            sectionOption ? sectionOption.addEventListener('change', roomService.findRoomsBySection) : undefined;
+        };
+
         const init = () => {
             signUp();
             update();
             join();
             quit();
             deleteRoom();
+            findRoom();
         };
 
         return {
@@ -177,12 +183,19 @@ const ROOM_APP = (() => {
             );
         };
 
+        const findRoomsBySection = () => {
+            const selectedOption = document.getElementById('selectOption').selectedOptions[0].value;
+
+            window.location.href = '/' + selectedOption;
+        };
+
         return {
             saveRoom,
             updateRoom,
             joinRoom,
             quitRoom,
             deleteRoom,
+            findRoomsBySection,
         }
     };
 

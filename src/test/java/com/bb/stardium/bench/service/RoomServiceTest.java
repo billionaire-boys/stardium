@@ -174,7 +174,7 @@ class RoomServiceTest {
 
         List<RoomResponseDto> actual = roomService.findPlayerJoinedRoom(master);
         List<RoomResponseDto> expected = List.of(room1, room2, room4).stream()
-                .map(this::toResponseDto).collect(Collectors.toList());
+                .map(RoomResponseDto::new).collect(Collectors.toList());
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -186,28 +186,10 @@ class RoomServiceTest {
 
         List<RoomResponseDto> actual = roomService.findAllUnexpiredRooms();
         List<RoomResponseDto> expected = List.of(room1, room2).stream()
-                .map(this::toResponseDto)
+                .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
 
         assertThat(actual).isEqualTo(expected);
-    }
-
-    private RoomResponseDto toResponseDto(Room room) {
-        return RoomResponseDto.builder()
-                .title(room.getTitle())
-                .intro(room.getIntro())
-                .address(String.format("%s %s %s",
-                        room.getAddress().getCity(),
-                        room.getAddress().getSection(),
-                        room.getAddress().getDetail()))
-                .playTime(String.format("%s - %s",
-                        room.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                        room.getEndTime().format(DateTimeFormatter.ofPattern("dd"))))
-                .playLimits(room.getPlayersLimit())
-                .master(room.getMaster())
-                .playerCount(room.getPlayers().size())
-                .id(room.getId())
-                .build();
     }
 
 }
