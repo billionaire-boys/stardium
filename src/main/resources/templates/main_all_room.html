@@ -21,6 +21,10 @@
             <option>지역</option>
             <option th:each="section : ${sections}" th:text="${section}"></option>
         </select>
+        <div class="ui action input">
+            <input type="text" placeholder="Search..." id="search-keyword">
+            <button class="ui button" id="search-button">Search</button>
+        </div>
     </div>
     <div class="ui segments">
         <div class="ui segment">
