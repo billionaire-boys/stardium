@@ -149,16 +149,4 @@ class RoomControllerTest {
                 .andExpect(status().isOk());
         verify(roomService).update(anyLong(), any(), any());
     }
-
-    @Test
-    @DisplayName("방 삭제하기")
-    void deleteRoom() throws Exception {
-        mockMvc.perform(delete("/rooms/{id}", 1)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(requestDto))
-                .sessionAttr("login", new PlayerResponseDto(mockPlayer)))
-                .andDo(print())
-                .andExpect(status().is3xxRedirection());
-        verify(roomService).delete(anyLong());
-    }
 }

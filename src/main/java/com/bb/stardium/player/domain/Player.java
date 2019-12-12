@@ -39,13 +39,13 @@ public class Player {
     @Column(name = "password", length = 64, nullable = false)
     private String password;
 
+    @Builder.Default
     @Column(name = "statusMessage", length = 255)
     private String statusMessage = "";
 
     @Builder.Default
     @ManyToMany(mappedBy = "players")
     private List<Room> rooms = new ArrayList<>();
-
 
     @OneToOne(cascade = CascadeType.PERSIST)
     private MediaFile profile;
