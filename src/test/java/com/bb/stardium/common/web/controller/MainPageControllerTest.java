@@ -1,12 +1,14 @@
 package com.bb.stardium.common.web.controller;
 
 import com.bb.stardium.bench.service.RoomService;
+import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
 import com.bb.stardium.player.service.PlayerService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @WebMvcTest(controllers = MainPageController.class)
+@Import(MediaFileResourceLocation.class)
 class MainPageControllerTest {
 
     @MockBean
