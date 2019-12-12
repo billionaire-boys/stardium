@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+<html lang="ko" layout:decorator="layout/main_layout"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/main_layout">
+      xmlns:th="http://www.thymeleaf.org">
 
 <th:block layout:fragment="custom_head">
     <title>로그인</title>
@@ -28,13 +28,18 @@
                             </div>
                         </div>
                         <div class="field">
-                            <button type="submit" class="ui fluid large violet submit button">Login</button>
+                            <button class="ui fluid large violet submit button" type="submit">Login</button>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="ui message">
                 처음이신가요? <a href="/player/new"> 회원가입</a>
+            </div>
+            <div class="ui segments" style="background: #f7e318;">
+                <a href="https://kauth.kakao.com/oauth/authorize?client_id=974d268d773b35a4a9e63eca0b74ec16&redirect_uri=http://localhost:8080/oauth/kakao&response_type=code"
+                >
+                    <img src="/images/kakao-wide.png" style="padding-top:3px"></a>
             </div>
         </div>
     </div>
