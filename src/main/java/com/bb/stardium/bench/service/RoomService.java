@@ -118,4 +118,11 @@ public class RoomService {
                 .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    public List<RoomResponseDto> findRoomBySearchKeyword(String searchKeyword) {
+        return roomRepository.findAllByTitleContaining(searchKeyword).stream()
+                .filter(Room::isUnexpiredRoom)
+                .map(RoomResponseDto::new)
+                .collect(Collectors.toList());
+    }
 }

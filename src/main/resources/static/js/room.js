@@ -34,6 +34,11 @@ const ROOM_APP = (() => {
             sectionOption ? sectionOption.addEventListener('change', roomService.findRoomsBySection) : undefined;
         };
 
+        const searchRoom = () => {
+            const searchButton = document.getElementById('search-button');
+            searchButton ? searchButton.addEventListener('click', roomService.searchRoom) : undefined;
+        };
+
         const init = () => {
             signUp();
             update();
@@ -41,6 +46,7 @@ const ROOM_APP = (() => {
             quit();
             deleteRoom();
             findRoom();
+            searchRoom();
         };
 
         return {
@@ -89,7 +95,7 @@ const ROOM_APP = (() => {
 
             const ifSucceed = (response) => {
                 response.json().then(data => {
-                    window.location.href = `/room/${data}`
+                    window.location.href = `/rooms/${data}`
                 })
             };
 
@@ -121,7 +127,7 @@ const ROOM_APP = (() => {
 
             const ifSucceed = (response) => {
                 response.json().then(data => {
-                    window.location.href = `/room/${data}`
+                    window.location.href = `/rooms/${data}`
                 })
             };
             const roomId = document.getElementById('roomId').value;
@@ -143,7 +149,7 @@ const ROOM_APP = (() => {
                 const ifSucceed = (response) => {
                     alert("방에 입장되었습니다!");
                     response.json().then(data => {
-                        window.location.href = `/room/${data}`
+                        window.location.href = `/rooms/${data}`
                     });
                 };
 
@@ -160,7 +166,7 @@ const ROOM_APP = (() => {
             const ifSucceed = (response) => {
                 response.json().then(data => {
                     alert("나가는 데 성공했습니다!");
-                    window.location.href = `/room/`
+                    window.location.href = `/rooms`
                 })
             };
             const roomId = document.getElementById('roomId').value;
@@ -191,6 +197,12 @@ const ROOM_APP = (() => {
             window.location.href = '/' + selectedOption;
         };
 
+        const searchRoom = () => {
+            const searchKeyword = document.getElementById('search-keyword').value;
+
+            window.location.href = `/search/${searchKeyword}`;
+        };
+
         return {
             saveRoom,
             updateRoom,
@@ -198,6 +210,7 @@ const ROOM_APP = (() => {
             quitRoom,
             deleteRoom,
             findRoomsBySection,
+            searchRoom,
         }
     };
 

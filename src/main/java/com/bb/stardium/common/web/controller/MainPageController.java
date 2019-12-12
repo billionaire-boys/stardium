@@ -6,6 +6,7 @@ import com.bb.stardium.bench.service.RoomService;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +41,14 @@ public class MainPageController {
     public String filteredHomePage(@PathVariable String section, Model model) {
         List<RoomResponseDto> filteredRooms = roomService.findRoomsFilterBySection(section);
         model.addAttribute("rooms", filteredRooms);
+        model.addAttribute("sections", Section.getAllSections());
+        return "main_all_room";
+    }
+
+    @GetMapping("/search/{searchKeyword}")
+    public String searchRooms(@PathVariable String searchKeyword, Model model) {
+        List<RoomResponseDto> searchedRooms = roomService.findRoomBySearchKeyword(searchKeyword);
+        model.addAttribute("rooms", searchedRooms);
         model.addAttribute("sections", Section.getAllSections());
         return "main_all_room";
     }
