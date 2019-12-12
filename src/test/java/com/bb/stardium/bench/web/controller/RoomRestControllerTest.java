@@ -4,6 +4,7 @@ import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.service.RoomService;
+import com.bb.stardium.bench.web.restcontroller.RoomRestController;
 import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerResponseDto;
@@ -21,22 +22,28 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = RoomRestController.class)
 @Import(MediaFileResourceLocation.class)
-public class RoomRestController {
+public class RoomRestControllerTest {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    private final Player mockPlayer = mock(Player.class);
+    private final Player player =
+            Player.builder()
+            .nickname("nickname")
+            .password("password")
+            .email("email@email.com")
+            .rooms(new ArrayList<>())
+            .build();
     private final Room mockRoom = mock(Room.class);
     private final Address mockAddress = mock(Address.class);
     private final RoomRequestDto requestDto = new RoomRequestDto(
@@ -48,7 +55,7 @@ public class RoomRestController {
             LocalDateTime.now().plusDays(1).plusHours(2),
             LocalDateTime.now().plusDays(1).plusHours(3),
             10,
-            mockPlayer
+            player
     );
 
     @MockBean
@@ -65,7 +72,7 @@ public class RoomRestController {
         given(mockRoom.getId()).willReturn(1L);
         given(mockRoom.getAddress()).willReturn(mockAddress);
         given(roomService.findRoom(anyLong())).willReturn(mockRoom);
-        given(playerService.findByPlayerEmail(anyString())).willReturn(mockPlayer);
+        given(playerService.findByPlayerEmail(anyString())).willReturn(player);
     }
 
     private static String asJsonString(final Object object) {
@@ -82,7 +89,7 @@ public class RoomRestController {
         mockMvc.perform(post("/rooms")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(requestDto))
-                .sessionAttr("login", new PlayerResponseDto(mockPlayer)))
+                .sessionAttr("login", new PlayerResponseDto(player)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -92,7 +99,7 @@ public class RoomRestController {
     void postJoin() throws Exception {
         mockMvc.perform(post("/rooms/join/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON)
-                .sessionAttr("login", new PlayerResponseDto(mockPlayer)))
+                .sessionAttr("login", new PlayerResponseDto(player)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -102,18 +109,9 @@ public class RoomRestController {
     void postQuit() throws Exception {
         mockMvc.perform(post("/rooms/quit/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON)
-                .sessionAttr("login", new PlayerResponseDto(mockPlayer)))
+                .sessionAttr("login", new PlayerResponseDto(player)))
                 .andDo(print())
                 .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName("방 번호로 특정 방에 들어가기")
-    void getRoomById() throws Exception {
-        mockMvc.perform(get("/rooms/{id}", 1)
-                .sessionAttr("login", new PlayerResponseDto(mockPlayer)))
-                .andExpect(status().isOk());
-        verify(mockRoom).getId();
     }
 
     @Test
@@ -121,22 +119,12 @@ public class RoomRestController {
     void putUpdate() throws Exception {
         mockMvc.perform(put("/rooms/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
                 .content(asJsonString(requestDto))
-                .sessionAttr("login", new PlayerResponseDto(mockPlayer)))
+                .sessionAttr("login", new PlayerResponseDto(player)))
                 .andDo(print())
                 .andExpect(status().isOk());
         verify(roomService).update(anyLong(), any(), any());
     }
 
-    @Test
-    @DisplayName("방 삭제하기")
-    void deleteRoom() throws Exception {
-        mockMvc.perform(delete("/rooms/{id}", 1)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(requestDto))
-                .sessionAttr("login", new PlayerResponseDto(mockPlayer)))
-                .andDo(print())
-                .andExpect(status().is3xxRedirection());
-        verify(roomService).delete(anyLong());
-    }
 }

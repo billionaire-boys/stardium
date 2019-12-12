@@ -5,6 +5,7 @@ import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.service.RoomService;
 import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
 import com.bb.stardium.player.domain.Player;
+import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +20,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -70,5 +72,14 @@ class RoomControllerTest {
         mockMvc.perform(get("/room/updateForm"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("update_room"));
+    }
+
+    @Test
+    @DisplayName("방 번호로 특정 방에 들어가기")
+    void getRoomById() throws Exception {
+        mockMvc.perform(get("/room/{id}", 1)
+                .sessionAttr("login", new PlayerResponseDto(mockPlayer)))
+                .andExpect(status().isOk());
+        verify(mockRoom).getId();
     }
 }
