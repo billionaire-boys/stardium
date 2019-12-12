@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Getter
+@Entity
 public class Room {
 
     @Id
@@ -40,6 +40,7 @@ public class Room {
     @JoinColumn(name = "master_id")
     private Player master;
 
+    @Builder.Default
     @ManyToMany
     @JoinTable(name = "player_room",
             joinColumns = @JoinColumn(name = "room_id"),

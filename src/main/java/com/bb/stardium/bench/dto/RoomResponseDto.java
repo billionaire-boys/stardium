@@ -2,15 +2,14 @@ package com.bb.stardium.bench.dto;
 
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.player.domain.Player;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.format.DateTimeFormatter;
 
 @Builder
+@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode

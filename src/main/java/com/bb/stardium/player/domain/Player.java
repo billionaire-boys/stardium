@@ -42,6 +42,7 @@ public class Player {
     @Column(name = "statusMessage", length = 255)
     private String statusMessage = "";
 
+    @Builder.Default
     @ManyToMany(mappedBy = "players")
     private List<Room> rooms = new ArrayList<>();
 
