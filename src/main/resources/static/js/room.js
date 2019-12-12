@@ -89,9 +89,11 @@ const ROOM_APP = (() => {
 
             const ifSucceed = (response) => {
                 response.json().then(data => {
-                    window.location.href = `/rooms/${data}`
+                    window.location.href = `/room/${data}`
                 })
             };
+
+            console.log(roomBasicInfo);
 
             connector.fetchTemplate('/rooms',
                 connector.POST,
@@ -119,7 +121,7 @@ const ROOM_APP = (() => {
 
             const ifSucceed = (response) => {
                 response.json().then(data => {
-                    window.location.href = `/rooms/${data}`
+                    window.location.href = `/room/${data}`
                 })
             };
             const roomId = document.getElementById('roomId').value;
@@ -141,7 +143,7 @@ const ROOM_APP = (() => {
                 const ifSucceed = (response) => {
                     alert("방에 입장되었습니다!");
                     response.json().then(data => {
-                        window.location.href = `/rooms/${data}`
+                        window.location.href = `/room/${data}`
                     });
                 };
 
@@ -158,7 +160,7 @@ const ROOM_APP = (() => {
             const ifSucceed = (response) => {
                 response.json().then(data => {
                     alert("나가는 데 성공했습니다!");
-                    window.location.href = `/rooms/`
+                    window.location.href = `/room/`
                 })
             };
             const roomId = document.getElementById('roomId').value;

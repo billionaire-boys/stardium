@@ -3,9 +3,7 @@ package com.bb.stardium.bench.domain;
 import com.bb.stardium.player.domain.Player;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,7 +15,10 @@ class RoomTest {
 
     private LocalDateTime startTime = LocalDateTime.now().plusDays(1);
     private LocalDateTime endTime = LocalDateTime.now().plusDays(1).plusHours(1);
-    private Address address = new Address("서울시", "송파구", "루터회관 앞");
+    private Address address = Address.builder()
+            .city("서울시").section("송파구")
+            .detail("루터회관 앞")
+            .build();
     private Player player = Player.builder()
             .nickname("nick")
             .email("email@email.com")
@@ -74,16 +75,16 @@ class RoomTest {
     @DisplayName("게임 시간이 현재 시간 이전인 경우")
     void isUnexpiredRoomTest() {
         Room expiredRoom = Room.builder()
-            .id(1L)
-            .title("title")
-            .intro("intro")
-            .address(address)
-            .startTime(LocalDateTime.now().minusDays(1L))
-            .endTime(LocalDateTime.now().minusDays(1L).plusHours(2L))
-            .playersLimit(10)
-            .master(master)
-            .players(new ArrayList<>())
-            .build();
+                .id(1L)
+                .title("title")
+                .intro("intro")
+                .address(address)
+                .startTime(LocalDateTime.now().minusDays(1L))
+                .endTime(LocalDateTime.now().minusDays(1L).plusHours(2L))
+                .playersLimit(10)
+                .master(master)
+                .players(new ArrayList<>())
+                .build();
 
         boolean result = expiredRoom.isUnexpiredRoom();
         assertThat(result).isFalse();

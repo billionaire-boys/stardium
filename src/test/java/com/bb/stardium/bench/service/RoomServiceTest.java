@@ -18,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -72,7 +71,9 @@ class RoomServiceTest {
                 .rooms(new ArrayList<>())
                 .build();
 
-        address = new Address("서울시", "송파구", "루터회관 앞");
+        address = Address.builder()
+                .city("서울시").section("송파구").detail("루터회관 앞")
+                .build();
         startTime = LocalDateTime.now().plusDays(1);
         endTime = LocalDateTime.now().plusDays(1).plusHours(3);
 

@@ -5,8 +5,6 @@ import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +21,6 @@ import java.util.Objects;
 @RequestMapping("/player")
 @AllArgsConstructor
 public class PlayerController {
-    private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
     private final PlayerService playerService;
     private final MediaFileService mediaFileService;
 

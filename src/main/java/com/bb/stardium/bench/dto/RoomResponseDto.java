@@ -8,8 +8,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.format.DateTimeFormatter;
 
+
 @Builder
-@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -38,7 +39,22 @@ public class RoomResponseDto {
     @NotNull
     private Player master;
 
-    public RoomResponseDto (Room room) {
+    @Builder
+    public RoomResponseDto(@NotBlank long id, @NotBlank String title,
+                           @NotBlank String intro, @NotBlank String address,
+                           @NotBlank String playTime, @NotBlank int playLimits,
+                           @NotBlank int playerCount, @NotNull Player master) {
+        this.id = id;
+        this.title = title;
+        this.intro = intro;
+        this.address = address;
+        this.playTime = playTime;
+        this.playLimits = playLimits;
+        this.playerCount = playerCount;
+        this.master = master;
+    }
+
+    public RoomResponseDto(Room room) {
         this.title = room.getTitle();
         this.intro = room.getIntro();
         this.address = String.format("%s %s %s",
