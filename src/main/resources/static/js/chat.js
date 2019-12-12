@@ -24,6 +24,10 @@ const appendMessage = (messageBody) => {
 };
 
 const sendMessage = (event) => {
+    if (chatInput.value === "") {
+        return;
+    }
+
     const requestMessage = {
         roomId,
         playerId,

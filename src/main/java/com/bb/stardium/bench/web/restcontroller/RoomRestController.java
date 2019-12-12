@@ -42,7 +42,6 @@ public class RoomRestController {
         }
 
         roomService.join(playerResponseDto.getEmail(), roomId);
-
         return ResponseEntity.ok(roomId);
     }
 
@@ -55,7 +54,6 @@ public class RoomRestController {
         }
 
         roomService.quit(playerResponseDto.getEmail(), roomId);
-
         return ResponseEntity.ok(roomId);
     }
 
