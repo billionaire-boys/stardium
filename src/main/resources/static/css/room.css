@@ -7,3 +7,25 @@
 .action.input {
     width: 100%;
 }
+
+.input_address {
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.table_title_size {
+    width: 4rem;
+}
+
+.info_window {
+    width:150px;
+    text-align:center;
+    padding:6px 0;
+}
+
+.map_size {
+    width: 300px;
+    height: 250px;
+    margin: auto;
+}

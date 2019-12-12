@@ -5,41 +5,43 @@
 
 <th:block layout:fragment="custom_head">
     <title>방 업데이트</title>
+    <link href="/css/room.css" rel="stylesheet" type="text/css">
+</th:block>
+
+<th:block layout:fragment="content_header">
+    <div class="ui small secondary inverted menu" style="margin-bottom: 0">
+        <div class="toc item">
+            <a href="/">
+                <i class="angle double left icon black"></i>
+            </a>
+            <div class="item">
+                <h1 class="ui violet header">방 수정하기</h1>
+            </div>
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content_body">
     <input id="roomId" name="roomId" type=hidden value="1">
-    <div class="ui main container">
-        <h1 class="ui violet header">방 수정하기</h1>
+    <div class="ui container">
         <form class="ui form" id="room-save-form">
             <div class="field">
                 <h4 class="ui dividing header">제목</h4>
                 <input id="title" name="title" placeholder="제목" type="text">
             </div>
-            <div class="field">
-                <h4 class="ui dividing header">주소</h4>
-                <div class="fields">
-                    <div class="field">
-                        <label>시</label>
-                        <input id="city" name="city" placeholder="시" type="text">
-                    </div>
-                    <div class="field">
-                        <label>구</label>
-                        <input id="section" name="section" placeholder="구" type="text">
-                    </div>
-                </div>
-                <div class="field">
-                    <label>더 자세히</label>
-                    <input id="detail" name="detail" placeholder="더 자세히" type="text">
-                </div>
-            </div>
+
             <div class="field">
                 <h4 class="ui dividing header">게임 시간</h4>
-                <label>시작 시간</label>
-                <input id="startTime" name="startTime" type="datetime-local">
-                <label>끝나는 시간</label>
-                <input id="endTime" name="endTime" type="datetime-local">
+                <div class="field">
+                    <label>시작 시간</label>
+                    <input id="startTime" name="startTime" type="datetime-local">
+                </div>
+                <div class="field">
+                    <label>끝나는 시간</label>
+                    <input id="endTime" name="endTime" type="datetime-local">
+                </div>
             </div>
+
             <div class="field">
                 <h4 class="ui dividing header">인원 수</h4>
                 <input id="playerNumbers" max="100" min="1" name="playerNumbers" type="number" placeholder="명">
@@ -56,8 +58,8 @@
 </th:block>
 ​
 <th:block layout:fragment="custom_js">
-    <script src="/js/fetchApi.js"></script>
-    <script src="/js/room.js"></script>
+    <script type="text/javascript" src="/js/fetchApi.js"></script>
+    <script type="text/javascript" src="/js/room.js"></script>
 </th:block>
 
 </html>

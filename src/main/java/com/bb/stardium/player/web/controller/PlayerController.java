@@ -23,7 +23,6 @@ import java.util.Objects;
 @RequestMapping("/player")
 @AllArgsConstructor
 public class PlayerController {
-    private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
     private final PlayerService playerService;
     private final MediaFileService mediaFileService;
 
