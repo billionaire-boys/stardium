@@ -24,11 +24,29 @@ const ROOM_APP = (() => {
             quitButton ? quitButton.addEventListener('click', roomService.quitRoom) : undefined;
         };
 
+        const deleteRoom = () => {
+            const deleteButton = document.getElementById('delete-room-button');
+            deleteButton ? deleteButton.addEventListener('click', roomService.deleteRoom) : undefined;
+        };
+
+        const findRoom = () => {
+            const sectionOption = document.getElementById('selectOption');
+            sectionOption ? sectionOption.addEventListener('change', roomService.findRoomsBySection) : undefined;
+        };
+
+        const searchRoom = () => {
+            const searchButton = document.getElementById('search-button');
+            searchButton ? searchButton.addEventListener('click', roomService.searchRoom) : undefined;
+        };
+
         const init = () => {
             signUp();
             update();
             join();
             quit();
+            deleteRoom();
+            findRoom();
+            searchRoom();
         };
 
         return {
@@ -77,7 +95,7 @@ const ROOM_APP = (() => {
 
             const ifSucceed = (response) => {
                 response.json().then(data => {
-                    window.location.href = `/room/${data}`
+                    window.location.href = `/rooms/${data}`
                 })
             };
 
@@ -109,7 +127,7 @@ const ROOM_APP = (() => {
 
             const ifSucceed = (response) => {
                 response.json().then(data => {
-                    window.location.href = `/room/${data}`
+                    window.location.href = `/rooms/${data}`
                 })
             };
             const roomId = document.getElementById('roomId').value;
@@ -131,7 +149,7 @@ const ROOM_APP = (() => {
                 const ifSucceed = (response) => {
                     alert("방에 입장되었습니다!");
                     response.json().then(data => {
-                        window.location.href = `/room/${data}`
+                        window.location.href = `/rooms/${data}`
                     });
                 };
 
@@ -148,7 +166,7 @@ const ROOM_APP = (() => {
             const ifSucceed = (response) => {
                 response.json().then(data => {
                     alert("나가는 데 성공했습니다!");
-                    window.location.href = `/room/`
+                    window.location.href = `/rooms`
                 })
             };
             const roomId = document.getElementById('roomId').value;
@@ -157,13 +175,42 @@ const ROOM_APP = (() => {
                 connector.POST,
                 ifSucceed
             );
-        }
+        };
+
+        const deleteRoom = (event) => {
+            const ifSucceed = (response) => {
+                alert('방을 삭제하였습니다!');
+                window.location.href = `/`;
+            };
+
+            const roomId = document.getElementById('roomId').value;
+
+            connector.fetchTemplateWithoutBody('/rooms/' + roomId,
+                connector.DELETE,
+                ifSucceed
+            );
+        };
+
+        const findRoomsBySection = () => {
+            const selectedOption = document.getElementById('selectOption').selectedOptions[0].value;
+
+            window.location.href = '/' + selectedOption;
+        };
+
+        const searchRoom = () => {
+            const searchKeyword = document.getElementById('search-keyword').value;
+
+            window.location.href = `/search/${searchKeyword}`;
+        };
 
         return {
             saveRoom,
             updateRoom,
             joinRoom,
-            quitRoom
+            quitRoom,
+            deleteRoom,
+            findRoomsBySection,
+            searchRoom,
         }
     };
 

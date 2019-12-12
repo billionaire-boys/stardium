@@ -40,11 +40,11 @@ public class RoomRestControllerTest {
 
     private final Player player =
             Player.builder()
-            .nickname("nickname")
-            .password("password")
-            .email("email@email.com")
-            .rooms(new ArrayList<>())
-            .build();
+                    .nickname("nickname")
+                    .password("password")
+                    .email("email@email.com")
+                    .rooms(new ArrayList<>())
+                    .build();
     private final Room mockRoom = mock(Room.class);
     private final Address mockAddress = mock(Address.class);
     private final RoomRequestDto requestDto = new RoomRequestDto(

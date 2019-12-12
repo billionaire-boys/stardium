@@ -69,4 +69,11 @@ public class RoomRestController {
         Long updatedRoomId = roomService.update(roomId, roomRequestDto, player);
         return ResponseEntity.ok(updatedRoomId);
     }
+
+    @DeleteMapping("/{roomId}")
+    public ResponseEntity delete(@PathVariable Long roomId, HttpSession httpSession) {
+        PlayerResponseDto loginPlayer = (PlayerResponseDto) httpSession.getAttribute("login");
+        roomService.delete(roomId, loginPlayer.getEmail());
+        return ResponseEntity.ok().build();
+    }
 }
