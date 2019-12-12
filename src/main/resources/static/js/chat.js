@@ -10,6 +10,9 @@ const makeChatMessageBlock = (messageBody) =>
 `<div class="comment">
     <div class="content">
         <a class="author">${messageBody.sender}</a>
+        <div class="metadata">
+            <span class="date">${messageBody.dateTime}</span>
+        </div>
         <div class="text">${messageBody.message}</div>
     </div>
 </div>`;

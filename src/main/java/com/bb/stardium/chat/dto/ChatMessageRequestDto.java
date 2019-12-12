@@ -1,17 +1,16 @@
-package com.bb.stardium.chat.domain;
+package com.bb.stardium.chat.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.ToString;
-
-import java.time.OffsetDateTime;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@ToString
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessage {
+public class ChatMessageRequestDto {
     private String roomId;
     private String sender;
     private String message;
-    private OffsetDateTime dateTime;
 }
