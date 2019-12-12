@@ -29,7 +29,7 @@ public class RoomService {
     }
 
     public long create(RoomRequestDto roomRequest, Player player) {
-        Room room = toEntity(roomRequest, player);
+        Room room = roomRequest.toEntity(player);
         room.addPlayer(player);
         Room saveRoom = roomRepository.save(room);
         return saveRoom.getId();
@@ -49,9 +49,9 @@ public class RoomService {
         }
     }
 
-    public boolean delete(long roomId, PlayerResponseDto loginPlayerDto) {
+    public boolean delete(long roomId, String playerEmail) {
         Room room = roomRepository.findById(roomId).orElseThrow(NotFoundRoomException::new);
-        Player loginPlayer = playerService.findByPlayerEmail(loginPlayerDto.getEmail());
+        Player loginPlayer = playerService.findByPlayerEmail(playerEmail);
         if (room.isNotMaster(loginPlayer)) {
             throw new MasterAndRoomNotMatchedException();
         }

@@ -5,6 +5,7 @@ import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.domain.repository.RoomRepository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.dto.RoomResponseDto;
+import com.bb.stardium.bench.service.exception.MasterAndRoomNotMatchedException;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.service.PlayerService;
 import org.assertj.core.util.Lists;
@@ -25,6 +26,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -114,14 +116,26 @@ class RoomServiceTest {
         assertThat(updatedRoom.getPlayersLimit()).isEqualTo(updateRequest.getPlayersLimit());
     }
 
-    @DisplayName("delete method 성공")
+    @DisplayName("방장이 방 삭제 성공")
     @Test
-    void deleteRoom() {
+    void master_can_delete_room() {
         given(roomRepository.findById(any())).willReturn(Optional.ofNullable(room1));
+        given(playerService.findByPlayerEmail(room1.getMaster().getEmail())).willReturn(room1.getMaster());
 
-        roomService.delete(room1.getId());
+        roomService.delete(room1.getId(), room1.getMaster().getEmail());
 
-        verify(roomRepository).delete(any());
+        verify(roomRepository).delete(room1);
+    }
+
+    @DisplayName("방장이 아닌 플레이어의 방 삭제 실패")
+    @Test
+    void player_cannot_delete_room() {
+        given(roomRepository.findById(any())).willReturn(Optional.ofNullable(room1));
+        given(playerService.findByPlayerEmail(player.getEmail())).willReturn(player);
+
+        assertThrows(MasterAndRoomNotMatchedException.class, () -> {
+            roomService.delete(room1.getId(), player.getEmail());
+        });
     }
 
     @DisplayName("find method 성공")
