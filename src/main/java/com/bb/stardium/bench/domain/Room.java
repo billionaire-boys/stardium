@@ -1,5 +1,6 @@
 package com.bb.stardium.bench.domain;
 
+import com.bb.stardium.bench.domain.exception.PlayerAlreadyExistException;
 import com.bb.stardium.player.domain.Player;
 import lombok.*;
 
@@ -15,6 +16,8 @@ import java.util.List;
 @Getter
 @Entity
 public class Room {
+
+    private static final int EMPTY_SEAT = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +64,9 @@ public class Room {
     }
 
     public void addPlayer(Player player) {
+        if (hasPlayer(player)) {
+            throw new PlayerAlreadyExistException();
+        }
         this.players.add(player);
         player.addRoom(this);
     }
@@ -79,6 +85,6 @@ public class Room {
     }
 
     public boolean hasRemainingSeat() {
-        return this.playersLimit - players.size() > 0;
+        return this.playersLimit - players.size() > EMPTY_SEAT;
     }
 }

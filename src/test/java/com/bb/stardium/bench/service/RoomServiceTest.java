@@ -206,4 +206,18 @@ class RoomServiceTest {
         assertThat(actual).isEqualTo(expected);
     }
 
+    @DisplayName("지역에 따라 필터링 된 방 찾기")
+    @Test
+    public void findRoomsFilterBySection() throws Exception {
+        // given
+        String section = "송파구";
+        given(roomRepository.findAllByAddressSectionOrderByStartTimeAsc(section)).willReturn(List.of(room1, room2, room3, room4));
+
+        // when
+        roomService.findRoomsFilterBySection(section);
+
+        // then
+        verify(roomRepository).findAllByAddressSectionOrderByStartTimeAsc(section);
+    }
+
 }
