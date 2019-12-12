@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class PlayerResponseDto {
+    private Long playerId;
     private String nickname;
     private String email;
     private String statusMessage;
     private String profile;
 
     public PlayerResponseDto(final Player player) {
+        this.playerId = player.getId();
         this.nickname = player.getNickname();
         this.email = player.getEmail();
         this.statusMessage = player.getStatusMessage();
