@@ -6,7 +6,7 @@ import com.bb.stardium.player.domain.Player;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class RoomRequestDto {
@@ -32,18 +31,29 @@ public class RoomRequestDto {
 
     @Future
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime startTime;
 
     @Future
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime endTime;
 
     @Min(value = 2)
     private int playersLimit;
 
     private Player master;
+
+    @Builder
+    public RoomRequestDto(@NotBlank String title, @NotBlank String intro, Address address, @Future LocalDateTime startTime, @Future LocalDateTime endTime, @Min(value = 2) int playersLimit, Player master) {
+        this.title = title;
+        this.intro = intro;
+        this.address = address;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.playersLimit = playersLimit;
+        this.master = master;
+    }
 
     public Room toEntity() {
         return Room.builder()

@@ -20,7 +20,10 @@ class RoomTest {
 
     private LocalDateTime startTime = LocalDateTime.now().plusDays(1);
     private LocalDateTime endTime = LocalDateTime.now().plusDays(1).plusHours(1);
-    private Address address = new Address("서울시", "송파구", "루터회관 앞");
+    private Address address = Address.builder()
+            .city("서울시").section("송파구")
+            .detail("루터회관 앞")
+            .build();
     private Player player = Player.builder()
             .nickname("nick")
             .email("email@email.com")

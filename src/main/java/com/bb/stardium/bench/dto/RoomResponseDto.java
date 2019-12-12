@@ -1,15 +1,13 @@
 package com.bb.stardium.bench.dto;
 
 import com.bb.stardium.player.domain.Player;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Builder
+
+@NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -37,4 +35,19 @@ public class RoomResponseDto {
 
     @NotNull
     private Player master;
+
+    @Builder
+    public RoomResponseDto(@NotBlank long id, @NotBlank String title,
+                           @NotBlank String intro, @NotBlank String address,
+                           @NotBlank String playTime, @NotBlank int playLimits,
+                           @NotBlank int playerCount, @NotNull Player master) {
+        this.id = id;
+        this.title = title;
+        this.intro = intro;
+        this.address = address;
+        this.playTime = playTime;
+        this.playLimits = playLimits;
+        this.playerCount = playerCount;
+        this.master = master;
+    }
 }

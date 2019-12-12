@@ -49,7 +49,7 @@
                     <div class="extra content">
                         <div class="extra content">
                             <button class="ui fluid basic violet button"
-                                    th:onclick="'window.location.href=\'/rooms/' + ${room.id} + '\''">상세 보기</button>
+                                    th:onclick="'window.location.href=\'/room/' + ${room.id} + '\''">상세 보기</button>
                         </div>
                     </div>
                 </div>
@@ -60,6 +60,6 @@
 </th:block>
 
 <th:block layout:fragment="custom_js">
-    <script src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
 </th:block>
 </html>

@@ -56,7 +56,10 @@ class RoomRepositoryTest {
         testEntityManager.persist(player);
         testEntityManager.persist(player3);
 
-        Address address = new Address("서울시", "송파구", "루터회관 앞");
+        Address address = Address.builder()
+                    .city("서울시").section("송파구")
+                    .detail("루터회관 앞")
+                    .build();
         LocalDateTime startTime = LocalDateTime.now().plusDays(1);
         LocalDateTime endTime = LocalDateTime.now().plusDays(1).plusHours(2);
         Room room1 = Room.builder().id(100L).title("title1").intro("intro").address(address)
