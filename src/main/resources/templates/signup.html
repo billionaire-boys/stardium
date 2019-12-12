@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+<html lang="ko" layout:decorator="layout/main_layout"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/main_layout">
+      xmlns:th="http://www.thymeleaf.org">
 <th:block layout:fragment="custom_head">
     <title>회원가입</title>
 </th:block>
@@ -9,11 +9,11 @@
 <th:block layout:fragment="content_body">
     <div class="ui top aligned center aligned">
         <h1 class="ui violet header">회원가입</h1>
-        <form class="ui form" accept-charset="UTF-8" action="/player/new" method="post">
+        <form accept-charset="UTF-8" action="/player/new" class="ui form" method="post">
             <div class="field">
                 <div class="ui left icon input">
                     <i class="envelope icon"></i>
-                    <input name="email" placeholder="이메일 입력" type="email"/>
+                    <input name="email" placeholder="이메일 입력" th:if="${email != null}" th:value="${email}" type="email"/>
                 </div>
             </div>
             <div class="field">
@@ -31,11 +31,12 @@
             <div class="field">
                 <div class="ui left icon input">
                     <i class="user icon"></i>
-                    <input name="nickname" placeholder="닉네임 입력" type="text">
+                    <input name="nickname" placeholder="닉네임 입력" th:if="${nickname != null}" th:value="${nickname}"
+                           type="text">
                 </div>
             </div>
             <div class="field">
-                <button type="submit" class="ui basic fluid violet large submit button">가입 완료</button>
+                <button class="ui basic fluid violet large submit button" type="submit">가입 완료</button>
             </div>
         </form>
     </div>
