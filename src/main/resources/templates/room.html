@@ -75,7 +75,7 @@
         <div class="ui two cards" th:each="player : ${room.players}">
             <div class="card">
                 <div class="image">
-                    <img alt="player-profile" src="/images/ybh.png">
+                    <img alt="player-profile" th:src="${player.profile.url}">
                 </div>
                 <div class="content">
                     <div class="header" th:text="${player.nickname}">강백호</div>
