@@ -3,9 +3,7 @@ package com.bb.stardium.bench.domain;
 import com.bb.stardium.player.domain.Player;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,9 +12,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 class RoomTest {
-
-    @Autowired
-    private TestEntityManager tm;
 
     private LocalDateTime startTime = LocalDateTime.now().plusDays(1);
     private LocalDateTime endTime = LocalDateTime.now().plusDays(1).plusHours(1);
@@ -30,7 +25,23 @@ class RoomTest {
             .password("password")
             .rooms(new ArrayList<>())
             .build();
-    private Room room = new Room(1L, "title", "intro", address, startTime, endTime, 10, player, new ArrayList<>());
+    private Player master = Player.builder()
+            .nickname("master")
+            .email("master@email.com")
+            .password("password")
+            .rooms(new ArrayList<>())
+            .build();
+    private Room room = Room.builder()
+            .id(1L)
+            .title("title")
+            .intro("intro")
+            .address(address)
+            .startTime(startTime)
+            .endTime(endTime)
+            .playersLimit(2)
+            .master(master)
+            .players(new ArrayList<>())
+            .build();
 
     @Test
     @DisplayName("방 입장")
@@ -44,6 +55,46 @@ class RoomTest {
     void roomQuit() {
         room.removePlayer(player);
         assertThat(room.hasPlayer(player)).isFalse();
+    }
+
+    @Test
+    @DisplayName("방의 마스터가 아닌 경우 확인")
+    void isNotMaster() {
+        boolean result = room.isNotMaster(player);
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("방의 마스터가 아닌 경우 확인")
+    void isMaster() {
+        boolean result = room.isNotMaster(master);
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("게임 시간이 현재 시간 이전인 경우")
+    void isUnexpiredRoomTest() {
+        Room expiredRoom = Room.builder()
+                .id(1L)
+                .title("title")
+                .intro("intro")
+                .address(address)
+                .startTime(LocalDateTime.now().minusDays(1L))
+                .endTime(LocalDateTime.now().minusDays(1L).plusHours(2L))
+                .playersLimit(10)
+                .master(master)
+                .players(new ArrayList<>())
+                .build();
+
+        boolean result = expiredRoom.isUnexpiredRoom();
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("방에 남은 자리가 있는지 확인")
+    void hasRemainingSeatTest() {
+        room.addPlayer(player);
+        assertThat(room.hasRemainingSeat()).isTrue();
     }
 
 }

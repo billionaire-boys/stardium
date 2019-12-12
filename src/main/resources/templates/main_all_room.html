@@ -16,6 +16,12 @@
 </th:block>
 
 <th:block layout:fragment="content_body">
+    <div>
+        <select class="ui dropdown right floated" id="selectOption" name="지역">
+            <option>지역</option>
+            <option th:each="section : ${sections}" th:text="${section}"></option>
+        </select>
+    </div>
     <div class="ui segments">
         <div class="ui segment">
             <div class="ui cards" id="room-list">

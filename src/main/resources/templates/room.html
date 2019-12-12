@@ -68,7 +68,8 @@
                     <div class="description" th:text="${player.statusMessage}">
                         안녕하세요!
                     </div>
-                </div>w
+                </div>
+                w
                 <div class="extra content">
                 <span>
                     <i class="basketball ball icon"></i>
@@ -78,8 +79,10 @@
             </div>
         </div>
     </div>
-
-    <div class="ui fluid large violet submit button" id="quit-button">나가기</div>
+    <div th:if="${session.login.nickname != room.master.nickname}" class="ui fluid large violet submit button" id="quit-button">나가기
+    </div>
+    <div th:if="${session.login.nickname == room.master.nickname}" class="ui fluid large violet submit button" id="delete-room-button">방 없애기
+    </div>
 </th:block>
 
 <th:block layout:fragment="custom_js">

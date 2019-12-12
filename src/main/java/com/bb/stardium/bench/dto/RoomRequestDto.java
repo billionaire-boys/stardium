@@ -52,14 +52,15 @@ public class RoomRequestDto {
         this.master = master;
     }
 
-    public Room toEntity() {
+    public Room toEntity(Player player) {
         return Room.builder()
-                .title(title)
-                .intro(intro)
-                .address(address)
-                .startTime(startTime)
-                .endTime(endTime)
-                .playersLimit(playersLimit)
+                .title(this.title)
+                .intro(this.intro)
+                .address(this.address)
+                .startTime(this.startTime)
+                .endTime(this.endTime)
+                .playersLimit(this.playersLimit)
+                .master(player)
                 .players(new ArrayList<>())
                 .build();
     }
