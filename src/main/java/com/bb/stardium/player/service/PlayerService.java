@@ -45,4 +45,11 @@ public class PlayerService {
         player.update(requestDto.toEntity());
         return new PlayerResponseDto(player);
     }
+
+    public String findNicknameByPlayerId(final long playerId) {
+        return playerRepository
+                .findById(playerId)
+                .map(Player::getNickname)
+                .orElseThrow(EmailNotExistException::new);
+    }
 }

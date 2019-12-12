@@ -22,8 +22,8 @@
 </th:block>
 
 <th:block layout:fragment="content_body">
-    <input id="roomId" name="roomId" th:value="${room.id}" type="hidden">
-    <input id="nickname" th:value="${session.login.nickname}" type="hidden">
+    <input id="room-id" th:value="${room.id}" type="hidden">
+    <input id="player-id" th:value="${session.login.playerId}" type="hidden">
 
     <div class="ui container">
         <div class="ui comments raised very padded container segment">

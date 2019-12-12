@@ -11,15 +11,15 @@ import java.time.OffsetDateTime;
 @Setter
 @AllArgsConstructor
 public class ChatMessageResponseDto {
-    private String roomId;
-    private String sender;
+    private Long roomId;
+    private String nickname;
     private String message;
-    private OffsetDateTime dateTime;
+    private OffsetDateTime timestamp;
 
     public ChatMessageResponseDto(final ChatMessage message) {
         this.roomId = message.getRoomId();
-        this.sender = message.getSender();
-        this.message = message.getMessage();
-        this.dateTime = message.getDateTime();
+        this.nickname = message.getPlayerNickname();
+        this.message = message.getContents();
+        this.timestamp = message.getTimestamp();
     }
 }
