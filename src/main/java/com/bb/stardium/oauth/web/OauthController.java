@@ -25,7 +25,7 @@ public class OauthController {
                         .path("/oauth/token")
                         .queryParam("grant_type", "authorization_code")
                         .queryParam("client_id", "974d268d773b35a4a9e63eca0b74ec16")
-                        .queryParam("redirect_uri", "http://localhost:8080/oauth/kakao")
+                        .queryParam("redirect_uri", "http://15.164.95.121:8080/oauth/kakao")
                         .queryParam("code", code).build())
                 .retrieve()
                 .toEntity(KakaoAccessTokenDto.class);
