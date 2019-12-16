@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,7 +33,7 @@ public class RoomRestController {
     @PostMapping("/join/{roomId}")
     public ResponseEntity join(@PathVariable Long roomId, final HttpSession session) {
         PlayerResponseDto playerResponseDto = (PlayerResponseDto) session.getAttribute("login");
-        if (playerResponseDto == null) {
+        if (Objects.isNull(playerResponseDto)) {
             throw new AuthenticationFailException();
         }
 
@@ -43,7 +44,7 @@ public class RoomRestController {
     @PostMapping("/quit/{roomId}")
     public ResponseEntity quit(@PathVariable Long roomId, final HttpSession session) {
         PlayerResponseDto playerResponseDto = (PlayerResponseDto) session.getAttribute("login");
-        if (playerResponseDto == null) {
+        if (Objects.isNull(playerResponseDto)) {
             throw new AuthenticationFailException();
         }
 

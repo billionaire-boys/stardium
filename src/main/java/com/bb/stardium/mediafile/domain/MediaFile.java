@@ -1,5 +1,6 @@
 package com.bb.stardium.mediafile.domain;
 
+import com.bb.stardium.common.util.StringUtil;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,7 +34,7 @@ public class MediaFile {
     }
 
     private String validUrl(String inputUrl) {
-        if (inputUrl == null || inputUrl.isEmpty()) {
+        if (StringUtil.isBlank(inputUrl)) {
             return DEFAULT_URL;
         }
         return inputUrl;
