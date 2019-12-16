@@ -1,6 +1,5 @@
-package com.bb.stardium.common.web.controller;
-
 import com.bb.stardium.bench.service.RoomService;
+import com.bb.stardium.common.web.controller.MainPageController;
 import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
 import com.bb.stardium.player.service.PlayerService;
 import org.junit.jupiter.api.DisplayName;

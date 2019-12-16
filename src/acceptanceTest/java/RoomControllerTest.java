@@ -1,5 +1,3 @@
-package com.bb.stardium.bench.web.controller;
-
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.service.RoomService;

@@ -1,5 +1,3 @@
-package com.bb.stardium.common.config;
-
 import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

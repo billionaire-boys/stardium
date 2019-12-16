@@ -1,5 +1,3 @@
-package com.bb.stardium.player.controller;
-
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.domain.repository.PlayerRepository;
 import org.junit.jupiter.api.BeforeEach;
