@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @EqualsAndHashCode(of = "id")
 @Getter
 public class MediaFile {
-    private static final String DEFAULT_URL = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Favatars2.githubusercontent.com%2Fu%2F41888327%3Fs%3D460%26v%3D4&type=b400";
+    private static final String DEFAULT_URL = "/images/profile-default.jpg";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
