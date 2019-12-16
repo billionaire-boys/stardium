@@ -33,7 +33,7 @@ public class MainPageController {
         List<RoomResponseDto> allRooms = roomService.findAllUnexpiredRooms();
         model.addAttribute("rooms", allRooms);
         model.addAttribute("sections", Section.getAllSections());
-        return "main_all_room";
+        return "main-all-room";
     }
 
     @GetMapping("/{section}")
@@ -41,7 +41,7 @@ public class MainPageController {
         List<RoomResponseDto> filteredRooms = roomService.findRoomsFilterBySection(section);
         model.addAttribute("rooms", filteredRooms);
         model.addAttribute("sections", Section.getAllSections());
-        return "main_all_room";
+        return "main-all-room";
     }
 
     @GetMapping("/search/{searchKeyword}")
@@ -49,7 +49,7 @@ public class MainPageController {
         List<RoomResponseDto> searchedRooms = roomService.findRoomBySearchKeyword(searchKeyword);
         model.addAttribute("rooms", searchedRooms);
         model.addAttribute("sections", Section.getAllSections());
-        return "main_all_room";
+        return "main-all-room";
     }
 
     @GetMapping("/myRoom")
@@ -61,6 +61,6 @@ public class MainPageController {
         Player player = playerService.findByPlayerEmail(sessionDto.getEmail());
         List<RoomResponseDto> myRooms = roomService.findPlayerJoinedRoom(player);
         model.addAttribute("rooms", myRooms);
-        return "main_my_room";
+        return "main-my-room";
     }
 }

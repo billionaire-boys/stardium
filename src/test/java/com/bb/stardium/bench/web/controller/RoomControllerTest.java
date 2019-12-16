@@ -70,7 +70,7 @@ class RoomControllerTest {
     void getMainRoomList() throws Exception {
         mockMvc.perform(get("/rooms"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("main_my_room"));
+                .andExpect(view().name("main-my-room"));
     }
 
     @Test
@@ -78,7 +78,7 @@ class RoomControllerTest {
     void getCreateFrom() throws Exception {
         mockMvc.perform(get("/rooms/createForm"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("create_room"));
+                .andExpect(view().name("create-room"));
     }
 
     @Test
@@ -86,7 +86,7 @@ class RoomControllerTest {
     void updateForm() throws Exception {
         mockMvc.perform(get("/rooms/updateForm"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("update_room"));
+                .andExpect(view().name("update-room"));
     }
 
     @Test

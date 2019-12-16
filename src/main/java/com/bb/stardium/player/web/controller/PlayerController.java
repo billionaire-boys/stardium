@@ -45,7 +45,7 @@ public class PlayerController {
             return "redirect:/login";
         }
         model.addAttribute("model", session.getAttribute("login"));
-        return "user_edit.html";
+        return "user-edit.html";
     }
 
     @PostMapping("/edit")
