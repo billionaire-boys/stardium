@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/main_layout">
+      layout:decorator="layout/main-layout">
 
-<th:block layout:fragment="custom_head">
+<th:block layout:fragment="custom-head">
     <title>게임 방</title>
     <link href="/css/room.css" rel="stylesheet" type="text/css">
 </th:block>
 
-<th:block layout:fragment="content_header">
+<th:block layout:fragment="content-header">
     <div class="ui small secondary inverted menu" style="margin-bottom: 0">
         <div class="toc item">
             <a href="/">
@@ -21,7 +21,7 @@
     </div>
 </th:block>
 
-<th:block layout:fragment="content_body">
+<th:block layout:fragment="content-body">
     <input id="room-id" th:value="${room.id}" type="hidden">
     <input id="player-id" th:value="${session.login.playerId}" type="hidden">
 
@@ -98,17 +98,17 @@
     </div>
 </th:block>
 
-<th:block layout:fragment="custom_js">
+<th:block layout:fragment="custom-js">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"
             integrity="sha256-z4cKT3yF+afIn8eFXJc+nRpGtwcmNEClvf+ikgsZcRo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"
             integrity="sha256-nkP8cj5xaTdWK/BsZl+57ZCE/Y/i4UNtbNTpgH+6Taw=" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/js/fetchApi.js"></script>
+    <script type="text/javascript" src="/js/fetch-api.js"></script>
     <script type="text/javascript" src="/js/room.js"></script>
     <script type="text/javascript" src="/js/chat.js"></script>
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7ce1b570b081a1c8a6e863b061308ff4&libraries=services&"></script>
-    <script type="text/javascript" src="/js/kakao_map_api.js"></script>
+    <script type="text/javascript" src="/js/kakao-map-api.js"></script>
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         const FULL_ADDRESS = [[${room.address.city}]] + ' ' + [[${room.address.section}]] + ' ' + [[${room.address.detail}]];

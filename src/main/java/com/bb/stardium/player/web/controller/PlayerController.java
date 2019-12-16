@@ -4,7 +4,7 @@ import com.bb.stardium.mediafile.service.MediaFileService;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +17,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
+@RequiredArgsConstructor
+@RequestMapping("/players")
 @Controller
-@RequestMapping("/player")
-@AllArgsConstructor
 public class PlayerController {
+
     private final PlayerService playerService;
     private final MediaFileService mediaFileService;
 
@@ -45,7 +46,7 @@ public class PlayerController {
             return "redirect:/login";
         }
         model.addAttribute("model", session.getAttribute("login"));
-        return "user_edit.html";
+        return "user-edit.html";
     }
 
     @PostMapping("/edit")
@@ -54,7 +55,6 @@ public class PlayerController {
         if (Objects.isNull(session.getAttribute("login"))) {
             return "redirect:/login";
         }
-
 
         if (file != null && !file.isEmpty()) {
             String fileName = mediaFileService.save(file);
