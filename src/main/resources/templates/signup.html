@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko" layout:decorator="layout/main_layout"
+<html lang="ko" layout:decorator="layout/main-layout"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
-<th:block layout:fragment="custom_head">
+<th:block layout:fragment="custom-head">
     <title>회원가입</title>
 </th:block>
 
-<th:block layout:fragment="content_body">
+<th:block layout:fragment="content-body">
     <div class="ui top aligned center aligned">
         <h1 class="ui violet header">회원가입</h1>
-        <form accept-charset="UTF-8" action="/player/new" class="ui form" method="post">
+        <form accept-charset="UTF-8" action="/players/new" class="ui form" method="post">
             <div class="field">
                 <div class="ui left icon input">
                     <i class="envelope icon"></i>

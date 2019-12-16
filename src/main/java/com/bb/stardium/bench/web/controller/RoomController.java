@@ -28,17 +28,17 @@ public class RoomController {
     public String mainRoomList(Model model) {
         List<RoomResponseDto> rooms = roomService.findAllUnexpiredRooms();
         model.addAttribute("rooms", rooms);
-        return "main_my_room";
+        return "main-my-room";
     }
 
-    @GetMapping("/createForm")
-    public String createFrom() {
-        return "create_room";
+    @GetMapping("/create-room")
+    public String createRoom() {
+        return "create-room";
     }
 
-    @GetMapping("/updateForm")
-    public String updateForm() {
-        return "update_room";
+    @GetMapping("/update-room")
+    public String updateRoom() {
+        return "update-room";
     }
 
     @GetMapping("/{roomId}")
