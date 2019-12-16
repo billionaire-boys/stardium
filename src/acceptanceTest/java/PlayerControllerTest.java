@@ -38,13 +38,13 @@ class PlayerControllerTest {
     @Test
     @DisplayName("회원가입 페이지 접속")
     void signUpPage() {
-        client.get().uri("/player/new").exchange().expectStatus().isOk();
+        client.get().uri("/players/new").exchange().expectStatus().isOk();
     }
 
     @Test
     @DisplayName("회원가입")
     void register() {
-        client.post().uri("/player/new")
+        client.post().uri("/players/new")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters
                         .fromFormData("nickname", "noname01")
@@ -59,7 +59,7 @@ class PlayerControllerTest {
     void userEditPageLoggedIn() {
         final String cookie = getLoginCookie();
 
-        client.get().uri("/player/edit")
+        client.get().uri("/players/edit")
                 .header("Cookie", cookie)
                 .exchange().expectStatus().isOk();
     }
@@ -78,7 +78,7 @@ class PlayerControllerTest {
     @DisplayName("로그인하지 않은 상태에서 회원정보 수정 페이지 접속")
     void userEditPageNotLoggedIn() {
         client.get()
-                .uri("/player/edit")
+                .uri("/players/edit")
                 .exchange().expectStatus().is3xxRedirection()
                 .expectHeader().valueMatches("Location", ".*\\/login.*");
     }
@@ -88,7 +88,7 @@ class PlayerControllerTest {
     void userEdit() {
         final String cookie = getLoginCookie();
 
-        client.post().uri("/player/edit")
+        client.post().uri("/players/edit")
                 .header("Cookie", cookie)
                 .body(BodyInserters
                         .fromFormData("nickname", "noname01")
@@ -108,7 +108,7 @@ class PlayerControllerTest {
     @Test
     @DisplayName("로그인하지 않은 상태에서 회원 정보 수정")
     void userEditNotLoggedIn() {
-        client.post().uri("/player/edit")
+        client.post().uri("/players/edit")
                 .body(BodyInserters
                         .fromFormData("nickname", "noname01")
                         .with("email", "email")

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/main_layout">
+      layout:decorator="layout/main-layout">
 
-<th:block layout:fragment="custom_head">
+<th:block layout:fragment="custom-head">
     <title>방 만들기</title>
     <link href="/css/room.css" rel="stylesheet" type="text/css">
 </th:block>
 
-<th:block layout:fragment="content_header">
+<th:block layout:fragment="content-header">
     <div class="ui small secondary inverted menu" style="margin-bottom: 0">
         <div class="toc item">
             <a href="/">
@@ -21,7 +21,7 @@
     </div>
 </th:block>
 
-<th:block layout:fragment="content_body">
+<th:block layout:fragment="content-body">
     <div class="ui container">
         <form class="ui form" id="room-save-form">
             <div class="field">
@@ -84,11 +84,11 @@
     </div>
 </th:block>
 
-<th:block layout:fragment="custom_js">
+<th:block layout:fragment="custom-js">
     <script type="text/javascript" src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script type="text/javascript" src="/js/fetchApi.js"></script>
+    <script type="text/javascript" src="/js/fetch-api.js"></script>
     <script type="text/javascript" src="/js/room.js"></script>
-    <script type="text/javascript" src="/js/kakao_post_api.js"></script>
+    <script type="text/javascript" src="/js/kakao-post-api.js"></script>
 </th:block>
 
 </html>

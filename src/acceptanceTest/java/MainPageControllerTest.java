@@ -40,7 +40,7 @@ class MainPageControllerTest {
     @Test
     @DisplayName("로그인되지 않은 채 마이룸 페이지 접속")
     void myRoomPage() throws Exception {
-        mockMvc.perform(get("/myRoom"))
+        mockMvc.perform(get("/my-room"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("login"));
