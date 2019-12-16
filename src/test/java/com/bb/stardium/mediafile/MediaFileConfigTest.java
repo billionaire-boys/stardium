@@ -1,3 +1,5 @@
+package com.bb.stardium.mediafile;
+
 import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
