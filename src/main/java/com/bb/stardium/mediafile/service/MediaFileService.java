@@ -1,7 +1,7 @@
 package com.bb.stardium.mediafile.service;
 
 import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,9 +12,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-@Service
+@RequiredArgsConstructor
 @Transactional
-@AllArgsConstructor
+@Service
 public class MediaFileService {
     private static final Logger log = LoggerFactory.getLogger(MediaFileService.class);
 

@@ -7,11 +7,13 @@ import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
 import com.bb.stardium.player.service.exception.AuthenticationFailException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/rooms")
 public class RoomRestController {
@@ -19,13 +21,7 @@ public class RoomRestController {
     private final PlayerService playerService;
     private final RoomService roomService;
 
-    public RoomRestController(RoomService roomService, PlayerService playerService) {
-        this.roomService = roomService;
-        this.playerService = playerService;
-    }
-
     @PostMapping
-    @ResponseBody
     public ResponseEntity create(@RequestBody final RoomRequestDto roomRequest, final HttpSession session) {
         PlayerResponseDto loginPlayerDto = (PlayerResponseDto) session.getAttribute("login");
         Player loginPlayer = playerService.findByPlayerEmail(loginPlayerDto.getEmail());
@@ -34,7 +30,6 @@ public class RoomRestController {
     }
 
     @PostMapping("/join/{roomId}")
-    @ResponseBody
     public ResponseEntity join(@PathVariable Long roomId, final HttpSession session) {
         PlayerResponseDto playerResponseDto = (PlayerResponseDto) session.getAttribute("login");
         if (playerResponseDto == null) {
@@ -46,7 +41,6 @@ public class RoomRestController {
     }
 
     @PostMapping("/quit/{roomId}")
-    @ResponseBody
     public ResponseEntity quit(@PathVariable Long roomId, final HttpSession session) {
         PlayerResponseDto playerResponseDto = (PlayerResponseDto) session.getAttribute("login");
         if (playerResponseDto == null) {
@@ -58,7 +52,6 @@ public class RoomRestController {
     }
 
     @PutMapping("/{roomId}")
-    @ResponseBody
     public ResponseEntity update(@PathVariable Long roomId,
                                  @RequestBody RoomRequestDto roomRequestDto,
                                  HttpSession httpSession) {
