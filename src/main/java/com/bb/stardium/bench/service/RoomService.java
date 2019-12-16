@@ -9,6 +9,7 @@ import com.bb.stardium.bench.service.exception.MasterAndRoomNotMatchedException;
 import com.bb.stardium.bench.service.exception.NotFoundRoomException;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.service.PlayerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,16 +17,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 @Transactional
 public class RoomService {
+
     private final RoomRepository roomRepository;
     private final PlayerService playerService;
-
-    public RoomService(RoomRepository roomRepository, PlayerService playerService) {
-        this.roomRepository = roomRepository;
-        this.playerService = playerService;
-    }
 
     public long create(RoomRequestDto roomRequest, Player player) {
         Room room = roomRequest.toEntity(player);

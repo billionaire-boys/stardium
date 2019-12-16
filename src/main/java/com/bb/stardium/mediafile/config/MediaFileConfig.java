@@ -1,13 +1,14 @@
 package com.bb.stardium.mediafile.config;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@RequiredArgsConstructor
 @Configuration
-@AllArgsConstructor
 public class MediaFileConfig implements WebMvcConfigurer {
+
     private final MediaFileResourceLocation mediaFileResourceLocation;
 
     @Override

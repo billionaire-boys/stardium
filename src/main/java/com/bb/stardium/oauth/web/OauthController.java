@@ -13,8 +13,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-@Controller
 @RequestMapping("/oauth")
+@Controller
 public class OauthController {
 
     @GetMapping("/kakao")

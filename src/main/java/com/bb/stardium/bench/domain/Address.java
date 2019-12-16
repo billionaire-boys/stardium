@@ -32,7 +32,7 @@ public class Address {
 
     private String checkCityName(String city) {
         if (!city.contains("서울")) {
-            throw new NotAllowCityException("서울시만 가능합니다.");
+            throw new NotAllowCityException();
         }
         return city;
     }
