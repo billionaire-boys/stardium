@@ -12,12 +12,12 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
 @Getter
 @EqualsAndHashCode(of = "id")
+@Entity
 public class Player {
 
     @Id

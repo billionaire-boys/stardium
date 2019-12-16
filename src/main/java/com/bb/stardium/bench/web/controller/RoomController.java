@@ -3,7 +3,7 @@ package com.bb.stardium.bench.web.controller;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.RoomService;
-import com.bb.stardium.player.service.PlayerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,17 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/rooms")
 public class RoomController {
 
-    private final PlayerService playerService;
     private final RoomService roomService;
-
-    public RoomController(RoomService roomService, PlayerService playerService) {
-        this.roomService = roomService;
-        this.playerService = playerService;
-    }
 
     @GetMapping
     public String mainRoomList(Model model) {

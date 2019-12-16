@@ -7,14 +7,15 @@ import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.exception.AuthenticationFailException;
 import com.bb.stardium.player.service.exception.EmailAlreadyExistException;
 import com.bb.stardium.player.service.exception.EmailNotExistException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
+@Service
 public class PlayerService {
+
     private final PlayerRepository playerRepository;
 
     @Transactional(readOnly = true)

@@ -1,5 +1,6 @@
 package com.bb.stardium.mediafile.domain;
 
+import com.bb.stardium.common.util.StringUtil;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,10 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
+@Entity
 public class MediaFile {
     private static final String DEFAULT_URL = "/images/profile-default.jpg";
 
@@ -33,7 +34,7 @@ public class MediaFile {
     }
 
     private String validUrl(String inputUrl) {
-        if (inputUrl == null || inputUrl.isEmpty()) {
+        if (StringUtil.isBlank(inputUrl)) {
             return DEFAULT_URL;
         }
         return inputUrl;

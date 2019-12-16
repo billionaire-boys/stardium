@@ -6,6 +6,7 @@ import com.bb.stardium.bench.service.RoomService;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,16 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Controller
 public class MainPageController {
 
-    private PlayerService playerService;
-    private RoomService roomService;
-
-    public MainPageController(PlayerService playerService, RoomService roomService) {
-        this.playerService = playerService;
-        this.roomService = roomService;
-    }
+    private final PlayerService playerService;
+    private final RoomService roomService;
 
     @GetMapping("/")
     public String homepage(Model model, HttpSession session) {
