@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
 @Controller
-@RequestMapping("/player")
+@RequestMapping("/players")
 @AllArgsConstructor
 public class PlayerController {
     private final PlayerService playerService;
@@ -54,7 +54,6 @@ public class PlayerController {
         if (Objects.isNull(session.getAttribute("login"))) {
             return "redirect:/login";
         }
-
 
         if (file != null && !file.isEmpty()) {
             String fileName = mediaFileService.save(file);

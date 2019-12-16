@@ -76,7 +76,7 @@ class RoomControllerTest {
     @Test
     @DisplayName("방 생성 페이지 접속")
     void getCreateFrom() throws Exception {
-        mockMvc.perform(get("/rooms/createForm"))
+        mockMvc.perform(get("/rooms/create-room"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("create-room"));
     }
@@ -84,7 +84,7 @@ class RoomControllerTest {
     @Test
     @DisplayName("방 수정 페이지 접속")
     void updateForm() throws Exception {
-        mockMvc.perform(get("/rooms/updateForm"))
+        mockMvc.perform(get("/rooms/update-room"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("update-room"));
     }

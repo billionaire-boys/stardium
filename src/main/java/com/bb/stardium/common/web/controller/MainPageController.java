@@ -52,7 +52,7 @@ public class MainPageController {
         return "main-all-room";
     }
 
-    @GetMapping("/myRoom")
+    @GetMapping("/my-room")
     public String myRoomPage(Model model, HttpSession session) {
         if (null == session.getAttribute("login")) {
             return "login";

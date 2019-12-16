@@ -21,7 +21,7 @@ public abstract class BaseAcceptanceTest {
     }
 
     private Player createPlayer(PlayerRequestDto playerRequestDto) {
-        webTestClient.post().uri("/player/new")
+        webTestClient.post().uri("/players/new")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters
                         .fromFormData("nickname", playerRequestDto.getNickname())

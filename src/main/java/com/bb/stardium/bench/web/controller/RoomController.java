@@ -31,13 +31,13 @@ public class RoomController {
         return "main-my-room";
     }
 
-    @GetMapping("/createForm")
-    public String createFrom() {
+    @GetMapping("/create-room")
+    public String createRoom() {
         return "create-room";
     }
 
-    @GetMapping("/updateForm")
-    public String updateForm() {
+    @GetMapping("/update-room")
+    public String updateRoom() {
         return "update-room";
     }
 
