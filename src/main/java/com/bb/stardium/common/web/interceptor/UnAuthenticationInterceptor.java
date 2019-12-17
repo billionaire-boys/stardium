@@ -11,16 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 @Component
 public class UnAuthenticationInterceptor extends HandlerInterceptorAdapter {
+    private static final String ROOT_PATH = "/";
 
     private final SessionService sessionService;
 
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
                              final Object handler) throws Exception {
-        final boolean loggedIn = sessionService.isLoggedIn(request.getSession());
-
-        if (loggedIn) {
-            response.sendRedirect("/");
+        if (sessionService.isLoggedIn(request.getSession())) {
+            response.sendRedirect(ROOT_PATH);
             return false;
         }
         return true;

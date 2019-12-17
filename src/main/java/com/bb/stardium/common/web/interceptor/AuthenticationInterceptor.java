@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 @Component
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
+    private static final String LOGIN_PATH = "/login";
 
     private final SessionService sessionService;
 
@@ -20,7 +21,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         if (sessionService.isLoggedIn(request.getSession())) {
             return true;
         }
-        response.sendRedirect("/login");
+        response.sendRedirect(LOGIN_PATH);
         return false;
     }
 

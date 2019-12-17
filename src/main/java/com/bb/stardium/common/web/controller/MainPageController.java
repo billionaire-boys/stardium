@@ -23,7 +23,7 @@ public class MainPageController {
     private final RoomService roomService;
 
     @GetMapping("/")
-    public String homepage(Model model, HttpSession session) {
+    public String homepage(Model model) {
         List<RoomResponseDto> allRooms = roomService.findAllUnexpiredRooms();
         model.addAttribute("rooms", allRooms);
         model.addAttribute("sections", Section.getAllSections());
