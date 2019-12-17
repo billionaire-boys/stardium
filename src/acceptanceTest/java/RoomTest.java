@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
@@ -34,31 +35,42 @@ class RoomTest extends BaseAcceptanceTest {
     @Test
     @DisplayName("사용자가 방을 만들고 들어가고 나올 수 있다")
     void joinRoom() {
-        PlayerRequestDto createPlayer = new PlayerRequestDto("test", "create@room", "password", "");
-        Long roomNumber = newSessionPost(createPlayer, "/rooms")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(roomRequestDto), RoomRequestDto.class)
-                .exchange()
-                .expectStatus()
-                .is2xxSuccessful()
-                .expectBody(Long.class)
-                .returnResult()
-                .getResponseBody();
+        PlayerRequestDto master = new PlayerRequestDto("test", "create@room", "password", "");
+        Long roomNumber = newSessionRoomPost(master, roomRequestDto);
 
 
         PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg", "dd");
-        newSessionPost(joinPlayer, "rooms/join/" + roomNumber)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(joinPlayer), PlayerRequestDto.class)
-                .exchange()
+
+        newSessionRoomJoinPost(roomNumber, joinPlayer)
                 .expectStatus()
                 .isOk();
 
-        loginSessionPost(joinPlayer, "rooms/quit/" + roomNumber)
-                .contentType(MediaType.APPLICATION_JSON)
-                .exchange()
+        loginSessionRoomQuitPost(roomNumber, joinPlayer)
                 .expectStatus()
                 .isOk();
+    }
+
+    @Test
+    @DisplayName("사용자가 방 들어간 후 방이 ready가 되면(인원이 꽉 차면) 방장을 제외한 그 누구도 나갈 수 없다")
+    void 방의_상태가_레디가_됨() {
+        RoomRequestDto roomWith2Players = new RoomRequestDto("title", "intro",
+                Address.builder()
+                        .city("서울시").section("송파구").detail("루터회관 앞")
+                        .build(),
+                LocalDateTime.now().plusHours(1L), LocalDateTime.now().plusHours(2L), 2, masterPlayer);
+
+        PlayerRequestDto master = new PlayerRequestDto("test", "create@room", "password", "");
+        Long roomNumber = newSessionRoomPost(master, roomWith2Players);
+
+        PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg", "dd");
+
+        newSessionRoomJoinPost(roomNumber, joinPlayer)
+                .expectStatus()
+                .isOk();
+
+        loginSessionRoomQuitPost(roomNumber, joinPlayer)
+                .expectStatus()
+                .isBadRequest();
     }
 
     @Test
@@ -112,5 +124,30 @@ class RoomTest extends BaseAcceptanceTest {
                 .exchange()
                 .expectStatus()
                 .isUnauthorized();
+    }
+
+    private Long newSessionRoomPost(PlayerRequestDto playerRequestDto, RoomRequestDto roomRequestDto) {
+        return newSessionPost(playerRequestDto, "/rooms")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(roomRequestDto), RoomRequestDto.class)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
+                .expectBody(Long.class)
+                .returnResult()
+                .getResponseBody();
+    }
+
+    private WebTestClient.ResponseSpec newSessionRoomJoinPost(Long roomNumber, PlayerRequestDto joinPlayer) {
+        return newSessionPost(joinPlayer, "rooms/join/" + roomNumber)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(joinPlayer), PlayerRequestDto.class)
+                .exchange();
+    }
+
+    private WebTestClient.ResponseSpec loginSessionRoomQuitPost(Long roomNumber, PlayerRequestDto joinPlayer) {
+        return loginSessionPost(joinPlayer, "rooms/quit/" + roomNumber)
+                .contentType(MediaType.APPLICATION_JSON)
+                .exchange();
     }
 }
