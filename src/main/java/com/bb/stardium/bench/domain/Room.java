@@ -88,4 +88,8 @@ public class Room {
     public boolean hasRemainingSeat() {
         return this.playersLimit - players.size() > EMPTY_SEAT;
     }
+
+    public boolean isReady() {
+        return !hasRemainingSeat();
+    }
 }

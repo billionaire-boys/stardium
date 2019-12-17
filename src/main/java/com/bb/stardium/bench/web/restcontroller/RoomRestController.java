@@ -3,10 +3,12 @@ package com.bb.stardium.bench.web.restcontroller;
 
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.service.RoomService;
+import com.bb.stardium.bench.service.exception.NotAllowedQuitException;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,5 +59,10 @@ public class RoomRestController {
         PlayerResponseDto loginPlayer = (PlayerResponseDto) httpSession.getAttribute("login");
         roomService.delete(roomId, loginPlayer.getEmail());
         return ResponseEntity.ok().build();
+    }
+
+    @ExceptionHandler(NotAllowedQuitException.class)
+    public ResponseEntity badRequest() {
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }
