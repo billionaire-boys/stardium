@@ -24,9 +24,6 @@ public class MainPageController {
 
     @GetMapping("/")
     public String homepage(Model model, HttpSession session) {
-        if (null == session.getAttribute("login")) {
-            return "login";
-        }
         List<RoomResponseDto> allRooms = roomService.findAllUnexpiredRooms();
         model.addAttribute("rooms", allRooms);
         model.addAttribute("sections", Section.getAllSections());
@@ -51,9 +48,6 @@ public class MainPageController {
 
     @GetMapping("/my-room")
     public String myRoomPage(Model model, HttpSession session) {
-        if (null == session.getAttribute("login")) {
-            return "login";
-        } // TODO: 중복 제거 및 로직을 다른 곳으로 이동
         PlayerResponseDto sessionDto = (PlayerResponseDto) session.getAttribute("login");
         Player player = playerService.findByPlayerEmail(sessionDto.getEmail());
         List<RoomResponseDto> myRooms = roomService.findPlayerJoinedRoom(player);

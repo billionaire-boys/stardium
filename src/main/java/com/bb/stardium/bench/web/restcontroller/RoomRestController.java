@@ -6,13 +6,11 @@ import com.bb.stardium.bench.service.RoomService;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
-import com.bb.stardium.player.service.exception.AuthenticationFailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController
@@ -33,10 +31,6 @@ public class RoomRestController {
     @PostMapping("/join/{roomId}")
     public ResponseEntity join(@PathVariable Long roomId, final HttpSession session) {
         PlayerResponseDto playerResponseDto = (PlayerResponseDto) session.getAttribute("login");
-        if (Objects.isNull(playerResponseDto)) {
-            throw new AuthenticationFailException();
-        }
-
         roomService.join(playerResponseDto.getEmail(), roomId);
         return ResponseEntity.ok(roomId);
     }
@@ -44,10 +38,6 @@ public class RoomRestController {
     @PostMapping("/quit/{roomId}")
     public ResponseEntity quit(@PathVariable Long roomId, final HttpSession session) {
         PlayerResponseDto playerResponseDto = (PlayerResponseDto) session.getAttribute("login");
-        if (Objects.isNull(playerResponseDto)) {
-            throw new AuthenticationFailException();
-        }
-
         roomService.quit(playerResponseDto.getEmail(), roomId);
         return ResponseEntity.ok(roomId);
     }
