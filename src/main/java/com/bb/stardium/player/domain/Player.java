@@ -75,4 +75,8 @@ public class Player {
         rooms.remove(room);
         return room;
     }
+
+    public boolean isSamePlayer(final long playerId, final String email) {
+        return this.id == playerId && this.email.equals(email);
+    }
 }
