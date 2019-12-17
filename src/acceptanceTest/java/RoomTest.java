@@ -28,7 +28,7 @@ class RoomTest extends BaseAcceptanceTest {
                 Address.builder()
                         .city("서울시").section("송파구").detail("루터회관 앞")
                         .build(),
-                LocalDateTime.now(), LocalDateTime.now().plusHours(1L), 3, masterPlayer);
+                LocalDateTime.now().plusHours(1L), LocalDateTime.now().plusHours(2L), 3, masterPlayer);
     }
 
     @Test
