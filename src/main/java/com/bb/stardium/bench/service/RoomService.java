@@ -5,8 +5,8 @@ import com.bb.stardium.bench.domain.repository.RoomRepository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.exception.AlreadyJoinedException;
+import com.bb.stardium.bench.service.exception.ImmutableReadyRoomException;
 import com.bb.stardium.bench.service.exception.MasterAndRoomNotMatchedException;
-import com.bb.stardium.bench.service.exception.NotAllowedQuitException;
 import com.bb.stardium.bench.service.exception.NotFoundRoomException;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.service.PlayerService;
@@ -53,6 +53,9 @@ public class RoomService {
         if (room.isNotMaster(loginPlayer)) {
             throw new MasterAndRoomNotMatchedException();
         }
+        if (room.isReady()) {
+            throw new ImmutableReadyRoomException();
+        }
         roomRepository.delete(room);
         return true;
     }
@@ -89,7 +92,7 @@ public class RoomService {
         Room room = findRoom(roomId);
 
         if (room.isReady()) {
-            throw new NotAllowedQuitException();
+            throw new ImmutableReadyRoomException();
         }
 
         room.removePlayer(player);
