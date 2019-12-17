@@ -3,6 +3,7 @@ package com.bb.stardium.common.web.controller;
 import com.bb.stardium.bench.service.RoomService;
 import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
 import com.bb.stardium.player.service.PlayerService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+@Disabled
 @WebMvcTest(controllers = MainPageController.class)
 @Import(MediaFileResourceLocation.class)
 class MainPageControllerTest {
