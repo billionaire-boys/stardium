@@ -3,7 +3,7 @@ package com.bb.stardium.bench.web.restcontroller;
 
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.service.RoomService;
-import com.bb.stardium.bench.service.exception.NotAllowedQuitException;
+import com.bb.stardium.bench.service.exception.ImmutableReadyRoomException;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
@@ -61,7 +61,7 @@ public class RoomRestController {
         return ResponseEntity.ok().build();
     }
 
-    @ExceptionHandler(NotAllowedQuitException.class)
+    @ExceptionHandler(ImmutableReadyRoomException.class)
     public ResponseEntity badRequest() {
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
