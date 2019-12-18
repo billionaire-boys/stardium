@@ -1,6 +1,9 @@
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.document;
+
 
 class MainPageControllerTest extends BaseAcceptanceTest {
 
@@ -10,7 +13,11 @@ class MainPageControllerTest extends BaseAcceptanceTest {
         webTestClient.get().uri("/")
                 .exchange()
                 .expectHeader().contentType("text/html;charset=UTF-8")
-                .expectStatus().isOk();
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .consumeWith(document("common/main",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
     }
 
     @Test
@@ -19,6 +26,10 @@ class MainPageControllerTest extends BaseAcceptanceTest {
         webTestClient.get().uri("/my-room")
                 .exchange()
                 .expectHeader().contentType("text/html;charset=UTF-8")
-                .expectStatus().isOk();
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .consumeWith(document("room/my-room",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
     }
 }
