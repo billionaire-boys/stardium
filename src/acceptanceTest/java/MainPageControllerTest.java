@@ -13,7 +13,7 @@ class MainPageControllerTest extends BaseAcceptanceTest {
         webTestClient.get().uri("/")
                 .exchange()
                 .expectHeader().contentType("text/html;charset=UTF-8")
-                .expectStatus().isOk()
+                .expectStatus().isFound()
                 .expectBody(String.class)
                 .consumeWith(document("common/main",
                         preprocessRequest(prettyPrint()),
@@ -26,7 +26,7 @@ class MainPageControllerTest extends BaseAcceptanceTest {
         webTestClient.get().uri("/my-room")
                 .exchange()
                 .expectHeader().contentType("text/html;charset=UTF-8")
-                .expectStatus().isOk()
+                .expectStatus().isFound()
                 .expectBody(String.class)
                 .consumeWith(document("room/my-room",
                         preprocessRequest(prettyPrint()),
