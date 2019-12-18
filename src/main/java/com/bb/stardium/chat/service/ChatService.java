@@ -21,10 +21,8 @@ public class ChatService {
     private final PlayerService playerService;
     private final ChatMessageRepository chatMessageRepository;
 
-    public ChatMessage saveMessage(final ChatMessageRequestDto requestDto) {
-        final ChatMessage message = getMessage(requestDto);
-        chatMessageRepository.save(message);
-        return message;
+    public ChatMessage saveMessage(final ChatMessageRequestDto chatMessageRequestDto) {
+        return chatMessageRepository.save(getMessageWithAdditionalInfo(chatMessageRequestDto));
     }
 
     @Transactional(readOnly = true)
@@ -36,16 +34,11 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
-    private ChatMessage getMessage(final ChatMessageRequestDto requestDto) {
+    private ChatMessage getMessageWithAdditionalInfo(final ChatMessageRequestDto chatMessageRequestDto) {
         // TODO: 데이터 sanitize
-        final String nickname = playerService.findNicknameByPlayerId(requestDto.getPlayerId());
+        final String nickname = playerService.findNicknameByPlayerId(chatMessageRequestDto.getPlayerId());
+        final OffsetDateTime now = OffsetDateTime.now();
 
-        return ChatMessage.builder()
-                .roomId(requestDto.getRoomId())
-                .playerId(requestDto.getPlayerId())
-                .playerNickname(nickname)
-                .contents(requestDto.getContents())
-                .timestamp(OffsetDateTime.now())
-                .build();
+        return chatMessageRequestDto.toEntity(nickname, now);
     }
 }

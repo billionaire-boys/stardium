@@ -5,6 +5,7 @@ import com.bb.stardium.bench.domain.repository.RoomRepository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.exception.AlreadyJoinedException;
+import com.bb.stardium.bench.service.exception.ImmutableReadyRoomException;
 import com.bb.stardium.bench.service.exception.MasterAndRoomNotMatchedException;
 import com.bb.stardium.bench.service.exception.NotFoundRoomException;
 import com.bb.stardium.player.domain.Player;
@@ -52,6 +53,9 @@ public class RoomService {
         if (room.isNotMaster(loginPlayer)) {
             throw new MasterAndRoomNotMatchedException();
         }
+        if (room.isReady()) {
+            throw new ImmutableReadyRoomException();
+        }
         roomRepository.delete(room);
         return true;
     }
@@ -86,6 +90,10 @@ public class RoomService {
     public Room quit(String email, Long roomId) {
         Player player = playerService.findByPlayerEmail(email);
         Room room = findRoom(roomId);
+
+        if (room.isReady()) {
+            throw new ImmutableReadyRoomException();
+        }
 
         room.removePlayer(player);
         return player.removeRoom(room);

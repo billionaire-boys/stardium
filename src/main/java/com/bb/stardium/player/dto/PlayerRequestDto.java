@@ -2,6 +2,7 @@ package com.bb.stardium.player.dto;
 
 import com.bb.stardium.mediafile.domain.MediaFile;
 import com.bb.stardium.player.domain.Player;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ public class PlayerRequestDto {
     private String statusMessage;
     private String mediaFile;
 
+    @Builder
     public PlayerRequestDto(String nickname, String email, String password, String statusMessage) {
         this.nickname = nickname;
         this.email = email;

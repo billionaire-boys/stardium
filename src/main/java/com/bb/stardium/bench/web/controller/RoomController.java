@@ -31,8 +31,10 @@ public class RoomController {
         return "create-room";
     }
 
-    @GetMapping("/update-room")
-    public String updateRoom() {
+    @GetMapping("/update-room/{roomId}")
+    public String updateRoom(@PathVariable Long roomId, Model model) {
+        Room room = roomService.findRoom(roomId);
+        model.addAttribute("room", room);
         return "update-room";
     }
 

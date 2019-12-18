@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @RequestMapping("/players")
@@ -42,9 +41,6 @@ public class PlayerController {
 
     @GetMapping("/edit")
     public String editPage(HttpSession session, Model model) {
-        if (Objects.isNull(session.getAttribute("login"))) {
-            return "redirect:/login";
-        }
         model.addAttribute("model", session.getAttribute("login"));
         return "user-edit.html";
     }
@@ -52,10 +48,6 @@ public class PlayerController {
     @PostMapping("/edit")
     public String edit(PlayerRequestDto requestDto, HttpSession session,
                        @RequestParam("profile") MultipartFile file, RedirectAttributes redirectAttributes) {
-        if (Objects.isNull(session.getAttribute("login"))) {
-            return "redirect:/login";
-        }
-
         if (file != null && !file.isEmpty()) {
             String fileName = mediaFileService.save(file);
             requestDto.setMediaFile(fileName);
