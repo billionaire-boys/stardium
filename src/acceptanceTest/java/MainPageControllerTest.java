@@ -12,7 +12,6 @@ class MainPageControllerTest extends BaseAcceptanceTest {
     void homepage() throws Exception {
         webTestClient.get().uri("/")
                 .exchange()
-                .expectHeader().contentType("text/html;charset=UTF-8")
                 .expectStatus().isFound()
                 .expectBody(String.class)
                 .consumeWith(document("common/main",
@@ -25,7 +24,6 @@ class MainPageControllerTest extends BaseAcceptanceTest {
     void myRoomPage() throws Exception {
         webTestClient.get().uri("/my-room")
                 .exchange()
-                .expectHeader().contentType("text/html;charset=UTF-8")
                 .expectStatus().isFound()
                 .expectBody(String.class)
                 .consumeWith(document("room/my-room",
