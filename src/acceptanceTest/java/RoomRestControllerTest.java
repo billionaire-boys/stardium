@@ -1,5 +1,3 @@
-package com.bb.stardium.bench.web.controller;
-
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.RoomRequestDto;
@@ -70,20 +68,20 @@ public class RoomRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() {
-        given(mockRoom.getId()).willReturn(1L);
-        given(mockRoom.getAddress()).willReturn(mockAddress);
-        given(roomService.findRoom(anyLong())).willReturn(mockRoom);
-        given(playerService.findByPlayerEmail(anyString())).willReturn(player);
-    }
-
     private static String asJsonString(final Object object) {
         try {
             return MAPPER.writeValueAsString(object);
         } catch (JsonProcessingException ignored) {
             return "{}";
         }
+    }
+
+    @BeforeEach
+    void setUp() {
+        given(mockRoom.getId()).willReturn(1L);
+        given(mockRoom.getAddress()).willReturn(mockAddress);
+        given(roomService.findRoom(anyLong())).willReturn(mockRoom);
+        given(playerService.findByPlayerEmail(anyString())).willReturn(player);
     }
 
     @Test

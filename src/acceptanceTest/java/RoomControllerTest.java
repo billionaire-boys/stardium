@@ -1,8 +1,7 @@
-package com.bb.stardium.bench.web.controller;
-
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.service.RoomService;
+import com.bb.stardium.bench.web.controller.RoomController;
 import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerResponseDto;

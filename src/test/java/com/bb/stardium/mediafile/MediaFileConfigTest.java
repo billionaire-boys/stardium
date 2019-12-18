@@ -1,4 +1,4 @@
-package com.bb.stardium.common.config;
+package com.bb.stardium.mediafile;
 
 import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
 import org.junit.jupiter.api.Test;
