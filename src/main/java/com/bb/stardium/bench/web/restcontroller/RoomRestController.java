@@ -1,6 +1,7 @@
 package com.bb.stardium.bench.web.restcontroller;
 
 
+import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.service.RoomService;
 import com.bb.stardium.bench.service.exception.FixedReadyRoomException;
@@ -25,14 +26,14 @@ public class RoomRestController {
 
     @PostMapping("/join/{roomId}")
     public ResponseEntity join(@PathVariable Long roomId, final Player loggedInPlayer) {
-        roomService.join(loggedInPlayer, roomId);
-        return ResponseEntity.ok(roomId);
+        final Room joinRoom = roomService.join(loggedInPlayer, roomId);
+        return ResponseEntity.ok(joinRoom.getId());
     }
 
     @PostMapping("/quit/{roomId}")
     public ResponseEntity quit(@PathVariable Long roomId, final Player loggedInPlayer) {
         roomService.quit(loggedInPlayer, roomId);
-        return ResponseEntity.ok(roomId);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{roomId}")
