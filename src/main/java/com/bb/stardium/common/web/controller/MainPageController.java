@@ -3,6 +3,7 @@ package com.bb.stardium.common.web.controller;
 import com.bb.stardium.bench.domain.Section;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.RoomService;
+import com.bb.stardium.common.web.annotation.LoggedInPlayer;
 import com.bb.stardium.player.domain.Player;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -40,7 +41,7 @@ public class MainPageController {
     }
 
     @GetMapping("/my-room")
-    public String myRoomPage(Model model, Player loggedInPlayer) {
+    public String myRoomPage(Model model, @LoggedInPlayer Player loggedInPlayer) {
         List<RoomResponseDto> myRooms = roomService.findPlayerJoinedRoom(loggedInPlayer);
         model.addAttribute("rooms", myRooms);
         return "main-my-room";
