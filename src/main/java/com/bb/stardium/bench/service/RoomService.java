@@ -74,16 +74,17 @@ public class RoomService {
                 .collect(Collectors.toList());
     }
 
-    public void join(Player loggedInPlayer, Long roomId) {
+    public Room join(Player loggedInPlayer, Long roomId) {
         Room room = findRoom(roomId);
         if (room.hasPlayer(loggedInPlayer)) {
             throw new AlreadyJoinedException();
         }
 
         room.addPlayer(loggedInPlayer);
+        return room;
     }
 
-    public Room quit(Player loggedInPlayer, Long roomId) {
+    public void quit(Player loggedInPlayer, Long roomId) {
         Room room = findRoom(roomId);
 
         if (room.isReady()) {
@@ -91,7 +92,6 @@ public class RoomService {
         }
 
         room.removePlayer(loggedInPlayer);
-        return loggedInPlayer.removeRoom(room);
     }
 
     @Transactional(readOnly = true)

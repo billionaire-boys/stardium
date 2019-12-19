@@ -1,6 +1,6 @@
 package com.bb.stardium.common.web.argumentresolver;
 
-import com.bb.stardium.player.domain.Player;
+import com.bb.stardium.common.web.annotation.LoggedInPlayer;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
-        return Player.class.isAssignableFrom(parameter.getParameterType());
+        return parameter.hasParameterAnnotation(LoggedInPlayer.class);
     }
 
     @Override
