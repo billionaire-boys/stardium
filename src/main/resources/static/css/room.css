@@ -30,3 +30,13 @@
     height: 250px;
     margin: auto;
 }
+
+.room-header {
+    margin-bottom: 1rem;
+}
+
+.chat-div {
+    margin-bottom: 1rem;
+    overflow-y:scroll;
+    height:15rem;
+}

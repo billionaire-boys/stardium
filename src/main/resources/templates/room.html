@@ -19,18 +19,20 @@
             </div>
         </div>
     </div>
-    <th:block th:replace="fragment/room-header"/>
 </th:block>
 
+<th:block layout:fragment="content-header">
+    <div class="room-header">
+        <th:block th:replace="fragment/room-header"/>
+    </div>
+</th:block>
 
 <th:block layout:fragment="content-body">
-    <input id="room-id" th:value="${room.id}" type="hidden">
-    <input id="player-id" th:value="${session.login.playerId}" type="hidden">
-
     <div class="ui container">
+        <input id="room-id" th:value="${room.id}" type="hidden">
+        <input id="player-id" th:value="${session.login.playerId}" type="hidden">
 
         <div class="ui form">
-
             <div class="field">
                 <h3 class="ui dividing header">팀 소개</h3>
                 <div class="ui segment">
@@ -41,8 +43,8 @@
             <div class="field">
                 <h3 class="ui dividing header">시간</h3>
                 <div class="ui segment center aligned">
-                    <p class="label" th:text="${'시작 시간 : ' + room.startTime}">일시</p>
-                    <p class="label" th:text="${'종료 시간 : ' + room.endTime}">시간</p>
+                    <p class="label" th:text="${'시작 시간 : ' + room.startTime.toString()}">일시</p>
+                    <p class="label" th:text="${'종료 시간 : ' + room.endTime.toString()}">시간</p>
                 </div>
             </div>
 
@@ -56,9 +58,11 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </th:block>
+
 
 <th:block layout:fragment="custom-js">
     <script type="text/javascript" src="/js/fetch-api.js"></script>
