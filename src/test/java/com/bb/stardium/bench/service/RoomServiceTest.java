@@ -125,7 +125,7 @@ class RoomServiceTest {
         given(roomRepository.findById(any())).willReturn(Optional.ofNullable(room1));
         given(playerService.findByPlayerEmail(room1.getMaster().getEmail())).willReturn(room1.getMaster());
 
-        roomService.delete(room1.getId(), room1.getMaster().getEmail());
+        roomService.delete(room1.getId(), room1.getMaster());
 
         verify(roomRepository).delete(room1);
     }
@@ -137,7 +137,7 @@ class RoomServiceTest {
         given(playerService.findByPlayerEmail(player.getEmail())).willReturn(player);
 
         assertThrows(MasterAndRoomNotMatchedException.class, () -> {
-            roomService.delete(room1.getId(), player.getEmail());
+            roomService.delete(room1.getId(), player);
         });
     }
 
@@ -166,7 +166,7 @@ class RoomServiceTest {
         given(playerService.findByPlayerEmail(any())).willReturn(player);
         given(roomRepository.findById(1L)).willReturn(Optional.of(room1));
 
-        roomService.join(PLAYER_EMAIL, room1.getId());
+        roomService.join(player, room1.getId());
 
         assertThat(room1.getPlayers().contains(player)).isTrue();
         assertThat(player.getRooms().contains(room1)).isTrue();
@@ -177,7 +177,7 @@ class RoomServiceTest {
         given(playerService.findByPlayerEmail(any())).willReturn(player);
         given(roomRepository.findById(1L)).willReturn(Optional.of(room1));
 
-        roomService.quit(PLAYER_EMAIL, room1.getId());
+        roomService.quit(player, room1.getId());
         assertThat(room1.getPlayers().contains(player)).isFalse();
         assertThat(player.getRooms().contains(room1)).isFalse();
     }
@@ -190,7 +190,7 @@ class RoomServiceTest {
         given(roomRepository.findById(readyRoom.getId())).willReturn(Optional.of(readyRoom));
 
         assertThrows(FixedReadyRoomException.class, () -> {
-            roomService.quit(PLAYER_EMAIL, readyRoom.getId());
+            roomService.quit(player, readyRoom.getId());
         });
     }
 
@@ -202,7 +202,7 @@ class RoomServiceTest {
         given(roomRepository.findById(readyRoom.getId())).willReturn(Optional.of(readyRoom));
 
         assertThrows(FixedReadyRoomException.class, () -> {
-            roomService.delete(readyRoom.getId(), master.getEmail());
+            roomService.delete(readyRoom.getId(), master);
         });
     }
 

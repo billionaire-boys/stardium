@@ -23,6 +23,11 @@ public class PlayerService {
         return playerRepository.findByEmail(email).orElseThrow(EmailNotExistException::new);
     }
 
+    @Transactional(readOnly = true)
+    public Player findByResponseDto(final PlayerResponseDto responseDto) {
+        return findByPlayerEmail(responseDto.getEmail());
+    }
+
     public Player register(final PlayerRequestDto requestDto) {
         if (playerRepository.existsByEmail(requestDto.getEmail())) {
             throw new EmailAlreadyExistException();
