@@ -5,7 +5,7 @@ import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.domain.repository.RoomRepository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.dto.RoomResponseDto;
-import com.bb.stardium.bench.service.exception.ImmutableReadyRoomException;
+import com.bb.stardium.bench.service.exception.FixedReadyRoomException;
 import com.bb.stardium.bench.service.exception.MasterAndRoomNotMatchedException;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.service.PlayerService;
@@ -189,7 +189,7 @@ class RoomServiceTest {
         given(playerService.findByPlayerEmail(any())).willReturn(player);
         given(roomRepository.findById(readyRoom.getId())).willReturn(Optional.of(readyRoom));
 
-        assertThrows(ImmutableReadyRoomException.class, () -> {
+        assertThrows(FixedReadyRoomException.class, () -> {
             roomService.quit(PLAYER_EMAIL, readyRoom.getId());
         });
     }
@@ -201,7 +201,7 @@ class RoomServiceTest {
         given(playerService.findByPlayerEmail(any())).willReturn(master);
         given(roomRepository.findById(readyRoom.getId())).willReturn(Optional.of(readyRoom));
 
-        assertThrows(ImmutableReadyRoomException.class, () -> {
+        assertThrows(FixedReadyRoomException.class, () -> {
             roomService.delete(readyRoom.getId(), master.getEmail());
         });
     }
