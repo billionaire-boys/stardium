@@ -1,0 +1,7 @@
+<th:block th:fragment="footer-fragment" xmlns:th="http://www.thymeleaf.org">
+    <div class="ui">
+        <div class="ui large fluid submit button" disabled th:if="${room.isReady()}">
+            게임이 시작되었습니다
+        </div>
+    </div>
+</th:block>

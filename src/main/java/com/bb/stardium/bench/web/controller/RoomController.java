@@ -57,4 +57,11 @@ public class RoomController {
         return "room";
     }
 
+    @GetMapping("/{roomId}/details")
+    public String getDetail(@PathVariable Long roomId, Model model) {
+        Room room = roomService.findRoom(roomId);
+        model.addAttribute("room", room);
+        return "room-detail";
+    }
+
 }

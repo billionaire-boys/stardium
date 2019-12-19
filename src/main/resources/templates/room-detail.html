@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main-layout">
+
+<th:block layout:fragment="custom-head">
+    <title>게임 방</title>
+    <link href="/css/room.css" rel="stylesheet" type="text/css">
+</th:block>
+
+<th:block layout:fragment="content-menu">
+    <th:block th:replace="fragment/room-menu"/>
+</th:block>
+
+<th:block layout:fragment="content-header">
+    <div class="room-header">
+        <th:block th:replace="fragment/room-header"/>
+    </div>
+</th:block>
+
+
+<th:block layout:fragment="content-body">
+    <div class="ui container">
+        <input id="room-id" th:value="${room.id}" type="hidden">
+        <input id="player-id" th:value="${session.login.playerId}" type="hidden">
+
+        <div class="ui form">
+            <div class="field">
+                <h3 class="ui dividing header">대화방</h3>
+                <div class="ui segment">
+                    <div class="chat-div" id="chat-box"></div>
+                    <div class="ui input action fluid">
+                        <input type="text" id="chat-input"/>
+                        <button class="ui primary button active" id="chat-send-button">보내기</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <h3 class="ui dividing header">Member</h3>
+                <div class="ui two cards" th:each="player : ${room.players}">
+                    <div class="ui fluid card">
+                        <div class="image">
+                            <img alt="player-profile" th:src="${player.profile.url}">
+                        </div>
+                        <div class="content">
+                            <div class="header" style="text-align: center;" th:text="${player.nickname}">강백호</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="content-footer">
+    <th:block th:replace="fragment/room-footer"/>
+</th:block>
+
+<th:block layout:fragment="custom-js">
+    <script type="text/javascript" src="/js/fetch-api.js"></script>
+    <script type="text/javascript" src="/js/room.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"
+            integrity="sha256-z4cKT3yF+afIn8eFXJc+nRpGtwcmNEClvf+ikgsZcRo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"
+            integrity="sha256-nkP8cj5xaTdWK/BsZl+57ZCE/Y/i4UNtbNTpgH+6Taw=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/chat.js"></script>
+</th:block>
+
+</html>
