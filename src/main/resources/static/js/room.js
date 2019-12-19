@@ -70,35 +70,36 @@ const ROOM_APP = (() => {
         let roomId = document.getElementById('room-id');
         roomId = roomId ? roomId.value : 0;
 
+        const title = document.getElementById('title');
+        const city = document.getElementById('city');
+        const section = document.getElementById('section');
+        const detail = document.getElementById('detail');
+        const startTime = document.getElementById('startTime');
+        const endTime = document.getElementById('endTime');
+        const playersLimit = document.getElementById('playersLimit');
+        const intro = document.getElementById('intro');
+
         const saveRoom = event => {
-            const title = document.getElementById('title').value;
-            const city = document.getElementById('city').value;
-            const section = document.getElementById('section').value;
-            const detail = document.getElementById('detail').value;
-            const startTime = document.getElementById('startTime').value;
-            const endTime = document.getElementById('endTime').value;
-            const playersLimit = document.getElementById('playersLimit').value;
-            const intro = document.getElementById('intro').value;
 
             event.preventDefault();
 
-            if (title === "" || city === "" || section === "" || detail === "" ||
-                startTime === "" || endTime === "" || playersLimit === "" && intro === "") {
+            if (title.value === "" || city.value === "" || section.value === "" || detail.value === "" ||
+                startTime.value === "" || endTime.value === "" || playersLimit.value === "" && intro.value === "") {
                 alert('모든 항목을 입력해주세요!');
                 return;
             }
 
             const roomBasicInfo = {
-                title: title,
+                title: title.value,
                 address: {
-                    city: city,
-                    section: section,
-                    detail: detail,
+                    city: city.value,
+                    section: section.value,
+                    detail: detail.value,
                 },
-                startTime: startTime,
-                endTime: endTime,
-                playersLimit: playersLimit,
-                intro: intro,
+                startTime: startTime.value,
+                endTime: endTime.value,
+                playersLimit: playersLimit.value,
+                intro: intro.value,
             };
 
             const ifSucceed = (response) => {
@@ -122,13 +123,13 @@ const ROOM_APP = (() => {
                 title: title.value,
                 address: {
                     city: city.value,
-                    gu: gu.value,
-                    detail: detail.value
+                    section: section.value,
+                    detail: detail.value,
                 },
                 startTime: startTime.value,
                 endTime: endTime.value,
                 playersLimit: playersLimit.value,
-                intro: intro.value
+                intro: intro.value,
             };
 
             const ifSucceed = (response) => {

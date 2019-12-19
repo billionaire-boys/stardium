@@ -22,34 +22,67 @@
 </th:block>
 
 <th:block layout:fragment="content-body">
-    <input id="roomId" name="roomId" type=hidden value="1">
+    <input id="room-id" th:value="${room.id}" type="hidden">
     <div class="ui container">
         <form class="ui form" id="room-save-form">
             <div class="field">
                 <h4 class="ui dividing header">제목</h4>
-                <input id="title" name="title" placeholder="제목" type="text">
+                <input id="title" name="title" placeholder="제목" th:value="${room.title}" type="text">
+            </div>
+
+            <div class="field">
+                <h4 class="ui dividing header">주소</h4>
+                <table>
+                    <tr>
+                        <div class="ui icon input" id="fullAddress">
+                            <input placeholder="주소 검색" type="text">
+                            <i class="inverted circular search link icon"></i>
+                        </div>
+                    </tr>
+                    <tr>
+                        <td class="label table_title_size">시/구</td>
+                        <td class="slimField">
+                            <input class="field" disabled="true" id="city" name="city" placeholder="시"
+                                   th:value="${room.address.city}"/>
+                        </td>
+                        <td class="slimField">
+                            <input class="field" disabled="true" id="section" name="section" placeholder="구"
+                                   th:value="${room.address.section}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label table_title_size">상세정보</td>
+                        <td class="wideField" colspan="2">
+                            <input class="field" disabled="true" id="detail" name="detail" placeholder="더 자세히"
+                                   th:value="${room.address.detail}"
+                                   type="text">
+                        </td>
+                    </tr>
+                </table>
             </div>
 
             <div class="field">
                 <h4 class="ui dividing header">게임 시간</h4>
                 <div class="field">
                     <label>시작 시간</label>
-                    <input id="startTime" name="startTime" type="datetime-local">
+                    <input id="startTime" name="startTime" th:value="${room.startTime}" type="datetime-local">
                 </div>
                 <div class="field">
                     <label>끝나는 시간</label>
-                    <input id="endTime" name="endTime" type="datetime-local">
+                    <input id="endTime" name="endTime" th:value="${room.endTime}" type="datetime-local">
                 </div>
             </div>
 
             <div class="field">
                 <h4 class="ui dividing header">인원 수</h4>
-                <input id="playerNumbers" max="100" min="1" name="playerNumbers" type="number" placeholder="명">
+                <input id="playersLimit" max="100" min="1" name="playersLimit" placeholder="명"
+                       th:value="${room.playersLimit}" type="number">
             </div>
             ​
             <div class="field">
                 <h4 class="ui dividing header">방 소개</h4>
-                <textarea form="room-save-form" id="intro" name="intro" placeholder="같이 게임 하실래요??"></textarea>
+                <textarea form="room-save-form" id="intro" name="intro" placeholder="같이 게임 하실래요??"
+                          th:text="${room.intro}"></textarea>
             </div>
             ​
             <button class="ui fluid violet button" id="update-room-button">Submit</button>
@@ -58,8 +91,10 @@
 </th:block>
 ​
 <th:block layout:fragment="custom-js">
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" type="text/javascript"></script>
     <script type="text/javascript" src="/js/fetch-api.js"></script>
     <script type="text/javascript" src="/js/room.js"></script>
+    <script src="/js/kakao-post-api.js" type="text/javascript"></script>
 </th:block>
 
 </html>

@@ -24,7 +24,8 @@
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input name="nickname" placeholder="닉네임 입력" type="text"/>
+                            <input name="nickname" placeholder="닉네임 입력" th:value="${session.login.nickname}"
+                                   type="text"/>
                             <input name="email" th:value="${session.login.email}" type="hidden"/>
                         </div>
                     </div>
@@ -41,7 +42,10 @@
                         </div>
                     </div>
                     <div class="field">
-                        <textarea name="statusMessage" placeholder="상태 메세지" type="password"></textarea>
+                        <textarea name="statusMessage" placeholder="상태 메세지" th:text="${session.login.statusMessage}"
+                                  type="password">
+
+                        </textarea>
                     </div>
                     <div class="field">
                         <button class="ui fluid violet large submit button" type="submit">수정 완료</button>

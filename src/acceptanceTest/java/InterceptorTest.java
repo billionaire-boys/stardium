@@ -21,8 +21,8 @@ class InterceptorTest extends BaseAcceptanceTest {
     @Test
     void loggedInUserPageAccessSuccess() {
         newSessionGet(requestDto, "/rooms")
-            .exchange()
-            .expectStatus().isOk();
+                .exchange()
+                .expectStatus().isOk();
     }
 
     @DisplayName("로그인 한 유저가 접근 불가능한 페이지 접근 실패")
