@@ -12,20 +12,24 @@
 </th:block>
 
 <th:block layout:fragment="content-header">
-    <th:block th:replace="fragment/main-header"/>
+    <div class="segments">
+        <th:block th:replace="fragment/main-header"/>
+        <div class="segment">
+            <div class="ui two item menu" style="margin-top: 0; margin-bottom: 0;">
+                <select class="ui dropdown" id="selectOption" name="지역">
+                    <option>지역</option>
+                    <option th:each="section : ${sections}" th:text="${section}"></option>
+                </select>
+                <div class="ui action input">
+                    <input type="text" placeholder="Search" id="search-keyword">
+                    <button class="ui violet submit button" id="search-button">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content-body">
-    <div>
-        <select class="ui dropdown right floated" id="selectOption" name="지역">
-            <option>지역</option>
-            <option th:each="section : ${sections}" th:text="${section}"></option>
-        </select>
-        <div class="ui action input">
-            <input type="text" placeholder="Search" id="search-keyword">
-            <button class="ui button" id="search-button">Search</button>
-        </div>
-    </div>
     <div class="ui segments">
         <div class="ui segment">
             <div class="ui cards" id="room-list">
