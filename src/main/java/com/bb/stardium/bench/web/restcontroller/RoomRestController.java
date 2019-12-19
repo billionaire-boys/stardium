@@ -5,59 +5,47 @@ import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.service.RoomService;
 import com.bb.stardium.bench.service.exception.ImmutableReadyRoomException;
 import com.bb.stardium.player.domain.Player;
-import com.bb.stardium.player.dto.PlayerResponseDto;
-import com.bb.stardium.player.service.PlayerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/rooms")
 public class RoomRestController {
 
-    private final PlayerService playerService;
     private final RoomService roomService;
 
     @PostMapping
-    public ResponseEntity create(@RequestBody final RoomRequestDto roomRequest, final HttpSession session) {
-        PlayerResponseDto loginPlayerDto = (PlayerResponseDto) session.getAttribute("login");
-        Player loginPlayer = playerService.findByPlayerEmail(loginPlayerDto.getEmail());
-        Long roomId = roomService.create(roomRequest, loginPlayer);
+    public ResponseEntity create(@RequestBody final RoomRequestDto roomRequest, final Player loggedInPlayer) {
+        Long roomId = roomService.create(roomRequest, loggedInPlayer);
         return ResponseEntity.ok(roomId);
     }
 
     @PostMapping("/join/{roomId}")
-    public ResponseEntity join(@PathVariable Long roomId, final HttpSession session) {
-        PlayerResponseDto playerResponseDto = (PlayerResponseDto) session.getAttribute("login");
-        roomService.join(playerResponseDto.getEmail(), roomId);
+    public ResponseEntity join(@PathVariable Long roomId, final Player loggedInPlayer) {
+        roomService.join(loggedInPlayer, roomId);
         return ResponseEntity.ok(roomId);
     }
 
     @PostMapping("/quit/{roomId}")
-    public ResponseEntity quit(@PathVariable Long roomId, final HttpSession session) {
-        PlayerResponseDto playerResponseDto = (PlayerResponseDto) session.getAttribute("login");
-        roomService.quit(playerResponseDto.getEmail(), roomId);
+    public ResponseEntity quit(@PathVariable Long roomId, final Player loggedInPlayer) {
+        roomService.quit(loggedInPlayer, roomId);
         return ResponseEntity.ok(roomId);
     }
 
     @PutMapping("/{roomId}")
     public ResponseEntity update(@PathVariable Long roomId,
                                  @RequestBody RoomRequestDto roomRequestDto,
-                                 HttpSession httpSession) {
-        PlayerResponseDto loginPlayerDto = (PlayerResponseDto) httpSession.getAttribute("login");
-        Player player = playerService.findByPlayerEmail(loginPlayerDto.getEmail());
-        Long updatedRoomId = roomService.update(roomId, roomRequestDto, player);
+                                 final Player loggedInPlayer) {
+        Long updatedRoomId = roomService.update(roomId, roomRequestDto, loggedInPlayer);
         return ResponseEntity.ok(updatedRoomId);
     }
 
     @DeleteMapping("/{roomId}")
-    public ResponseEntity delete(@PathVariable Long roomId, HttpSession httpSession) {
-        PlayerResponseDto loginPlayer = (PlayerResponseDto) httpSession.getAttribute("login");
-        roomService.delete(roomId, loginPlayer.getEmail());
+    public ResponseEntity delete(@PathVariable Long roomId, final Player loggedInPlayer) {
+        roomService.delete(roomId, loggedInPlayer);
         return ResponseEntity.ok().build();
     }
 

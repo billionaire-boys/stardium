@@ -4,7 +4,6 @@ import com.bb.stardium.bench.domain.Section;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.RoomService;
 import com.bb.stardium.player.domain.Player;
-import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -47,11 +45,10 @@ public class MainPageController {
     }
 
     @GetMapping("/my-room")
-    public String myRoomPage(Model model, HttpSession session) {
-        PlayerResponseDto sessionDto = (PlayerResponseDto) session.getAttribute("login");
-        Player player = playerService.findByPlayerEmail(sessionDto.getEmail());
-        List<RoomResponseDto> myRooms = roomService.findPlayerJoinedRoom(player);
+    public String myRoomPage(Model model, Player loggedInPlayer) {
+        List<RoomResponseDto> myRooms = roomService.findPlayerJoinedRoom(loggedInPlayer);
         model.addAttribute("rooms", myRooms);
         return "main-my-room";
     }
+
 }
