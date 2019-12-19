@@ -9,36 +9,40 @@
 <th:block layout:fragment="content-body">
     <div class="ui top aligned center aligned">
         <h1 class="ui violet header">회원가입</h1>
-        <form accept-charset="UTF-8" action="/players/new" class="ui form" method="post">
+        <form accept-charset="UTF-8" id="sign-up-form" action="/players/new" class="ui form" method="post">
             <div class="field">
                 <div class="ui left icon input">
                     <i class="envelope icon"></i>
-                    <input name="email" placeholder="이메일 입력" th:value="${email}" type="email"/>
+                    <input id="email" name="email" placeholder="이메일 입력" th:value="${email}" type="email"/>
                 </div>
             </div>
             <div class="field">
                 <div class="ui left icon input">
                     <i class="lock icon"></i>
-                    <input name="password" placeholder="비밀번호 입력" type="password">
+                    <input id="password" name="password" placeholder="비밀번호 입력" type="password">
                 </div>
             </div>
             <div class="field">
                 <div class="ui left icon input">
                     <i class="lock icon"></i>
-                    <input name="password-confirm" placeholder="비밀번호 재입력" type="password">
+                    <input id="password-confirm" name="password-confirm" placeholder="비밀번호 재입력" type="password">
                 </div>
             </div>
             <div class="field">
                 <div class="ui left icon input">
                     <i class="user icon"></i>
-                    <input name="nickname" placeholder="닉네임 입력" th:value="${nickname}"
+                    <input id="nickname" name="nickname" placeholder="닉네임 입력" th:value="${nickname}"
                            type="text">
                 </div>
             </div>
             <div class="field">
-                <button class="ui basic fluid violet large submit button" type="submit">가입 완료</button>
+                <button class="ui basic fluid violet large submit button" id="submit-btn" type="button">가입 완료</button>
             </div>
         </form>
     </div>
+</th:block>
+
+<th:block layout:fragment="custom-js">
+    <script type="text/javascript" src="/js/sign-up.js"></script>
 </th:block>
 </html>
