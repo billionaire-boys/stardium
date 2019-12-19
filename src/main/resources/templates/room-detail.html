@@ -9,18 +9,8 @@
 </th:block>
 
 <th:block layout:fragment="content-menu">
-    <div class="ui small secondary inverted menu" style="margin-bottom: 0">
-        <div class="toc item">
-            <a href="/">
-                <i class="angle double left icon black"></i>
-            </a>
-            <div class="item">
-                <h1 class="ui violet header" th:text="${room.title}">title</h1>
-            </div>
-        </div>
-    </div>
+    <th:block th:replace="fragment/room-menu"/>
 </th:block>
-
 
 <th:block layout:fragment="content-header">
     <div class="room-header">
@@ -63,6 +53,9 @@
     </div>
 </th:block>
 
+<th:block layout:fragment="content-footer">
+    <th:block th:replace="fragment/room-footer"/>
+</th:block>
 
 <th:block layout:fragment="custom-js">
     <script type="text/javascript" src="/js/fetch-api.js"></script>
