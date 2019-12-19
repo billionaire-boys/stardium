@@ -1,0 +1,6 @@
+<th:block th:fragment="room-header-fragment" xmlns:th="http://www.thymeleaf.org">
+    <div class="ui two item menu" style="margin-top: 0; margin-bottom: 0;">
+        <a class="item" th:href="@{/rooms/{roomId}(roomId=${room.id})}">정보</a>
+        <a class="item" th:href="@{/rooms/{roomId}/details(roomId=${room.id})}">채팅/팀</a>
+    </div>
+</th:block>
