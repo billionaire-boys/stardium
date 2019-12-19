@@ -76,9 +76,9 @@ public class Room {
         return players.contains(player);
     }
 
-    public Player removePlayer(Player player) {
-        players.remove(player);
-        return player;
+    public void removePlayer(Player player) {
+        player.removeRoom(this);
+        this.players.remove(player);
     }
 
     public boolean isUnexpiredRoom() {

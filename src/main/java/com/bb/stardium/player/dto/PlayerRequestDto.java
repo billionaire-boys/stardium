@@ -1,5 +1,6 @@
 package com.bb.stardium.player.dto;
 
+import com.bb.stardium.common.util.EscapedCharacters;
 import com.bb.stardium.mediafile.domain.MediaFile;
 import com.bb.stardium.player.domain.Player;
 import lombok.Builder;
@@ -27,10 +28,10 @@ public class PlayerRequestDto {
 
     public Player toEntity() {
         return Player.builder()
-                .nickname(nickname)
-                .email(email)
+                .nickname(EscapedCharacters.of(nickname))
+                .email(EscapedCharacters.of(email))
                 .password(password)
-                .statusMessage(statusMessage)
+                .statusMessage(EscapedCharacters.of(statusMessage))
                 .profile(new MediaFile(mediaFile))
                 .build();
     }
