@@ -3,6 +3,7 @@ package com.bb.stardium.bench.web.controller;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.RoomService;
+import com.bb.stardium.player.domain.Player;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,15 +33,25 @@ public class RoomController {
     }
 
     @GetMapping("/update-room/{roomId}")
-    public String updateRoom(@PathVariable Long roomId, Model model) {
+    public String updateRoom(@PathVariable Long roomId, Model model, final Player loggedInPlayer) {
         Room room = roomService.findRoom(roomId);
+
+        if (room.isNotMaster(loggedInPlayer)) {
+            return "redirect:/";
+        }
+
         model.addAttribute("room", room);
         return "update-room";
     }
 
     @GetMapping("/{roomId}")
-    public String get(@PathVariable Long roomId, Model model) {
+    public String get(@PathVariable Long roomId, Model model, final Player loggedInPlayer) {
         Room room = roomService.findRoom(roomId);
+
+        if (!room.hasPlayer(loggedInPlayer)) {
+            return "redirect:/";
+        }
+
         model.addAttribute("room", room);
         return "room";
     }
