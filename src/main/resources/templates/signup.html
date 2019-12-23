@@ -44,5 +44,11 @@
 
 <th:block layout:fragment="custom-js">
     <script src="/js/sign-up.js" type="text/javascript"></script>
+    <script th:if="${error}" th:inline="javascript">
+        /*<![CDATA[*/
+        const errorMessage = [[${error}]];
+        /*]]>*/
+        alert(errorMessage);
+    </script>
 </th:block>
 </html>

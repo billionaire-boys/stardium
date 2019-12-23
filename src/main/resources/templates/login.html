@@ -39,4 +39,13 @@
         </div>
     </div>
 </th:block>
+
+<th:block layout:fragment="custom-js">
+    <script th:if="${error}" th:inline="javascript">
+        /*<![CDATA[*/
+        const errorMessage = [[${error}]];
+        /*]]>*/
+        alert(errorMessage);
+    </script>
+</th:block>
 </html>
