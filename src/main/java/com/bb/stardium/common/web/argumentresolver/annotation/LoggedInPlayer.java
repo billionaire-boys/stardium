@@ -1,4 +1,4 @@
-package com.bb.stardium.common.web.annotation;
+package com.bb.stardium.common.web.argumentresolver.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
