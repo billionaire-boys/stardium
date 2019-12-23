@@ -15,6 +15,7 @@ public class PlayerRequestDto {
     private String nickname;
     private String email;
     private String password;
+    private String confirmPassword;
     private String statusMessage;
     private String mediaFile;
 
@@ -34,5 +35,9 @@ public class PlayerRequestDto {
                 .statusMessage(EscapedCharacters.of(statusMessage))
                 .profile(new MediaFile(mediaFile))
                 .build();
+    }
+
+    public boolean isEqualPassword() {
+        return this.password.equals(this.confirmPassword);
     }
 }

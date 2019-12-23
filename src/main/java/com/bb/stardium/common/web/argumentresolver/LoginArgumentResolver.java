@@ -1,6 +1,6 @@
 package com.bb.stardium.common.web.argumentresolver;
 
-import com.bb.stardium.common.web.annotation.LoggedInPlayer;
+import com.bb.stardium.common.web.argumentresolver.annotation.*;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
 import lombok.RequiredArgsConstructor;

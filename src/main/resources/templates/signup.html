@@ -25,7 +25,7 @@
             <div class="field">
                 <div class="ui left icon input">
                     <i class="lock icon"></i>
-                    <input id="password-confirm" name="password-confirm" placeholder="비밀번호 재입력" type="password">
+                    <input id="password-confirm" name="confirmPassword" placeholder="비밀번호 재입력" type="password">
                 </div>
             </div>
             <div class="field">
@@ -44,5 +44,11 @@
 
 <th:block layout:fragment="custom-js">
     <script src="/js/sign-up.js" type="text/javascript"></script>
+    <script th:if="${error}" th:inline="javascript">
+        /*<![CDATA[*/
+        const errorMessage = [[${error}]];
+        /*]]>*/
+        alert(errorMessage);
+    </script>
 </th:block>
 </html>

@@ -36,12 +36,16 @@
             <div class="ui message">
                 처음이신가요? <a href="/players/new"> 회원가입</a>
             </div>
-            <div class="ui segments" style="background: #f7e318;">
-                <a href="https://kauth.kakao.com/oauth/authorize?client_id=974d268d773b35a4a9e63eca0b74ec16&redirect_uri=http://15.164.222.108:8080/oauth/kakao&response_type=code"
-                >
-                    <img src="/images/kakao.png" style="padding-top:3px"></a>
-            </div>
         </div>
     </div>
+</th:block>
+
+<th:block layout:fragment="custom-js">
+    <script th:if="${error}" th:inline="javascript">
+        /*<![CDATA[*/
+        const errorMessage = [[${error}]];
+        /*]]>*/
+        alert(errorMessage);
+    </script>
 </th:block>
 </html>

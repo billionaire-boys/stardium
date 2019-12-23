@@ -2,6 +2,8 @@ import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
@@ -43,6 +45,7 @@ public abstract class BaseAcceptanceTest {
                         .fromFormData("nickname", playerRequestDto.getNickname())
                         .with("email", playerRequestDto.getEmail())
                         .with("password", playerRequestDto.getPassword())
+                        .with("confirmPassword", playerRequestDto.getConfirmPassword())
                         .with("status", playerRequestDto.getStatusMessage()))
                 .exchange();
         return playerRequestDto.toEntity();

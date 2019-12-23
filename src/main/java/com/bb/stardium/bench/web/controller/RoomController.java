@@ -3,7 +3,7 @@ package com.bb.stardium.bench.web.controller;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.RoomService;
-import com.bb.stardium.common.web.annotation.LoggedInPlayer;
+import com.bb.stardium.common.web.argumentresolver.annotation.*;
 import com.bb.stardium.player.domain.Player;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

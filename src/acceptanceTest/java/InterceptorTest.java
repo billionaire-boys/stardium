@@ -15,6 +15,7 @@ class InterceptorTest extends BaseAcceptanceTest {
                 .password("password")
                 .statusMessage("status message")
                 .build();
+        requestDto.setConfirmPassword("password");
     }
 
     @DisplayName("로그인 한 유저가 접근 가능한 페이지 접근 성공")

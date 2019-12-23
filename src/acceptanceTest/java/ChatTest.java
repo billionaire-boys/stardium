@@ -99,6 +99,7 @@ public class ChatTest extends BaseAcceptanceTest {
                 .password("password")
                 .build();
         PlayerRequestDto playerRequestDto = new PlayerRequestDto("test", "create@room", "password", "");
+        playerRequestDto.setConfirmPassword("password");
         RoomRequestDto roomRequestDto = new RoomRequestDto("title", "intro",
                 Address.builder()
                         .city("서울시").section("송파구").detail("루터회관 앞")

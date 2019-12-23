@@ -4,9 +4,7 @@ import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.domain.repository.PlayerRepository;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
-import com.bb.stardium.player.service.exception.AuthenticationFailException;
-import com.bb.stardium.player.service.exception.EmailAlreadyExistException;
-import com.bb.stardium.player.service.exception.EmailNotExistException;
+import com.bb.stardium.player.service.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +29,12 @@ public class PlayerService {
     public Player register(final PlayerRequestDto requestDto) {
         if (playerRepository.existsByEmail(requestDto.getEmail())) {
             throw new EmailAlreadyExistException();
+        }
+        if (playerRepository.existsByNickname(requestDto.getNickname())) {
+            throw new NicknameAlreadyExistException();
+        }
+        if (!requestDto.isEqualPassword()) {
+            throw new MisMatchedPasswordException();
         }
         return playerRepository.save(requestDto.toEntity());
     }
