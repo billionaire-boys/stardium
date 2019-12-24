@@ -48,12 +48,20 @@ public class Room {
     private List<Player> players = new ArrayList<>();
 
     @Builder
-    public Room(String title, String intro, int playersLimit, Address address, @Future LocalDateTime startTime, @Future LocalDateTime endTime, Player master) {
+    public Room(String title, String intro, int playersLimit, Address address,
+                @Future LocalDateTime startTime, @Future LocalDateTime endTime, Player master) {
+        checkTime(startTime, endTime);
         this.description = new RoomDescription(title, intro, playersLimit);
         this.address = address;
         this.startTime = startTime;
         this.endTime = endTime;
         this.master = master;
+    }
+
+    private void checkTime(LocalDateTime startTime, LocalDateTime endTime) {
+        if (startTime.isAfter(endTime)) {
+            throw new IllegalPlayTimeException();
+        }
     }
 
     public boolean isNotMaster(Player masterPlayer) {

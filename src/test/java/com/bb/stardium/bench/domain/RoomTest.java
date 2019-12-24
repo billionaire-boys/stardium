@@ -115,4 +115,12 @@ class RoomTest {
         room.addPlayer(player);
         assertThat(room.isReady()).isFalse();
     }
+
+    @Test
+    void 경기시간_유효성() {
+        assertThatThrownBy(() -> Room.builder()
+                .startTime(LocalDateTime.now().plusHours(5))
+                .endTime(LocalDateTime.now().plusHours(2))
+                .build()).isInstanceOf(IllegalPlayTimeException.class);
+    }
 }
