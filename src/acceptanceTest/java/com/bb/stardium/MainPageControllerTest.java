@@ -1,3 +1,5 @@
+package com.bb.stardium;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
