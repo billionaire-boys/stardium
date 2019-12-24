@@ -17,15 +17,8 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-    acceptanceTestImplementation.extendsFrom(implementation, testImplementation)
 }
 
-sourceSets {
-    acceptanceTest {
-        compileClasspath += main.output + test.output + configurations.testRuntime
-        runtimeClasspath += output + compileClasspath
-    }
-}
 
 repositories {
     mavenCentral()
@@ -64,28 +57,9 @@ test {
     useJUnitPlatform()
 }
 
-
-task acceptanceTest(type: Test) {
-    description = 'Runs integration tests.'
-    group = 'verification'
-
-    testClassesDirs = sourceSets.acceptanceTest.output
-    classpath = sourceSets.acceptanceTest.runtimeClasspath
-}
-
-acceptanceTest {
-    dependsOn test
-    outputs.dir snippetsDir
-    useJUnitPlatform()
-}
-
 asciidoctor {
     inputs.dir snippetsDir
-    dependsOn acceptanceTest
-}
-
-check {
-    dependsOn(acceptanceTest)
+    dependsOn test
 }
 
 bootJar {

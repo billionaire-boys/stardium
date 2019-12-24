@@ -1,11 +1,8 @@
-package com.bb.stardium;
-
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -14,7 +11,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
-@Disabled
 class RoomTest extends BaseAcceptanceTest {
     private RoomRequestDto roomRequestDto;
     private Player masterPlayer;
@@ -23,7 +19,7 @@ class RoomTest extends BaseAcceptanceTest {
     void setUp() {
         masterPlayer = Player.builder()
                 .nickname("master")
-                .nickname("master@mail.com")
+                .email("master@mail.com")
                 .password("password")
                 .build();
 
@@ -37,11 +33,13 @@ class RoomTest extends BaseAcceptanceTest {
     @Test
     @DisplayName("사용자가 방을 만들고 들어가고 나올 수 있다")
     void joinRoom() {
-        PlayerRequestDto master = new PlayerRequestDto("test", "create@room", "password", "");
+        PlayerRequestDto master = new PlayerRequestDto("test", "create@room",
+                "password", "password", "");
         Long roomNumber = newSessionRoomPost(master, roomRequestDto);
 
 
-        PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg", "dd");
+        PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com",
+                "A!1bcdefg", "A!1bcdefg", "dd");
 
         newSessionRoomJoinPost(roomNumber, joinPlayer)
                 .expectStatus()
@@ -61,10 +59,12 @@ class RoomTest extends BaseAcceptanceTest {
                         .build(),
                 LocalDateTime.now().plusHours(1L), LocalDateTime.now().plusHours(2L), 2, masterPlayer);
 
-        PlayerRequestDto master = new PlayerRequestDto("test", "create@room", "password", "");
+        PlayerRequestDto master = new PlayerRequestDto("test", "create@room",
+                "password", "password", "");
         Long roomNumber = newSessionRoomPost(master, roomWith2Players);
 
-        PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg", "dd");
+        PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com",
+                "A!1bcdefg", "A!1bcdefg", "dd");
 
         newSessionRoomJoinPost(roomNumber, joinPlayer)
                 .expectStatus()
@@ -78,54 +78,57 @@ class RoomTest extends BaseAcceptanceTest {
     @Test
     @DisplayName("방 주인이 방을 나가면 방이 사라진다")
     void quitRoom() {
-        PlayerRequestDto dto = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg", "Dd");
+        PlayerRequestDto dto = new PlayerRequestDto("test", "master@room.com",
+                "A!1bcdefg", "A!1bcdefg", "Dd");
 
-        String roomUri = newSessionPost(dto, "/rooms")
+        String roomId = newSessionPost(dto, "/rooms")
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(roomRequestDto), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()
-                .is3xxRedirection()
-                .returnResult(String.class).getRequestHeaders().getFirst("Location");
+                .isOk()
+                .expectBody(String.class)
+                .returnResult().getResponseBody();
 
-        loginSessionPost(dto, roomUri + "/quit")
+
+        loginSessionPost(dto, "/rooms/quit/" + roomId)
                 .exchange();
-
-        loginSessionPost(dto, roomUri)
-                .exchange()
-                .expectStatus()
-                .isNotFound();
     }
 
     @Test
     @DisplayName("방 주인만이 방 정보를 수정할 수 있다")
     void updateRoom() {
-        PlayerRequestDto masterPlayer = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg", "Dd");
-
-        String roomUri = newSessionPost(masterPlayer, "/rooms")
+        PlayerRequestDto masterPlayer = new PlayerRequestDto("test", "master@room.com",
+                "A!1bcdefg", "A!1bcdefg", "Dd");
+        String roomId = newSessionPost(masterPlayer, "/rooms")
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(roomRequestDto), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()
-                .is3xxRedirection()
-                .returnResult(String.class).getRequestHeaders().getFirst("Location");
+                .isOk()
+                .expectBody(String.class)
+                .returnResult()
+                .getResponseBody();
 
-        PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg", "Dd");
-        newSessionPost(joinPlayer, roomUri)
+        PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com",
+                "A!1bcdefg", "A!1bcdefg", "Dd");
+        newSessionPost(joinPlayer, "/rooms/join/" + roomId)
                 .body(Mono.just(joinPlayer), PlayerRequestDto.class)
                 .exchange()
                 .expectStatus()
                 .isOk();
 
-        loginSessionPut(masterPlayer, roomUri)
+        loginSessionPut(masterPlayer, "/rooms/" + roomId)
                 .body(Mono.just(roomRequestDto), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()
-                .is3xxRedirection();
+                .isOk();
 
-        loginSessionPut(joinPlayer, roomUri)
+        loginSessionPut(joinPlayer, "/rooms/" + roomId)
                 .body(Mono.just(roomRequestDto), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()
-                .isUnauthorized();
+                .is5xxServerError();
     }
 
     private Long newSessionRoomPost(PlayerRequestDto playerRequestDto, RoomRequestDto roomRequestDto) {

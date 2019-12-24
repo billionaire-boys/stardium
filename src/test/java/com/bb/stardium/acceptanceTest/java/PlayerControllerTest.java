@@ -1,7 +1,4 @@
-package com.bb.stardium;
-
 import com.bb.stardium.player.dto.PlayerRequestDto;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -45,7 +42,7 @@ class PlayerControllerTest extends BaseAcceptanceTest {
     @Test
     @DisplayName("로그인 상태에서 회원정보 수정 페이지 접속")
     void userEditPageLoggedIn() {
-        PlayerRequestDto player = new PlayerRequestDto("nick", "email@mail.com", "password", "");
+        PlayerRequestDto player = new PlayerRequestDto("nick", "email@mail.com", "password", "password", "");
         loginSessionGet(player, "/players/edit")
                 .exchange()
                 .expectStatus()
@@ -71,11 +68,10 @@ class PlayerControllerTest extends BaseAcceptanceTest {
     }
 
     @Test
-    @Disabled
     @DisplayName("로그인한 상태에서 회원 정보 수정")
     void userEdit() {
-        PlayerRequestDto player = new PlayerRequestDto("" +
-                "nick", "email@email.com", "password", "");
+        PlayerRequestDto player = new PlayerRequestDto("nick", "email@email.com",
+                "password", "password", "");
 
         loginSessionPost(player, "/players/edit")
                 .body(BodyInserters
@@ -93,7 +89,6 @@ class PlayerControllerTest extends BaseAcceptanceTest {
     }
 
     @Test
-    @Disabled
     @DisplayName("로그인하지 않은 상태에서 회원 정보 수정")
     void userEditNotLoggedIn() {
         webTestClient.post().uri("/players/edit")

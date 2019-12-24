@@ -20,10 +20,11 @@ public class PlayerRequestDto {
     private String mediaFile;
 
     @Builder
-    public PlayerRequestDto(String nickname, String email, String password, String statusMessage) {
+    public PlayerRequestDto(String nickname, String email, String password, String confirmPassword, String statusMessage) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
+        this.confirmPassword = confirmPassword;
         this.statusMessage = statusMessage;
     }
 
