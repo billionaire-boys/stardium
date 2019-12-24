@@ -1,7 +1,7 @@
 package com.bb.stardium.bench.dto;
 
 import com.bb.stardium.bench.domain.Address;
-import com.bb.stardium.bench.domain.Room;
+import com.bb.stardium.bench.domain.Room2;
 import com.bb.stardium.common.util.EscapedCharacters;
 import com.bb.stardium.player.domain.Player;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,7 +16,6 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @NoArgsConstructor
 @Getter
@@ -56,8 +55,8 @@ public class RoomRequestDto {
         this.master = master;
     }
 
-    public Room toEntity(Player player) {
-        return Room.builder()
+    public Room2 toEntity(Player player) {
+        return Room2.builder()
                 .title(EscapedCharacters.of(this.title))
                 .intro(EscapedCharacters.of(this.intro))
                 .address(this.address)
@@ -65,7 +64,6 @@ public class RoomRequestDto {
                 .endTime(this.endTime)
                 .playersLimit(this.playersLimit)
                 .master(player)
-                .players(new ArrayList<>())
                 .build();
     }
 }

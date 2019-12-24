@@ -30,9 +30,11 @@ public class Room2 {
     private Address address;
 
     @Future
+    @Column(name = "start_time")
     private LocalDateTime startTime;
 
     @Future
+    @Column(name = "end_time")
     private LocalDateTime endTime;
 
 
@@ -84,5 +86,24 @@ public class Room2 {
 
     public boolean isReady() {
         return !hasRemainingSeat();
+    }
+
+    public void update(Room2 another) {
+        this.description = another.description;
+        this.address = another.getAddress();
+        this.startTime = another.getStartTime();
+        this.endTime = another.getEndTime();
+    }
+
+    public String getTitle() {
+        return description.getTitle();
+    }
+
+    public String getIntro() {
+        return description.getIntro();
+    }
+
+    public int getPlayersLimit() {
+        return description.getPlayerLimit();
     }
 }

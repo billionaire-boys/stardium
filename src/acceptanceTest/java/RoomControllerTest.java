@@ -1,5 +1,6 @@
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
+import com.bb.stardium.bench.domain.Room2;
 import com.bb.stardium.bench.service.RoomService;
 import com.bb.stardium.bench.web.controller.RoomController;
 import com.bb.stardium.mediafile.config.MediaFileResourceLocation;
@@ -36,8 +37,7 @@ class RoomControllerTest {
             .password("password")
             .email("email@email.com")
             .build();
-    private final Room room = Room.builder()
-            .id(1L)
+    private final Room2 room = Room2.builder()
             .title("title")
             .intro("intro")
             .startTime(LocalDateTime.now())

@@ -1,7 +1,7 @@
 package com.bb.stardium.bench.service;
 
-import com.bb.stardium.bench.domain.Room;
-import com.bb.stardium.bench.domain.repository.RoomRepository;
+import com.bb.stardium.bench.domain.Room2;
+import com.bb.stardium.bench.domain.repository.Room2Repository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.exception.AlreadyJoinedException;
@@ -9,7 +9,9 @@ import com.bb.stardium.bench.service.exception.FixedReadyRoomException;
 import com.bb.stardium.bench.service.exception.MasterAndRoomNotMatchedException;
 import com.bb.stardium.bench.service.exception.NotFoundRoomException;
 import com.bb.stardium.player.domain.Player;
+import com.bb.stardium.player.domain.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,32 +23,32 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class RoomService {
+    private final Room2Repository roomRepository;
+    private final PlayerRepository playerRepository;
 
-    private final RoomRepository roomRepository;
-
-    public long create(RoomRequestDto roomRequest, Player player) {
-        Room room = roomRequest.toEntity(player);
-        room.addPlayer(player);
-        Room saveRoom = roomRepository.save(room);
+    public long create(RoomRequestDto roomRequest, Player master) {
+        Room2 room = roomRequest.toEntity(master);
+        room.addPlayer(master);
+        Room2 saveRoom = roomRepository.save(room);
         return saveRoom.getId();
     }
 
     public long update(long roomId, RoomRequestDto roomRequestDto, final Player player) {
-        Room room = roomRepository.findById(roomId).orElseThrow(NotFoundRoomException::new);
+        Room2 room = roomRepository.findById(roomId).orElseThrow(NotFoundRoomException::new);
         checkRoomMaster(player, room);
 
         room.update(roomRequestDto.toEntity(player));
         return room.getId();
     }
 
-    private void checkRoomMaster(Player player, Room room) {
+    private void checkRoomMaster(Player player, Room2 room) {
         if (room.isNotMaster(player)) {
             throw new MasterAndRoomNotMatchedException();
         }
     }
 
     public boolean delete(long roomId, Player loggedInPlayer) {
-        Room room = roomRepository.findById(roomId).orElseThrow(NotFoundRoomException::new);
+        Room2 room = roomRepository.findById(roomId).orElseThrow(NotFoundRoomException::new);
         if (room.isNotMaster(loggedInPlayer)) {
             throw new MasterAndRoomNotMatchedException();
         }
@@ -58,24 +60,24 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
-    public Room findRoom(long roomId) {
+    public Room2 findRoom(long roomId) {
         return roomRepository.findById(roomId)
                 .orElseThrow(NotFoundRoomException::new);
     }
 
     public List<RoomResponseDto> findAllRooms() { // TODO: 필요한지 논의
-        List<Room> rooms = roomRepository.findAll();
+        List<Room2> rooms = roomRepository.findAll();
         return toResponseDtos(rooms);
     }
 
-    private List<RoomResponseDto> toResponseDtos(List<Room> rooms) {
+    private List<RoomResponseDto> toResponseDtos(List<Room2> rooms) {
         return rooms.stream()
                 .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public Room join(Player loggedInPlayer, Long roomId) {
-        Room room = findRoom(roomId);
+    public Room2 join(Player loggedInPlayer, Long roomId) {
+        Room2 room = findRoom(roomId);
         if (room.hasPlayer(loggedInPlayer)) {
             throw new AlreadyJoinedException();
         }
@@ -84,8 +86,8 @@ public class RoomService {
         return room;
     }
 
-    public void quit(Player loggedInPlayer, Long roomId) {
-        Room room = findRoom(roomId);
+    public void quit(long roomId, Player loggedInPlayer) {
+        Room2 room = findRoom(roomId);
 
         if (room.isReady()) {
             throw new FixedReadyRoomException();
@@ -97,32 +99,32 @@ public class RoomService {
     @Transactional(readOnly = true)
     public List<RoomResponseDto> findAllUnexpiredRooms() {
         return roomRepository.findAll().stream()
-                .filter(Room::isUnexpiredRoom)
-                .filter(Room::hasRemainingSeat)
-                .sorted(Comparator.comparing(Room::getStartTime)) // TODO: 추후 추출? 혹은 쿼리 등 다른 방법?
+                .filter(Room2::isUnexpiredRoom)
+                .filter(Room2::hasRemainingSeat)
+                .sorted(Comparator.comparing(Room2::getStartTime)) // TODO: 추후 추출? 혹은 쿼리 등 다른 방법?
                 .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<RoomResponseDto> findPlayerJoinedRoom(Player player) {
-        return roomRepository.findByPlayers_Email(player.getEmail()).stream()
-                .sorted(Comparator.comparing(Room::getStartTime))
+        return roomRepository.findByPlayersOrderByStartTimeAsc(player).stream()
                 .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<RoomResponseDto> findRoomsFilterBySection(String section) {
-        return roomRepository.findAllByAddressSectionOrderByStartTimeAsc(section).stream()
-                .filter(Room::isUnexpiredRoom)
+        Sort sort = Sort.by(Sort.Direction.ASC, "start_time");
+        return roomRepository.findAllByAddressSection(section, sort).stream()
+                .filter(Room2::isUnexpiredRoom)
                 .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
     }
 
     public List<RoomResponseDto> findRoomBySearchKeyword(String searchKeyword) {
-        return roomRepository.findAllByTitleContaining(searchKeyword).stream()
-                .filter(Room::isUnexpiredRoom)
+        return roomRepository.findAllByDescriptionTitleContaining(searchKeyword).stream()
+                .filter(Room2::isUnexpiredRoom)
                 .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
     }
