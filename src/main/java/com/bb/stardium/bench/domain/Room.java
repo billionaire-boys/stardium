@@ -68,7 +68,6 @@ public class Room {
             throw new PlayerAlreadyExistException();
         }
         this.players.add(player);
-        player.addRoom(this);
     }
 
     public boolean hasPlayer(Player player) {
@@ -76,7 +75,6 @@ public class Room {
     }
 
     public void removePlayer(Player player) {
-        player.removeRoom(this);
         this.players.remove(player);
     }
 

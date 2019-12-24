@@ -62,7 +62,6 @@ class RoomServiceTest {
                 .nickname("master")
                 .email("master@email.com")
                 .password("password")
-                .rooms(new ArrayList<>())
                 .build();
 
         player = Player.builder()
@@ -70,7 +69,6 @@ class RoomServiceTest {
                 .nickname("player")
                 .email(PLAYER_EMAIL)
                 .password("password")
-                .rooms(new ArrayList<>())
                 .build();
 
         address = Address.builder()
@@ -169,7 +167,6 @@ class RoomServiceTest {
         roomService.join(player, room1.getId());
 
         assertThat(room1.getPlayers().contains(player)).isTrue();
-        assertThat(player.getRooms().contains(room1)).isTrue();
     }
 
     @Test
@@ -179,7 +176,6 @@ class RoomServiceTest {
 
         roomService.quit(player, room1.getId());
         assertThat(room1.getPlayers().contains(player)).isFalse();
-        assertThat(player.getRooms().contains(room1)).isFalse();
     }
 
     @Test

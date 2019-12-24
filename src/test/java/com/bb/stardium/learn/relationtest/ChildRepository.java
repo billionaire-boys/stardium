@@ -1,4 +1,4 @@
-package com.bb.stardium.bench.domain.relationtest;
+package com.bb.stardium.learn.relationtest;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

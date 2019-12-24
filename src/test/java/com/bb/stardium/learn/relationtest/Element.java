@@ -1,4 +1,4 @@
-package com.bb.stardium.bench.domain.relationtest;
+package com.bb.stardium.learn.relationtest;
 
 import lombok.AccessLevel;
 import lombok.Getter;

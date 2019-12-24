@@ -27,14 +27,12 @@ class RoomTest {
             .nickname("nick")
             .email("email@email.com")
             .password("password")
-            .rooms(new ArrayList<>())
             .build();
     private Player master = Player.builder()
             .id(2L)
             .nickname("master")
             .email("master@email.com")
             .password("password")
-            .rooms(new ArrayList<>())
             .build();
     private Room room = Room.builder()
             .id(1L)

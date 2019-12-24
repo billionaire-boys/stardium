@@ -1,4 +1,4 @@
-package com.bb.stardium.bench.domain.relationtest;
+package com.bb.stardium.learn.relationtest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
