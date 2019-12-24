@@ -79,8 +79,8 @@ class RoomServiceTest {
         startTime = LocalDateTime.now().plusDays(1);
         endTime = LocalDateTime.now().plusDays(1).plusHours(3);
 
-        room1 = new Room(1L, "title", "intro", address, startTime, endTime, 10, master, new ArrayList<>(List.of(master)));
-        room2 = new Room(2L, "title2", "intro2", address, startTime, endTime, 12, master, new ArrayList<>(List.of(player)));
+        room1 = new Room(1L, "title", "intro", 10, address, startTime, endTime, master, new ArrayList<>(List.of(master)));
+        room2 = new Room(2L, "title2", "intro2", 12, address, startTime, endTime, master, new ArrayList<>(List.of(player)));
         room3 = Room.builder().id(3L).title("title3").intro("intro").address(address)
                 .startTime(startTime.minusDays(4)).endTime(endTime.minusDays(4))
                 .playersLimit(10).master(master)

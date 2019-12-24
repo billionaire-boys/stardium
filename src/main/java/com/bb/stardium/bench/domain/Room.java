@@ -26,8 +26,8 @@ public class Room {
     private Long id;
 
     private String title;
-
     private String intro;
+    private int playersLimit;
 
     @Embedded
     private Address address;
@@ -38,7 +38,6 @@ public class Room {
     @Future
     private LocalDateTime endTime;
 
-    private int playersLimit;
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "master_id")
