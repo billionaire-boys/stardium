@@ -6,20 +6,36 @@ const chatInput = document.getElementById("chat-input");
 const sendButton = document.getElementById("chat-send-button");
 const roomId = document.getElementById("room-id").value;
 const playerId = document.getElementById("player-id").value;
+const playerNickname = document.getElementById("player-nickname").value;
 
 const makeChatMessageBlock = (messageBody) =>
-`<div class="comment">
+`<div class="comment item">
     <div class="content">
         <a class="author">${messageBody.nickname}</a>
-        <div class="metadata">
-            <span class="date">${messageBody.timestamp}</span>
-        </div>
+        <span class="date">${messageBody.timestamp}</span>
         <div class="text">${messageBody.message}</div>
     </div>
 </div>`;
 
+const makeMyChatMessageBlock = (messageBody) =>
+`<div class="my-comment item">
+    <div class="content">
+        <span class="date">${messageBody.timestamp}</span>
+        <a class="author">${messageBody.nickname}</a>
+        <div class="text">${messageBody.message}</div>
+    </div>
+</div>`
+;
+
 const appendMessage = (messageBody) => {
-    chatBox.insertAdjacentHTML("beforeend", makeChatMessageBlock(messageBody));
+    let chatMessage;
+
+    if (playerNickname === messageBody.nickname) {
+        chatMessage = makeMyChatMessageBlock(messageBody);
+    } else {
+        chatMessage = makeChatMessageBlock(messageBody);
+    }
+    chatBox.insertAdjacentHTML("beforeend", chatMessage);
     chatBoxScrollToBottom();
 };
 
