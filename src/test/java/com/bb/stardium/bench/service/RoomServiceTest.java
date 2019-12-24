@@ -1,7 +1,7 @@
 package com.bb.stardium.bench.service;
 
 import com.bb.stardium.bench.domain.Address;
-import com.bb.stardium.bench.domain.Room2;
+import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.domain.repository.Room2Repository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.dto.RoomResponseDto;
@@ -48,9 +48,9 @@ class RoomServiceTest {
     private Address address;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Room2 room1;
-    private Room2 room2;
-    private Room2 readyRoom;
+    private Room room1;
+    private Room room;
+    private Room readyRoom;
     private Player master;
     private Player player;
 
@@ -76,7 +76,7 @@ class RoomServiceTest {
         startTime = LocalDateTime.now().plusDays(1);
         endTime = LocalDateTime.now().plusDays(1).plusHours(3);
 
-        room1 = new MockRoom(Room2.builder()
+        room1 = new MockRoom(Room.builder()
                 .title("타이틀1")
                 .intro("인트로1")
                 .playersLimit(10)
@@ -86,7 +86,7 @@ class RoomServiceTest {
                 .endTime(endTime)
                 .build());
 
-        room2 = new MockRoom(Room2.builder()
+        room = new MockRoom(Room.builder()
                 .title("타이틀2")
                 .intro("인트로2")
                 .playersLimit(12)
@@ -96,7 +96,7 @@ class RoomServiceTest {
                 .endTime(endTime)
                 .build());
 
-        readyRoom = Room2.builder()
+        readyRoom = Room.builder()
                 .title("title4")
                 .intro("intro")
                 .address(address)
@@ -114,12 +114,12 @@ class RoomServiceTest {
     void 생성() {
         RoomRequestDto requestDto = new RoomRequestDto("타이틀1", "인트로", address, startTime, endTime, 10, master);
 
-        given(roomRepository.save(any(Room2.class))).willReturn(room1);
+        given(roomRepository.save(any(Room.class))).willReturn(room1);
 
         long id = roomService.create(requestDto, master);
 
         assertThat(id).isEqualTo(10);
-        verify(roomRepository).save(any(Room2.class));
+        verify(roomRepository).save(any(Room.class));
     }
 
     @DisplayName("update method 성공")
@@ -164,7 +164,7 @@ class RoomServiceTest {
     void findRoom() {
         given(roomRepository.findById(anyLong())).willReturn(Optional.ofNullable(room1));
 
-        Room2 room = roomService.findRoom(room1.getId());
+        Room room = roomService.findRoom(room1.getId());
 
         assertThat(room.getTitle()).isEqualTo(room1.getTitle());
         assertThat(room.getId()).isEqualTo(room1.getId());
@@ -175,7 +175,7 @@ class RoomServiceTest {
     @DisplayName("findAllRoom method 성공")
     @Test
     void findAllRoom() {
-        ArrayList<Room2> allRooms = Lists.newArrayList(room1, room2);
+        ArrayList<Room> allRooms = Lists.newArrayList(room1, room);
         given(roomRepository.findAll()).willReturn(allRooms);
 
         List<RoomResponseDto> resultRooms = roomService.findAllRooms();
@@ -229,7 +229,7 @@ class RoomServiceTest {
     @DisplayName("자신이 참가한 방을 찾기")
     @Test
     void findPlayerJoinedRoom() {
-        List<Room2> rooms = Lists.newArrayList(room1, room2);
+        List<Room> rooms = Lists.newArrayList(room1, room);
         given(roomRepository.findByPlayersOrderByStartTimeAsc(any(Player.class))).willReturn(rooms);
 
         List<RoomResponseDto> actual = roomService.findPlayerJoinedRoom(master);
@@ -242,12 +242,12 @@ class RoomServiceTest {
     @DisplayName("현재 시간 이후이고 참가가능 인원이 남아 있는 방을 찾기")
     @Test
     void findAllUnexpiredRooms() {
-        List<Room2> rooms = Lists.newArrayList(room1, room2, readyRoom);
+        List<Room> rooms = Lists.newArrayList(room1, room, readyRoom);
         given(roomRepository.findAll()).willReturn(rooms);
 
         List<RoomResponseDto> actual = roomService.findAllUnexpiredRooms();
         List<RoomResponseDto> expected = rooms.stream()
-                .filter(Room2::hasRemainingSeat)
+                .filter(Room::hasRemainingSeat)
                 .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
 
@@ -258,7 +258,7 @@ class RoomServiceTest {
     @Test
     public void findRoomsFilterBySection() throws Exception {
         String section = "송파구";
-        List<Room2> rooms = Lists.newArrayList(room1, room2);
+        List<Room> rooms = Lists.newArrayList(room1, room);
 
         // given
         given(roomRepository.findAllByAddressSection(eq(section), any(Sort.class)))
@@ -273,10 +273,10 @@ class RoomServiceTest {
 
 }
 
-class MockRoom extends Room2 {
-    MockRoom(Room2 room2) {
-        super(room2.getTitle(), room2.getIntro(), room2.getPlayersLimit(), room2.getAddress(),
-                room2.getStartTime(), room2.getEndTime(), room2.getMaster());
+class MockRoom extends Room {
+    MockRoom(Room room) {
+        super(room.getTitle(), room.getIntro(), room.getPlayersLimit(), room.getAddress(),
+                room.getStartTime(), room.getEndTime(), room.getMaster());
     }
 
     @Override

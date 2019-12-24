@@ -1,6 +1,6 @@
 package com.bb.stardium.bench.dto;
 
-import com.bb.stardium.bench.domain.Room2;
+import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.player.domain.Player;
 import lombok.*;
 
@@ -54,7 +54,7 @@ public class RoomResponseDto {
         this.master = master;
     }
 
-    public RoomResponseDto(Room2 room) {
+    public RoomResponseDto(Room room) {
         this.title = room.getTitle();
         this.intro = room.getIntro();
         this.address = String.format("%s %s %s",

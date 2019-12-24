@@ -98,7 +98,7 @@ public class ChatTest extends BaseAcceptanceTest {
                 .nickname("master@mail.com")
                 .password("password")
                 .build();
-        PlayerRequestDto playerRequestDto = new PlayerRequestDto("test", "create@room", "password", "");
+        PlayerRequestDto playerRequestDto = new PlayerRequestDto("test", "create@room", "password", "password", "");
         playerRequestDto.setConfirmPassword("password");
         RoomRequestDto roomRequestDto = new RoomRequestDto("title", "intro",
                 Address.builder()

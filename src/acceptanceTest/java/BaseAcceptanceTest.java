@@ -2,8 +2,6 @@ import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
@@ -55,16 +53,14 @@ public abstract class BaseAcceptanceTest {
         String cookie = getNewCookie(dto);
         return webTestClient.post()
                 .uri(uri)
-                .header("Cookie", cookie)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED);
+                .header("Cookie", cookie);
     }
 
     protected WebTestClient.RequestBodySpec newSessionPut(PlayerRequestDto dto, String uri) {
         String cookie = getNewCookie(dto);
         return webTestClient.put()
                 .uri(uri)
-                .header("Cookie", cookie)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED);
+                .header("Cookie", cookie);
     }
 
     protected WebTestClient.RequestHeadersSpec newSessionGet(PlayerRequestDto dto, String uri) {
@@ -81,16 +77,14 @@ public abstract class BaseAcceptanceTest {
         String cookie = getLoginCookie(dto);
         return webTestClient.post()
                 .uri(uri)
-                .header("Cookie", cookie)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED);
+                .header("Cookie", cookie);
     }
 
     protected WebTestClient.RequestBodySpec loginSessionPut(PlayerRequestDto dto, String uri) {
         String cookie = getLoginCookie(dto);
         return webTestClient.put()
                 .uri(uri)
-                .header("Cookie", cookie)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED);
+                .header("Cookie", cookie);
     }
 
     protected WebTestClient.RequestHeadersSpec loginSessionGet(PlayerRequestDto dto, String uri) {

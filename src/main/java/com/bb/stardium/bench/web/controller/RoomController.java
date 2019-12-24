@@ -1,6 +1,6 @@
 package com.bb.stardium.bench.web.controller;
 
-import com.bb.stardium.bench.domain.Room2;
+import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.RoomService;
 import com.bb.stardium.common.web.argumentresolver.annotation.LoggedInPlayer;
@@ -35,7 +35,7 @@ public class RoomController {
 
     @GetMapping("/update-room/{roomId}")
     public String updateRoom(@PathVariable Long roomId, Model model, @LoggedInPlayer final Player loggedInPlayer) {
-        Room2 room = roomService.findRoom(roomId);
+        Room room = roomService.findRoom(roomId);
 
         if (room.isNotMaster(loggedInPlayer)) {
             return "redirect:/";
@@ -47,7 +47,7 @@ public class RoomController {
 
     @GetMapping("/{roomId}")
     public String get(@PathVariable Long roomId, Model model, @LoggedInPlayer final Player loggedInPlayer) {
-        Room2 room = roomService.findRoom(roomId);
+        Room room = roomService.findRoom(roomId);
 
         if (!room.hasPlayer(loggedInPlayer)) {
             return "redirect:/";
@@ -59,7 +59,7 @@ public class RoomController {
 
     @GetMapping("/{roomId}/details")
     public String getDetail(@PathVariable Long roomId, Model model) {
-        Room2 room = roomService.findRoom(roomId);
+        Room room = roomService.findRoom(roomId);
         model.addAttribute("room", room);
         return "room-detail";
     }

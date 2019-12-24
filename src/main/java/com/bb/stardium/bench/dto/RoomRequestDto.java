@@ -1,7 +1,7 @@
 package com.bb.stardium.bench.dto;
 
 import com.bb.stardium.bench.domain.Address;
-import com.bb.stardium.bench.domain.Room2;
+import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.common.util.EscapedCharacters;
 import com.bb.stardium.player.domain.Player;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -55,8 +55,8 @@ public class RoomRequestDto {
         this.master = master;
     }
 
-    public Room2 toEntity(Player player) {
-        return Room2.builder()
+    public Room toEntity(Player player) {
+        return Room.builder()
                 .title(EscapedCharacters.of(this.title))
                 .intro(EscapedCharacters.of(this.intro))
                 .address(this.address)
