@@ -7,7 +7,7 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.format.DateTimeFormatter;
-
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -39,11 +39,15 @@ public class RoomResponseDto {
     @NotNull
     private Player master;
 
+    @NotNull
+    private List<Player> players;
+
     @Builder
     public RoomResponseDto(@NotBlank long id, @NotBlank String title,
                            @NotBlank String intro, @NotBlank String address,
                            @NotBlank String playTime, @NotBlank int playLimits,
-                           @NotBlank int playerCount, @NotNull Player master) {
+                           @NotBlank int playerCount, @NotNull Player master,
+                           @NotNull List<Player> players) {
         this.id = id;
         this.title = title;
         this.intro = intro;
@@ -52,6 +56,7 @@ public class RoomResponseDto {
         this.playLimits = playLimits;
         this.playerCount = playerCount;
         this.master = master;
+        this.players = players;
     }
 
     public RoomResponseDto(Room room) {
@@ -68,5 +73,11 @@ public class RoomResponseDto {
         this.master = room.getMaster();
         this.id = room.getId();
         this.playerCount = room.getPlayers().size();
+        this.players = room.getPlayers();
+    }
+
+    public boolean hasPlayer(String nickname) {
+        return players.stream()
+                .anyMatch(player -> player.getNickname().equals(nickname));
     }
 }

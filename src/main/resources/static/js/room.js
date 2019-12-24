@@ -197,10 +197,14 @@ const ROOM_APP = (() => {
                 window.location.href = '/';
             };
 
-            connector.fetchTemplateWithoutBody('/rooms/' + roomId,
-                connector.DELETE,
-                ifSucceed
-            );
+            const sendDelete = () => {
+                connector.fetchTemplateWithoutBody('/rooms/' + roomId,
+                    connector.DELETE,
+                    ifSucceed
+                );
+            };
+
+            confirm('정말로 이 방을 삭제하시겠습니까?') ? sendDelete() : false;
         };
 
         const findRoomsBySection = () => {

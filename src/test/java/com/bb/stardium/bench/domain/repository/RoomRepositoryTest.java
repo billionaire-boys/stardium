@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RoomRepositoryTest {
 
     @Autowired
-    RoomRepository roomRepository;
+    Room2Repository roomRepository;
 
     @Autowired
     TestEntityManager testEntityManager;
@@ -40,21 +40,14 @@ class RoomRepositoryTest {
                 .password("password")
                 .build();
 
-        Player player = Player.builder()
+        Player player2 = Player.builder()
                 .nickname("nick2")
                 .email("email2@email.com")
                 .password("password")
                 .build();
 
-        Player player3 = Player.builder()
-                .nickname("nick3")
-                .email("email3@email.com")
-                .password("password")
-                .build();
-
         testEntityManager.persist(player1);
-        testEntityManager.persist(player);
-        testEntityManager.persist(player3);
+        testEntityManager.persist(player2);
 
         Address address = Address.builder()
                 .city("서울시").section("송파구")
@@ -62,29 +55,34 @@ class RoomRepositoryTest {
                 .build();
         LocalDateTime startTime = LocalDateTime.now().plusDays(1);
         LocalDateTime endTime = LocalDateTime.now().plusDays(1).plusHours(2);
-        Room room1 = Room.builder().id(100L).title("title1").intro("intro").address(address)
-                .startTime(startTime).endTime(endTime)
-                .playersLimit(10).master(player1)
-                .players(List.of(player1)).build();
-        Room room2 = Room.builder().id(200L).title("title2").intro("intro").address(address)
-                .startTime(startTime.plusHours(3)).endTime(endTime.plusHours(3))
-                .playersLimit(10).master(player)
-                .players(List.of(player, player3)).build();
-        Room room3 = Room.builder().id(300L).title("title3").intro("intro").address(address)
-                .startTime(startTime.plusDays(4)).endTime(endTime.plusDays(4))
-                .playersLimit(10).master(player3)
-                .players(List.of()).build();
-        Room room4 = Room.builder().id(400L).title("title4").intro("intro").address(address)
-                .startTime(startTime.plusHours(5)).endTime(endTime.plusHours(5))
-                .playersLimit(2).master(player)
-                .players(List.of(player1, player, player3)).build();
-        room1 = roomRepository.save(room1);
-        room2 = roomRepository.save(room2);
-        room3 = roomRepository.save(room3);
-        room4 = roomRepository.save(room4);
+        Room room1 = Room.builder()
+                .title("title1")
+                .intro("intro")
+                .address(address)
+                .startTime(startTime)
+                .endTime(endTime)
+                .playersLimit(10)
+                .master(player1)
+                .build();
 
-        List<Room> rooms = roomRepository.findByPlayers_Email(player1.getEmail());
-        assertThat(rooms).contains(room1, room4);
-        assertThat(rooms).doesNotContain(room2, room3);
+        Room room = Room.builder()
+                .title("title2")
+                .intro("intro")
+                .address(address)
+                .startTime(startTime.plusHours(3))
+                .endTime(endTime.plusHours(3))
+                .playersLimit(10)
+                .master(player2)
+                .build();
+
+        room1.addPlayer(player1);
+        room.addPlayer(player2);
+
+        room1 = roomRepository.save(room1);
+        room = roomRepository.save(room);
+
+        List<Room> rooms = roomRepository.findByPlayersOrderByStartTimeAsc(player1);
+        assertThat(rooms).contains(room1);
+        assertThat(rooms).doesNotContain(room);
     }
 }

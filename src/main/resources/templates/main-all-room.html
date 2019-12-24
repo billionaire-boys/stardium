@@ -61,7 +61,13 @@
                         </div>
                     </div>
                     <div class="extra content">
-                        <button class="ui fluid violet button room-join-button" th:data-room-id="${room.id}">참여하기
+                        <button class="ui fluid violet button room-join-button"
+                                th:data-room-id="${room.id}"
+                                th:if="${!room.hasPlayer(session.login.nickname)}">참여하기
+                        </button>
+                        <button class="ui fluid basic violet button"
+                                th:if="${room.hasPlayer(session.login.nickname)}"
+                                th:onclick="'window.location.href=\'/rooms/' + ${room.id} + '\''">상세 보기
                         </button>
                     </div>
                 </div>
