@@ -1,3 +1,5 @@
+package com.bb.stardium;
+
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.player.domain.Player;
