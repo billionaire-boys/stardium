@@ -70,35 +70,36 @@ const ROOM_APP = (() => {
         let roomId = document.getElementById('room-id');
         roomId = roomId ? roomId.value : 0;
 
+        const title = document.getElementById('title');
+        const city = document.getElementById('city');
+        const section = document.getElementById('section');
+        const detail = document.getElementById('detail');
+        const startTime = document.getElementById('startTime');
+        const endTime = document.getElementById('endTime');
+        const playersLimit = document.getElementById('playersLimit');
+        const intro = document.getElementById('intro');
+
         const saveRoom = event => {
-            const title = document.getElementById('title').value;
-            const city = document.getElementById('city').value;
-            const section = document.getElementById('section').value;
-            const detail = document.getElementById('detail').value;
-            const startTime = document.getElementById('startTime').value;
-            const endTime = document.getElementById('endTime').value;
-            const playersLimit = document.getElementById('playersLimit').value;
-            const intro = document.getElementById('intro').value;
 
             event.preventDefault();
 
-            if (title === "" || city === "" || section === "" || detail === "" ||
-                startTime === "" || endTime === "" || playersLimit === "" && intro === "") {
+            if (title.value === "" || city.value === "" || section.value === "" || detail.value === "" ||
+                startTime.value === "" || endTime.value === "" || playersLimit.value === "" && intro.value === "") {
                 alert('모든 항목을 입력해주세요!');
                 return;
             }
 
             const roomBasicInfo = {
-                title: title,
+                title: title.value,
                 address: {
-                    city: city,
-                    section: section,
-                    detail: detail,
+                    city: city.value,
+                    section: section.value,
+                    detail: detail.value,
                 },
-                startTime: startTime,
-                endTime: endTime,
-                playersLimit: playersLimit,
-                intro: intro,
+                startTime: startTime.value,
+                endTime: endTime.value,
+                playersLimit: playersLimit.value,
+                intro: intro.value,
             };
 
             const ifSucceed = (response) => {
@@ -122,13 +123,13 @@ const ROOM_APP = (() => {
                 title: title.value,
                 address: {
                     city: city.value,
-                    gu: gu.value,
-                    detail: detail.value
+                    section: section.value,
+                    detail: detail.value,
                 },
                 startTime: startTime.value,
                 endTime: endTime.value,
                 playersLimit: playersLimit.value,
-                intro: intro.value
+                intro: intro.value,
             };
 
             const ifSucceed = (response) => {
@@ -165,14 +166,12 @@ const ROOM_APP = (() => {
             }
         };
 
-        const quitRoom = (event) => {
+        const quitRoom = () => {
 
-            const ifSucceed = (response) => {
-                response.json().then(data => {
+            const ifSucceed = () => {
                     alert("나가는 데 성공했습니다!");
                     window.location.href = `/rooms`
-                })
-            };
+                };
 
             connector.fetchTemplateWithoutBody('/rooms/quit/' + roomId,
                 connector.POST,
@@ -180,8 +179,8 @@ const ROOM_APP = (() => {
             );
         };
 
-        const deleteRoom = (event) => {
-            const ifSucceed = (response) => {
+        const deleteRoom = () => {
+            const ifSucceed = () => {
                 alert('방을 삭제하였습니다!');
                 window.location.href = '/';
             };
@@ -205,7 +204,7 @@ const ROOM_APP = (() => {
             }
         };
 
-        const searchRoomByButton = (event) => {
+        const searchRoomByButton = () => {
             const searchKeyword = document.getElementById('search-keyword').value;
             window.location.href = `/search/${searchKeyword}`;
         };

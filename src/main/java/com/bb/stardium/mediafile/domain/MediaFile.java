@@ -1,5 +1,6 @@
 package com.bb.stardium.mediafile.domain;
 
+import com.bb.stardium.common.util.StringUtil;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,12 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
+@Entity
 public class MediaFile {
-    private static final String DEFAULT_URL = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Favatars2.githubusercontent.com%2Fu%2F41888327%3Fs%3D460%26v%3D4&type=b400";
+    private static final String DEFAULT_URL = "/images/profile-default.jpg";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +34,7 @@ public class MediaFile {
     }
 
     private String validUrl(String inputUrl) {
-        if (inputUrl == null || inputUrl.isEmpty()) {
+        if (StringUtil.isBlank(inputUrl)) {
             return DEFAULT_URL;
         }
         return inputUrl;

@@ -1,0 +1,15 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:snippets: ../../../build/generated-snippets
+
+==== Request curl
+
+include::{snippets}/player/my-room/curl-request.adoc[]
+
+==== Response result
+
+include::{snippets}/common/main/curl-request.adoc[]
+

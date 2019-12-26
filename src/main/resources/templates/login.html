@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko" layout:decorator="layout/main_layout"
+<html lang="ko" layout:decorator="layout/main-layout"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 
-<th:block layout:fragment="custom_head">
+<th:block layout:fragment="custom-head">
     <title>로그인</title>
 </th:block>
 
-<th:block layout:fragment="content_body">
+<th:block layout:fragment="content-body">
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <img alt="login.png" class="ui huge image" src="/images/login.png">
@@ -34,12 +34,12 @@
                 </div>
             </div>
             <div class="ui message">
-                처음이신가요? <a href="/player/new"> 회원가입</a>
+                처음이신가요? <a href="/players/new"> 회원가입</a>
             </div>
             <div class="ui segments" style="background: #f7e318;">
-                <a href="https://kauth.kakao.com/oauth/authorize?client_id=974d268d773b35a4a9e63eca0b74ec16&redirect_uri=http://localhost:8080/oauth/kakao&response_type=code"
+                <a href="https://kauth.kakao.com/oauth/authorize?client_id=974d268d773b35a4a9e63eca0b74ec16&redirect_uri=http://15.164.95.121:8080/oauth/kakao&response_type=code"
                 >
-                    <img src="/images/kakao-wide.png" style="padding-top:3px"></a>
+                    <img src="/images/kakao.png" style="padding-top:3px"></a>
             </div>
         </div>
     </div>

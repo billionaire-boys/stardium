@@ -4,7 +4,7 @@ import com.bb.stardium.mediafile.service.MediaFileService;
 import com.bb.stardium.player.dto.PlayerRequestDto;
 import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.PlayerService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.util.Objects;
 
+@RequiredArgsConstructor
+@RequestMapping("/players")
 @Controller
-@RequestMapping("/player")
-@AllArgsConstructor
 public class PlayerController {
+
     private final PlayerService playerService;
     private final MediaFileService mediaFileService;
 
@@ -41,21 +41,13 @@ public class PlayerController {
 
     @GetMapping("/edit")
     public String editPage(HttpSession session, Model model) {
-        if (Objects.isNull(session.getAttribute("login"))) {
-            return "redirect:/login";
-        }
         model.addAttribute("model", session.getAttribute("login"));
-        return "user_edit.html";
+        return "user-edit.html";
     }
 
     @PostMapping("/edit")
     public String edit(PlayerRequestDto requestDto, HttpSession session,
                        @RequestParam("profile") MultipartFile file, RedirectAttributes redirectAttributes) {
-        if (Objects.isNull(session.getAttribute("login"))) {
-            return "redirect:/login";
-        }
-
-
         if (file != null && !file.isEmpty()) {
             String fileName = mediaFileService.save(file);
             requestDto.setMediaFile(fileName);

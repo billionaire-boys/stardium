@@ -7,19 +7,25 @@ import com.bb.stardium.player.dto.PlayerResponseDto;
 import com.bb.stardium.player.service.exception.AuthenticationFailException;
 import com.bb.stardium.player.service.exception.EmailAlreadyExistException;
 import com.bb.stardium.player.service.exception.EmailNotExistException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
+@Service
 public class PlayerService {
+
     private final PlayerRepository playerRepository;
 
     @Transactional(readOnly = true)
     public Player findByPlayerEmail(final String email) {
         return playerRepository.findByEmail(email).orElseThrow(EmailNotExistException::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Player findByResponseDto(final PlayerResponseDto responseDto) {
+        return findByPlayerEmail(responseDto.getEmail());
     }
 
     public Player register(final PlayerRequestDto requestDto) {

@@ -4,7 +4,8 @@ const POST_API = (() => {
         const postService = new PostService();
 
         const postExecute = () => {
-            document.querySelector("#fullAddress").addEventListener("click", postService.execute);
+            document.querySelector("#full-address").addEventListener("click", postService.execute);
+            document.querySelector("#input-full-address").addEventListener("keydown", postService.execute);
         };
 
         const init = () => {
@@ -18,8 +19,10 @@ const POST_API = (() => {
 
     const PostService = function() {
 
-        const executePostApi = function() {
-            getAddress();
+        const executePostApi = (event) => {
+            if (event.target.tagName === "INPUT" || event.target.tagName === "I") {
+                getAddress();
+            }
         };
 
         function getAddress() {
@@ -33,8 +36,8 @@ const POST_API = (() => {
                         return;
                     }
 
-                    document.querySelector("#fullAddress").value = fullAddress;
-                    document.querySelector("#fullAddress").disabled = true;
+                    document.querySelector("#full-address").value = fullAddress;
+                    document.querySelector("#full-address").disabled = true;
                     document.querySelector("#city").value = address[0];
                     document.querySelector("#section").value = address[1];
 

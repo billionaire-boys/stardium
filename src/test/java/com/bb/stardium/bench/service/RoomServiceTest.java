@@ -5,12 +5,12 @@ import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.bench.domain.repository.RoomRepository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.dto.RoomResponseDto;
+import com.bb.stardium.bench.service.exception.FixedReadyRoomException;
 import com.bb.stardium.bench.service.exception.MasterAndRoomNotMatchedException;
 import com.bb.stardium.player.domain.Player;
 import com.bb.stardium.player.service.PlayerService;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +58,7 @@ class RoomServiceTest {
     @BeforeEach
     void setUp() {
         master = Player.builder()
+                .id(1L)
                 .nickname("master")
                 .email("master@email.com")
                 .password("password")
@@ -65,6 +66,7 @@ class RoomServiceTest {
                 .build();
 
         player = Player.builder()
+                .id(2L)
                 .nickname("player")
                 .email(PLAYER_EMAIL)
                 .password("password")
@@ -85,7 +87,7 @@ class RoomServiceTest {
                 .players(new ArrayList<>(Arrays.asList(master, player))).build();
         room4 = Room.builder().id(4L).title("title4").intro("intro").address(address)
                 .startTime(startTime.plusHours(5)).endTime(endTime.plusHours(5))
-                .playersLimit(2).master(player)
+                .playersLimit(2).master(master)
                 .players(new ArrayList<>(Arrays.asList(master, player))).build();
     }
 
@@ -123,7 +125,7 @@ class RoomServiceTest {
         given(roomRepository.findById(any())).willReturn(Optional.ofNullable(room1));
         given(playerService.findByPlayerEmail(room1.getMaster().getEmail())).willReturn(room1.getMaster());
 
-        roomService.delete(room1.getId(), room1.getMaster().getEmail());
+        roomService.delete(room1.getId(), room1.getMaster());
 
         verify(roomRepository).delete(room1);
     }
@@ -135,7 +137,7 @@ class RoomServiceTest {
         given(playerService.findByPlayerEmail(player.getEmail())).willReturn(player);
 
         assertThrows(MasterAndRoomNotMatchedException.class, () -> {
-            roomService.delete(room1.getId(), player.getEmail());
+            roomService.delete(room1.getId(), player);
         });
     }
 
@@ -160,12 +162,11 @@ class RoomServiceTest {
     }
 
     @Test
-    @Disabled
     void join() {
         given(playerService.findByPlayerEmail(any())).willReturn(player);
         given(roomRepository.findById(1L)).willReturn(Optional.of(room1));
 
-        roomService.join(PLAYER_EMAIL, room1.getId());
+        roomService.join(player, room1.getId());
 
         assertThat(room1.getPlayers().contains(player)).isTrue();
         assertThat(player.getRooms().contains(room1)).isTrue();
@@ -176,11 +177,35 @@ class RoomServiceTest {
         given(playerService.findByPlayerEmail(any())).willReturn(player);
         given(roomRepository.findById(1L)).willReturn(Optional.of(room1));
 
-        roomService.quit(PLAYER_EMAIL, room1.getId());
+        roomService.quit(player, room1.getId());
         assertThat(room1.getPlayers().contains(player)).isFalse();
         assertThat(player.getRooms().contains(room1)).isFalse();
-
     }
+
+    @Test
+    @DisplayName("레디인 방에서 나가기")
+    void quit_in_ready_room() {
+        Room readyRoom = room4;
+        given(playerService.findByPlayerEmail(any())).willReturn(player);
+        given(roomRepository.findById(readyRoom.getId())).willReturn(Optional.of(readyRoom));
+
+        assertThrows(FixedReadyRoomException.class, () -> {
+            roomService.quit(player, readyRoom.getId());
+        });
+    }
+
+    @Test
+    @DisplayName("레디인 방에서 방장이 방을 폭파 시도하나 실패")
+    void delete_ready_room() {
+        Room readyRoom = room4;
+        given(playerService.findByPlayerEmail(any())).willReturn(master);
+        given(roomRepository.findById(readyRoom.getId())).willReturn(Optional.of(readyRoom));
+
+        assertThrows(FixedReadyRoomException.class, () -> {
+            roomService.delete(readyRoom.getId(), master);
+        });
+    }
+
 
     @DisplayName("자신이 참가한 방을 찾기")
     @Test

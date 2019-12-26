@@ -5,13 +5,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.OffsetDateTime;
 
-
-@Entity
 @Getter
 @ToString
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Entity
 public class ChatMessage {
 
     @Id

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="ko" layout:decorator="layout/main_layout"
+<html lang="ko" layout:decorator="layout/main-layout"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 
-<th:block layout:fragment="custom_head">
+<th:block layout:fragment="custom-head">
     <title>로그인</title>
     <link href="/css/user-edit.css" rel="stylesheet" type="text/css">
 </th:block>
 
-<th:block layout:fragment="content_body">
+<th:block layout:fragment="content-body">
     <div class="ui top aligned center aligned grid">
         <div class="column">
             <h1 class="ui violet header">회원 정보 수정</h1>
-            <form accept-charset="UTF-8" action="/player/edit" enctype="multipart/form-data" method="post">
+            <form accept-charset="UTF-8" action="/players/edit" enctype="multipart/form-data" method="post">
                 <div class="ui form">
                     <div class="field">
                         <img alt="profile_img" class="ui image user_profile" th:src="${model.profile}">
@@ -24,7 +24,8 @@
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input name="nickname" placeholder="닉네임 입력" type="text"/>
+                            <input name="nickname" placeholder="닉네임 입력" th:value="${session.login.nickname}"
+                                   type="text"/>
                             <input name="email" th:value="${session.login.email}" type="hidden"/>
                         </div>
                     </div>
@@ -41,7 +42,10 @@
                         </div>
                     </div>
                     <div class="field">
-                        <textarea name="statusMessage" placeholder="상태 메세지" type="password"></textarea>
+                        <textarea name="statusMessage" placeholder="상태 메세지" th:text="${session.login.statusMessage}"
+                                  type="password">
+
+                        </textarea>
                     </div>
                     <div class="field">
                         <button class="ui fluid violet large submit button" type="submit">수정 완료</button>

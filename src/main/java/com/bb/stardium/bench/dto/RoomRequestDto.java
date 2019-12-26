@@ -2,6 +2,7 @@ package com.bb.stardium.bench.dto;
 
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
+import com.bb.stardium.common.util.EscapedCharacters;
 import com.bb.stardium.player.domain.Player;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -57,8 +58,8 @@ public class RoomRequestDto {
 
     public Room toEntity(Player player) {
         return Room.builder()
-                .title(this.title)
-                .intro(this.intro)
+                .title(EscapedCharacters.of(this.title))
+                .intro(EscapedCharacters.of(this.intro))
                 .address(this.address)
                 .startTime(this.startTime)
                 .endTime(this.endTime)

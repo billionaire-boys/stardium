@@ -5,10 +5,11 @@ import com.bb.stardium.bench.domain.repository.RoomRepository;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.bench.dto.RoomResponseDto;
 import com.bb.stardium.bench.service.exception.AlreadyJoinedException;
+import com.bb.stardium.bench.service.exception.FixedReadyRoomException;
 import com.bb.stardium.bench.service.exception.MasterAndRoomNotMatchedException;
 import com.bb.stardium.bench.service.exception.NotFoundRoomException;
 import com.bb.stardium.player.domain.Player;
-import com.bb.stardium.player.service.PlayerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,16 +17,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 @Transactional
 public class RoomService {
-    private final RoomRepository roomRepository;
-    private final PlayerService playerService;
 
-    public RoomService(RoomRepository roomRepository, PlayerService playerService) {
-        this.roomRepository = roomRepository;
-        this.playerService = playerService;
-    }
+    private final RoomRepository roomRepository;
 
     public long create(RoomRequestDto roomRequest, Player player) {
         Room room = roomRequest.toEntity(player);
@@ -48,11 +45,13 @@ public class RoomService {
         }
     }
 
-    public boolean delete(long roomId, String playerEmail) {
+    public boolean delete(long roomId, Player loggedInPlayer) {
         Room room = roomRepository.findById(roomId).orElseThrow(NotFoundRoomException::new);
-        Player loginPlayer = playerService.findByPlayerEmail(playerEmail);
-        if (room.isNotMaster(loginPlayer)) {
+        if (room.isNotMaster(loggedInPlayer)) {
             throw new MasterAndRoomNotMatchedException();
+        }
+        if (room.isReady()) {
+            throw new FixedReadyRoomException();
         }
         roomRepository.delete(room);
         return true;
@@ -75,22 +74,24 @@ public class RoomService {
                 .collect(Collectors.toList());
     }
 
-    public void join(String email, Long roomId) {
-        Player player = playerService.findByPlayerEmail(email);
+    public Room join(Player loggedInPlayer, Long roomId) {
         Room room = findRoom(roomId);
-        if (room.hasPlayer(player)) {
+        if (room.hasPlayer(loggedInPlayer)) {
             throw new AlreadyJoinedException();
         }
 
-        room.addPlayer(player);
+        room.addPlayer(loggedInPlayer);
+        return room;
     }
 
-    public Room quit(String email, Long roomId) {
-        Player player = playerService.findByPlayerEmail(email);
+    public void quit(Player loggedInPlayer, Long roomId) {
         Room room = findRoom(roomId);
 
-        room.removePlayer(player);
-        return player.removeRoom(room);
+        if (room.isReady()) {
+            throw new FixedReadyRoomException();
+        }
+
+        room.removePlayer(loggedInPlayer);
     }
 
     @Transactional(readOnly = true)
@@ -125,4 +126,5 @@ public class RoomService {
                 .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
     }
+
 }

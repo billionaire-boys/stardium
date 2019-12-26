@@ -1,27 +1,41 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/main_layout">
+      layout:decorator="layout/main-layout">
 
-<th:block layout:fragment="custom_head">
+<th:block layout:fragment="custom-head">
     <title>스타디움</title>
 </th:block>
 
-<th:block layout:fragment="content_menu">
+<th:block layout:fragment="content-menu">
     <th:block th:replace="fragment/menu"/>
 </th:block>
 
-<th:block layout:fragment="content_header">
-    <th:block th:replace="fragment/main_header"/>
+<th:block layout:fragment="content-header">
+    <div class="segments">
+        <th:block th:replace="fragment/main-header"/>
+        <div class="segment">
+            <div class="ui two item menu" style="margin-top: 0; margin-bottom: 0;">
+                <select class="ui dropdown" id="selectOption" name="지역">
+                    <option>지역</option>
+                    <option th:each="section : ${sections}" th:text="${section}"></option>
+                </select>
+                <div class="ui action input">
+                    <input type="text" placeholder="Search" id="search-keyword">
+                    <button class="ui violet submit button" id="search-button">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </th:block>
 
-<th:block layout:fragment="content_body">
+<th:block layout:fragment="content-body">
     <div class="ui segments">
         <div class="ui segment">
-            <div class="ui cards">
+            <div class="ui cards" id="room-list">
                 <div class="card" style="width: 100%;" th:if="${!rooms.isEmpty()}" th:each="room : ${rooms}">
                     <div class="content">
-                        <img class="right floated mini ui image" src="/images/default_profile_img.png">
+                        <img class="right floated mini ui image" th:src="${room.master.profile.url}">
                         <div class="header" th:text="${room.title}">
                             방 제목
                         </div>
@@ -40,27 +54,25 @@
                             일시 : 언제 농구 할 것인가
                         </div>
                         <div class="summary" th:text="'인원 : ' +${room.playLimits}">
-                            인원 : 10명
+                            인원 : 몇 명이서 할 것인가
                         </div>
                         <div class="summary" th:text="'들어온 인원: ' + ${room.playerCount}">
                             들어온 인원: 1명
                         </div>
                     </div>
                     <div class="extra content">
-                        <div class="extra content">
-                            <button class="ui fluid basic violet button"
-                                    th:onclick="'window.location.href=\'/rooms/' + ${room.id} + '\''">상세 보기
-                            </button>
-                        </div>
+                        <button class="ui fluid violet button room-join-button" th:data-room-id="${room.id}">참여하기
+                        </button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </th:block>
 
-<th:block layout:fragment="custom_js">
+<th:block layout:fragment="custom-js">
     <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/fetch-api.js"></script>
+    <script type="text/javascript" src="/js/room.js"></script>
 </th:block>
 </html>

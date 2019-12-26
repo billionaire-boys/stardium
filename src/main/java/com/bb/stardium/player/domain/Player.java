@@ -12,12 +12,12 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
 @Getter
 @EqualsAndHashCode(of = "id")
+@Entity
 public class Player {
 
     @Id
@@ -74,5 +74,9 @@ public class Player {
     public Room removeRoom(Room room) {
         rooms.remove(room);
         return room;
+    }
+
+    public boolean isSamePlayer(final long playerId, final String email) {
+        return this.id == playerId && this.email.equals(email);
     }
 }

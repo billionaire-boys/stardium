@@ -76,9 +76,9 @@ public class Room {
         return players.contains(player);
     }
 
-    public Player removePlayer(Player player) {
-        players.remove(player);
-        return player;
+    public void removePlayer(Player player) {
+        player.removeRoom(this);
+        this.players.remove(player);
     }
 
     public boolean isUnexpiredRoom() {
@@ -87,5 +87,9 @@ public class Room {
 
     public boolean hasRemainingSeat() {
         return this.playersLimit - players.size() > EMPTY_SEAT;
+    }
+
+    public boolean isReady() {
+        return !hasRemainingSeat();
     }
 }

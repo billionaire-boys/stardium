@@ -5,7 +5,7 @@ import com.bb.stardium.chat.dto.ChatMessageRequestDto;
 import com.bb.stardium.chat.dto.ChatMessageResponseDto;
 import com.bb.stardium.chat.repository.ChatMessageRepository;
 import com.bb.stardium.player.service.PlayerService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,18 +13,16 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
+@Service
 public class ChatService {
 
-    private PlayerService playerService;
-    private ChatMessageRepository chatMessageRepository;
+    private final PlayerService playerService;
+    private final ChatMessageRepository chatMessageRepository;
 
     public ChatMessage saveMessage(final ChatMessageRequestDto requestDto) {
-        final ChatMessage message = getMessage(requestDto);
-        chatMessageRepository.save(message);
-        return message;
+        return chatMessageRepository.save(getMessageWithAdditionalInfo(requestDto));
     }
 
     @Transactional(readOnly = true)
@@ -36,16 +34,9 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
-    private ChatMessage getMessage(final ChatMessageRequestDto requestDto) {
-        // TODO: 데이터 sanitize
+    private ChatMessage getMessageWithAdditionalInfo(final ChatMessageRequestDto requestDto) {
         final String nickname = playerService.findNicknameByPlayerId(requestDto.getPlayerId());
-
-        return ChatMessage.builder()
-                .roomId(requestDto.getRoomId())
-                .playerId(requestDto.getPlayerId())
-                .playerNickname(nickname)
-                .contents(requestDto.getContents())
-                .timestamp(OffsetDateTime.now())
-                .build();
+        return requestDto.toEntity(nickname, OffsetDateTime.now());
     }
+
 }

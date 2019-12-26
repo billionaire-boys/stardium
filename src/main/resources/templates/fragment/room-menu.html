@@ -1,0 +1,29 @@
+<th:block th:fragment="room-menu-fragment" xmlns:th="http://www.thymeleaf.org">
+    <div class="ui small secondary inverted menu" style="margin-bottom: 0">
+        <div class="toc item">
+            <a href="/">
+                <i class="angle double left icon black"></i>
+            </a>
+            <div class="item">
+                <h1 class="ui violet header" th:text="${room.title}">title</h1>
+            </div>
+        </div>
+        <div class="right item main menu">
+            <div class="ui gray segment fluid submit button" id="update-room-button"
+                 th:if="${session.login.nickname == room.master.nickname && !room.isReady()}"
+                 th:onclick="'window.location.href=\'/rooms/update-room/' + ${room.id} + '\''">
+                <i class="gray gavel icon" style="margin: auto"></i>
+            </div>
+
+            <div class="ui gray segment fluid submit button" id="quit-button"
+                 th:if="${session.login.nickname != room.master.nickname && !room.isReady()}">
+                <i class="gray sign out alternate icon" style="margin: auto"></i>
+            </div>
+
+            <div class="ui gray segment fluid submit button" id="delete-room-button"
+                 th:if="${session.login.nickname == room.master.nickname && !room.isReady()}">
+                <i class="gray trash alternate icon" style="margin: auto"></i>
+            </div>
+        </div>
+    </div>
+</th:block>
