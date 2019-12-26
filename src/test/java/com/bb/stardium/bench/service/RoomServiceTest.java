@@ -261,14 +261,14 @@ class RoomServiceTest {
         List<Room> rooms = Lists.newArrayList(room1, room);
 
         // given
-        given(roomRepository.findAllByAddressSection(eq(section), any(Sort.class)))
+        given(roomRepository.findAllByAddressSectionOrderByStartTimeAsc(eq(section)))
                 .willReturn(rooms);
 
         // when
         List<RoomResponseDto> reuslts = roomService.findRoomsFilterBySection(section);
 
         // then
-        verify(roomRepository).findAllByAddressSection(eq(section), any(Sort.class));
+        verify(roomRepository).findAllByAddressSectionOrderByStartTimeAsc(eq(section));
     }
 
 }
