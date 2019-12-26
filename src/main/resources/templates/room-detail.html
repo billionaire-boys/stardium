@@ -23,12 +23,13 @@
     <div class="ui container">
         <input id="room-id" th:value="${room.id}" type="hidden">
         <input id="player-id" th:value="${session.login.playerId}" type="hidden">
+        <input id="player-nickname" th:value="${session.login.nickname}" type="hidden">
 
         <div class="ui form">
             <div class="field">
                 <h3 class="ui dividing header">대화방</h3>
                 <div class="ui segment">
-                    <div class="chat-div" id="chat-box"></div>
+                    <div class="chat-div ui items" id="chat-box"></div>
                     <div class="ui input action fluid">
                         <input id="chat-input" type="text"/>
                         <button class="ui primary button active" id="chat-send-button">보내기</button>

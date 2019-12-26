@@ -5,6 +5,14 @@
     border-radius: 30px;
 }
 
+.date {
+    color: #0e8c8c;
+}
+
+.text {
+    font-weight: bold;
+}
+
 .action.input {
     width: 100%;
 }
@@ -39,4 +47,12 @@
     margin-bottom: 1rem;
     overflow-y: scroll;
     height: 15rem;
+}
+
+.my-comment {
+    display: inline-block;
+    text-align: right;
+}
+.my-comment.content {
+    margin-right: 20px;
 }
