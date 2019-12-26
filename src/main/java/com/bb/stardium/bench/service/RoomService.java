@@ -115,8 +115,7 @@ public class RoomService {
 
     @Transactional(readOnly = true)
     public List<RoomResponseDto> findRoomsFilterBySection(String section) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "start_time");
-        return roomRepository.findAllByAddressSection(section, sort).stream()
+        return roomRepository.findAllByAddressSectionOrderByStartTimeAsc(section).stream()
                 .filter(Room::isUnexpiredRoom)
                 .map(RoomResponseDto::new)
                 .collect(Collectors.toList());

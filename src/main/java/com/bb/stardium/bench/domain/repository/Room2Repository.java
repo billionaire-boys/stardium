@@ -14,7 +14,5 @@ public interface Room2Repository extends JpaRepository<Room, Long> {
 
     List<Room> findAllByAddressSectionOrderByStartTimeAsc(final String section);
 
-    List<Room> findAllByAddressSection(String section, Sort sortable);
-
     List<Room> findAllByDescriptionTitleContaining(final String searchKeyword);
 }
