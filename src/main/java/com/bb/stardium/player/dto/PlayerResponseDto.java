@@ -1,21 +1,27 @@
 package com.bb.stardium.player.dto;
 
+import com.bb.stardium.mediafile.domain.MediaFile;
 import com.bb.stardium.player.domain.Player;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
+@NoArgsConstructor
 @Getter
-@Setter
-@ToString
 public class PlayerResponseDto {
+    private Long playerId;
     private String nickname;
     private String email;
     private String statusMessage;
+    private String profile;
 
     public PlayerResponseDto(final Player player) {
-        this(player.getNickname(), player.getEmail(), player.getStatusMessage());
+        this.playerId = player.getId();
+        this.nickname = player.getNickname();
+        this.email = player.getEmail();
+        this.statusMessage = player.getStatusMessage();
+        MediaFile profile = player.getProfile();
+        if (profile != null) {
+            this.profile = player.getProfile().getUrl();
+        }
     }
 }

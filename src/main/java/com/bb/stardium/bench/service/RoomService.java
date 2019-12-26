@@ -12,9 +12,6 @@ import com.bb.stardium.player.service.PlayerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +28,7 @@ public class RoomService {
     }
 
     public long create(RoomRequestDto roomRequest, Player player) {
-        Room room = toEntity(roomRequest, player);
+        Room room = roomRequest.toEntity(player);
         room.addPlayer(player);
         Room saveRoom = roomRepository.save(room);
         return saveRoom.getId();
@@ -41,7 +38,7 @@ public class RoomService {
         Room room = roomRepository.findById(roomId).orElseThrow(NotFoundRoomException::new);
         checkRoomMaster(player, room);
 
-        room.update(toEntity(roomRequestDto, player));
+        room.update(roomRequestDto.toEntity(player));
         return room.getId();
     }
 
@@ -51,9 +48,12 @@ public class RoomService {
         }
     }
 
-    public boolean delete(long roomId) {
-        Room room = roomRepository.findById(roomId)
-                .orElseThrow(NotFoundRoomException::new);
+    public boolean delete(long roomId, String playerEmail) {
+        Room room = roomRepository.findById(roomId).orElseThrow(NotFoundRoomException::new);
+        Player loginPlayer = playerService.findByPlayerEmail(playerEmail);
+        if (room.isNotMaster(loginPlayer)) {
+            throw new MasterAndRoomNotMatchedException();
+        }
         roomRepository.delete(room);
         return true;
     }
@@ -64,47 +64,15 @@ public class RoomService {
                 .orElseThrow(NotFoundRoomException::new);
     }
 
-    public List<RoomResponseDto> findAllRooms() {
+    public List<RoomResponseDto> findAllRooms() { // TODO: 필요한지 논의
         List<Room> rooms = roomRepository.findAll();
         return toResponseDtos(rooms);
     }
 
-    private Room toEntity(RoomRequestDto roomRequestDto, Player player) {
-        return Room.builder()
-                .title(roomRequestDto.getTitle())
-                .intro(roomRequestDto.getIntro())
-                .address(roomRequestDto.getAddress())
-                .startTime(roomRequestDto.getStartTime())
-                .endTime(roomRequestDto.getEndTime())
-                .playersLimit(roomRequestDto.getPlayersLimit())
-                .master(player)
-                .players(new ArrayList<>())
-                .build();
-    }
-
     private List<RoomResponseDto> toResponseDtos(List<Room> rooms) {
         return rooms.stream()
-                .map(this::toResponseDto)
+                .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
-    }
-
-    // TODO : service에서 뷰를 고려해서 만들어 보내주는 게 어색함. 리팩토링 필요할듯
-    private RoomResponseDto toResponseDto(Room room) {
-        return RoomResponseDto.builder()
-                .title(room.getTitle())
-                .intro(room.getIntro())
-                .address(String.format("%s %s %s",
-                        room.getAddress().getCity(),
-                        room.getAddress().getSection(),
-                        room.getAddress().getDetail()))
-                .playTime(String.format("%s - %s",
-                        room.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                        room.getEndTime().format(DateTimeFormatter.ofPattern("dd"))))
-                .playLimits(room.getPlayersLimit())
-                .master(room.getMaster())
-                .id(room.getId())
-                .playerCount(room.getPlayers().size())
-                .build();
     }
 
     public void join(String email, Long roomId) {
@@ -125,28 +93,36 @@ public class RoomService {
         return player.removeRoom(room);
     }
 
-    private boolean isUnexpiredRoom(Room room) {
-        return room.getStartTime().isAfter(LocalDateTime.now());
-    }
-
-    private boolean hasRemainingSeat(Room room) {
-        return (room.getPlayersLimit() - room.getPlayers().size()) > 0;
-    }
-
+    @Transactional(readOnly = true)
     public List<RoomResponseDto> findAllUnexpiredRooms() {
         return roomRepository.findAll().stream()
-                .filter(this::isUnexpiredRoom)
-                .filter(this::hasRemainingSeat)
+                .filter(Room::isUnexpiredRoom)
+                .filter(Room::hasRemainingSeat)
                 .sorted(Comparator.comparing(Room::getStartTime)) // TODO: 추후 추출? 혹은 쿼리 등 다른 방법?
-                .map(this::toResponseDto)
+                .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<RoomResponseDto> findPlayerJoinedRoom(Player player) {
         return roomRepository.findByPlayers_Email(player.getEmail()).stream()
                 .sorted(Comparator.comparing(Room::getStartTime))
-                .map(this::toResponseDto)
+                .map(RoomResponseDto::new)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<RoomResponseDto> findRoomsFilterBySection(String section) {
+        return roomRepository.findAllByAddressSectionOrderByStartTimeAsc(section).stream()
+                .filter(Room::isUnexpiredRoom)
+                .map(RoomResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<RoomResponseDto> findRoomBySearchKeyword(String searchKeyword) {
+        return roomRepository.findAllByTitleContaining(searchKeyword).stream()
+                .filter(Room::isUnexpiredRoom)
+                .map(RoomResponseDto::new)
+                .collect(Collectors.toList());
+    }
 }

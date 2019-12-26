@@ -3,7 +3,10 @@ package com.bb.stardium.bench.dto;
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.domain.Room;
 import com.bb.stardium.player.domain.Player;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class RoomRequestDto {
@@ -28,9 +30,13 @@ public class RoomRequestDto {
     private Address address;
 
     @Future
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime startTime;
 
     @Future
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime endTime;
 
     @Min(value = 2)
@@ -38,14 +44,26 @@ public class RoomRequestDto {
 
     private Player master;
 
-    public Room toEntity() {
+    @Builder
+    public RoomRequestDto(@NotBlank String title, @NotBlank String intro, Address address, @Future LocalDateTime startTime, @Future LocalDateTime endTime, @Min(value = 2) int playersLimit, Player master) {
+        this.title = title;
+        this.intro = intro;
+        this.address = address;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.playersLimit = playersLimit;
+        this.master = master;
+    }
+
+    public Room toEntity(Player player) {
         return Room.builder()
-                .title(title)
-                .intro(intro)
-                .address(address)
-                .startTime(startTime)
-                .endTime(endTime)
-                .playersLimit(playersLimit)
+                .title(this.title)
+                .intro(this.intro)
+                .address(this.address)
+                .startTime(this.startTime)
+                .endTime(this.endTime)
+                .playersLimit(this.playersLimit)
+                .master(player)
                 .players(new ArrayList<>())
                 .build();
     }

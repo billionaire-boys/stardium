@@ -33,7 +33,11 @@ class PlayerServiceTest {
 
     @BeforeEach
     void setUp() {
-        requestDto = new PlayerRequestDto("nickname", "email", "password", "별일 없이 산다");
+        requestDto = new PlayerRequestDto();
+        requestDto.setNickname("nickname");
+        requestDto.setEmail("email@email.com");
+        requestDto.setPassword("password");
+        requestDto.setStatusMessage("별일 없이 산다");
         player = requestDto.toEntity();
     }
 
@@ -52,6 +56,7 @@ class PlayerServiceTest {
     @DisplayName("이미 가입된 이메일로 가입 시도")
     void alreadyRegistered() {
         given(playerRepository.findByEmail(anyString())).willReturn(Optional.of(player));
+        given(playerRepository.existsByEmail(anyString())).willReturn(true);
 
         assertThatThrownBy(() -> playerService.register(requestDto))
                 .isInstanceOf(EmailAlreadyExistException.class);
@@ -60,11 +65,11 @@ class PlayerServiceTest {
     @Test
     @DisplayName("로그인 성공")
     void login() {
-        given(playerRepository.findByEmail("email")).willReturn(Optional.of(player));
+        given(playerRepository.findByEmail("email@email.com")).willReturn(Optional.of(player));
 
         PlayerResponseDto responseDto = playerService.login(requestDto);
 
-        verify(playerRepository).findByEmail("email");
+        verify(playerRepository).findByEmail("email@email.com");
     }
 
     @Test
@@ -79,7 +84,12 @@ class PlayerServiceTest {
     @Test
     @DisplayName("잘못된 패스워드로 로그인 시도")
     void wrongPassword() {
-        PlayerRequestDto wrongPasswordDto = new PlayerRequestDto("nickname", "email", "wrong", "핫하 죽어라");
+        PlayerRequestDto wrongPasswordDto = new PlayerRequestDto();
+        wrongPasswordDto.setNickname("nickname");
+        wrongPasswordDto.setEmail("email@email.com");
+        wrongPasswordDto.setPassword("wrongPassword");
+        wrongPasswordDto.setStatusMessage("핫하 죽어라");
+
         given(playerRepository.findByEmail(anyString())).willReturn(Optional.of(player));
 
         assertThatThrownBy(() -> playerService.login(wrongPasswordDto))

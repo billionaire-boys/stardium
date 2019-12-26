@@ -1,5 +1,3 @@
-package com.bb.stardium.acceptance;
-
 import com.bb.stardium.bench.domain.Address;
 import com.bb.stardium.bench.dto.RoomRequestDto;
 import com.bb.stardium.player.domain.Player;
@@ -9,28 +7,34 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@Disabled
 class RoomTest extends BaseAcceptanceTest {
     private RoomRequestDto roomRequestDto;
-    private Player masterPlayer1;
+    private Player masterPlayer;
 
     @BeforeEach
     void setUp() {
-        masterPlayer1 = new Player("master1", "master1@mail.net", "password");
+        masterPlayer = Player.builder()
+                .nickname("master")
+                .nickname("master@mail.com")
+                .password("password")
+                .build();
+
         roomRequestDto = new RoomRequestDto("title", "intro",
-                new Address("서울시", "송파구", "루터회관"),
-                LocalDateTime.now().plusHours(2L), LocalDateTime.now().plusHours(3L), 3, masterPlayer1);
+                Address.builder()
+                        .city("서울시").section("송파구").detail("루터회관 앞")
+                        .build(),
+                LocalDateTime.now(), LocalDateTime.now().plusHours(1L), 3, masterPlayer);
     }
 
     @Test
     @DisplayName("사용자가 방을 만들고 들어가고 나올 수 있다")
     void joinRoom() {
-        PlayerRequestDto createPlayer = new PlayerRequestDto("test", "create@room.com", "A!1bcdefg", "");
+        PlayerRequestDto createPlayer = new PlayerRequestDto("test", "create@room", "password", "");
         Long roomNumber = newSessionPost(createPlayer, "/rooms")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(roomRequestDto), RoomRequestDto.class)
@@ -40,6 +44,7 @@ class RoomTest extends BaseAcceptanceTest {
                 .expectBody(Long.class)
                 .returnResult()
                 .getResponseBody();
+
 
         PlayerRequestDto joinPlayer = new PlayerRequestDto("join", "join@room.com", "A!1bcdefg", "dd");
         newSessionPost(joinPlayer, "rooms/join/" + roomNumber)
@@ -58,11 +63,10 @@ class RoomTest extends BaseAcceptanceTest {
 
     @Test
     @DisplayName("방 주인이 방을 나가면 방이 사라진다")
-    @Disabled
     void quitRoom() {
         PlayerRequestDto dto = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg", "Dd");
 
-        String roomUri = newSessionPost(dto, "/rooms/new")
+        String roomUri = newSessionPost(dto, "/rooms")
                 .body(Mono.just(roomRequestDto), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()
@@ -80,11 +84,10 @@ class RoomTest extends BaseAcceptanceTest {
 
     @Test
     @DisplayName("방 주인만이 방 정보를 수정할 수 있다")
-    @Disabled
     void updateRoom() {
         PlayerRequestDto masterPlayer = new PlayerRequestDto("test", "master@room.com", "A!1bcdefg", "Dd");
 
-        String roomUri = newSessionPost(masterPlayer, "/rooms/new")
+        String roomUri = newSessionPost(masterPlayer, "/rooms")
                 .body(Mono.just(roomRequestDto), RoomRequestDto.class)
                 .exchange()
                 .expectStatus()

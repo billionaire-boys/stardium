@@ -24,11 +24,35 @@ const ROOM_APP = (() => {
             quitButton ? quitButton.addEventListener('click', roomService.quitRoom) : undefined;
         };
 
+        const deleteRoom = () => {
+            const deleteButton = document.getElementById('delete-room-button');
+            deleteButton ? deleteButton.addEventListener('click', roomService.deleteRoom) : undefined;
+        };
+
+        const findRoom = () => {
+            const sectionOption = document.getElementById('selectOption');
+            sectionOption ? sectionOption.addEventListener('change', roomService.findRoomsBySection) : undefined;
+        };
+
+        const searchRoom = () => {
+            const searchButton = document.getElementById('search-button');
+            searchButton ? searchButton.addEventListener('click', roomService.searchRoomByButton) : undefined;
+        };
+
+        const searchInput = () => {
+            const searchInput = document.getElementById('search-keyword');
+            searchInput ? searchInput.addEventListener('keyup', roomService.searchRoom) : undefined;
+        };
+
         const init = () => {
             signUp();
             update();
             join();
             quit();
+            deleteRoom();
+            findRoom();
+            searchRoom();
+            searchInput();
         };
 
         return {
@@ -43,6 +67,9 @@ const ROOM_APP = (() => {
             'Accept': 'application/json'
         };
 
+        let roomId = document.getElementById('room-id');
+        roomId = roomId ? roomId.value : 0;
+
         const saveRoom = event => {
             const title = document.getElementById('title').value;
             const city = document.getElementById('city').value;
@@ -54,7 +81,6 @@ const ROOM_APP = (() => {
             const intro = document.getElementById('intro').value;
 
             event.preventDefault();
-            console.log(title, city, section, detail, startTime, endTime, playersLimit, intro);
 
             if (title === "" || city === "" || section === "" || detail === "" ||
                 startTime === "" || endTime === "" || playersLimit === "" && intro === "") {
@@ -110,8 +136,6 @@ const ROOM_APP = (() => {
                     window.location.href = `/rooms/${data}`
                 })
             };
-            const roomId = document.getElementById('roomId').value;
-
 
             connector.fetchTemplate('/rooms/' + roomId,
                 connector.PUT,
@@ -146,22 +170,55 @@ const ROOM_APP = (() => {
             const ifSucceed = (response) => {
                 response.json().then(data => {
                     alert("나가는 데 성공했습니다!");
-                    window.location.href = `/rooms/`
+                    window.location.href = `/rooms`
                 })
             };
-            const roomId = document.getElementById('roomId').value;
 
             connector.fetchTemplateWithoutBody('/rooms/quit/' + roomId,
                 connector.POST,
                 ifSucceed
             );
-        }
+        };
+
+        const deleteRoom = (event) => {
+            const ifSucceed = (response) => {
+                alert('방을 삭제하였습니다!');
+                window.location.href = '/';
+            };
+
+            connector.fetchTemplateWithoutBody('/rooms/' + roomId,
+                connector.DELETE,
+                ifSucceed
+            );
+        };
+
+        const findRoomsBySection = () => {
+            const selectedOption = document.getElementById('selectOption').selectedOptions[0].value;
+
+            window.location.href = '/' + selectedOption;
+        };
+
+        const searchRoom = (event) => {
+            if (event.key === "Enter") {
+                const searchKeyword = document.getElementById('search-keyword').value;
+                window.location.href = `/search/${searchKeyword}`;
+            }
+        };
+
+        const searchRoomByButton = (event) => {
+            const searchKeyword = document.getElementById('search-keyword').value;
+            window.location.href = `/search/${searchKeyword}`;
+        };
 
         return {
             saveRoom,
             updateRoom,
             joinRoom,
-            quitRoom
+            quitRoom,
+            deleteRoom,
+            findRoomsBySection,
+            searchRoom,
+            searchRoomByButton
         }
     };
 
@@ -171,7 +228,7 @@ const ROOM_APP = (() => {
     };
 
     return {
-        init,
+        init
     }
 })();
 

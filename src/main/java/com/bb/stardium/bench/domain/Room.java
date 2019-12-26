@@ -1,10 +1,8 @@
 package com.bb.stardium.bench.domain;
 
+import com.bb.stardium.bench.domain.exception.PlayerAlreadyExistException;
 import com.bb.stardium.player.domain.Player;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -12,12 +10,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
+@Entity
 public class Room {
+
+    private static final int EMPTY_SEAT = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,11 +44,12 @@ public class Room {
     @JoinColumn(name = "master_id")
     private Player master;
 
+    @Builder.Default
     @ManyToMany
     @JoinTable(name = "player_room",
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "player_id"))
-    private List<Player> players = new ArrayList<Player>();
+    private List<Player> players = new ArrayList<>();
 
     public void update(Room updatedRoom) {
         this.title = updatedRoom.getTitle();
@@ -63,6 +65,9 @@ public class Room {
     }
 
     public void addPlayer(Player player) {
+        if (hasPlayer(player)) {
+            throw new PlayerAlreadyExistException();
+        }
         this.players.add(player);
         player.addRoom(this);
     }
@@ -74,5 +79,13 @@ public class Room {
     public Player removePlayer(Player player) {
         players.remove(player);
         return player;
+    }
+
+    public boolean isUnexpiredRoom() {
+        return this.getStartTime().isAfter(LocalDateTime.now());
+    }
+
+    public boolean hasRemainingSeat() {
+        return this.playersLimit - players.size() > EMPTY_SEAT;
     }
 }

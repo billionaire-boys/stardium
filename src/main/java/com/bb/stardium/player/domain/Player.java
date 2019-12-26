@@ -1,9 +1,9 @@
 package com.bb.stardium.player.domain;
 
+
 import com.bb.stardium.bench.domain.Room;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import com.bb.stardium.mediafile.domain.MediaFile;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -13,9 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Getter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
+@EqualsAndHashCode(of = "id")
 public class Player {
 
     @Id
@@ -23,40 +25,32 @@ public class Player {
     private Long id;
 
     @CreationTimestamp
-    private OffsetDateTime createdDateTime;
+    private OffsetDateTime createDateTime;
 
     @UpdateTimestamp
-    private OffsetDateTime updatedDateTime;
+    private OffsetDateTime updateDateTime;
 
     @Column(name = "nickname", length = 64, nullable = false, unique = true)
     private String nickname;
 
     @Column(name = "email", length = 64, nullable = false, unique = true)
-    @EqualsAndHashCode.Include
     private String email;
 
     @Column(name = "password", length = 64, nullable = false)
     private String password;
 
-    @Column(name = "statusMessage")
+    @Builder.Default
+    @Column(name = "statusMessage", length = 255)
     private String statusMessage = "";
 
+    @Builder.Default
     @ManyToMany(mappedBy = "players")
     private List<Room> rooms = new ArrayList<>();
 
-    protected Player() {
-        this.updatedDateTime = OffsetDateTime.now();
-    }
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private MediaFile profile;
 
-    public Player(final String nickname, final String email, final String password) {
-        this();
-        this.nickname = nickname;
-        this.email = email;
-        this.password = password;
-    }
-
-    public Player(final String nickname, final String email, final String password, final String statusMessage) {
-        this(nickname, email, password);
+    public void updateStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
     }
 
@@ -65,7 +59,7 @@ public class Player {
         this.email = newPlayer.email;
         this.password = newPlayer.password;
         this.statusMessage = newPlayer.statusMessage;
-        this.updatedDateTime = OffsetDateTime.now();
+        this.profile = newPlayer.profile;
         return this;
     }
 
