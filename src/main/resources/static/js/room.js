@@ -60,7 +60,7 @@ const ROOM_APP = (() => {
         }
     };
 
-    const RoomService = function () {
+    function RoomService() {
         const connector = FETCH_APP.FetchApi();
         const header = {
             'Content-Type': 'application/json; charset=UTF-8',
@@ -73,7 +73,7 @@ const ROOM_APP = (() => {
         const roomBasicInfoItemIds = ['title', 'city', 'section', 'detail', 'gameDate', 'startTime'
             , 'endTime', 'playersLimit', 'intro'];
 
-        function getBasicInfoItems(roomBasicInfoItemIds) {
+        const getBasicInfoItems = (roomBasicInfoItemIds) => {
             let roomBasicInfoItems = new Map();
             for (const id of roomBasicInfoItemIds) {
                 roomBasicInfoItems.set(id, document.getElementById(id).value);
@@ -81,7 +81,7 @@ const ROOM_APP = (() => {
             return roomBasicInfoItems;
         }
 
-        function noneBlank(roomBasicInfoItems) {
+        const noneBlank = (roomBasicInfoItems) => {
             for (const value of roomBasicInfoItems.values()) {
                 if (value === "") {
                     return false;
@@ -90,7 +90,7 @@ const ROOM_APP = (() => {
             return true;
         }
 
-        function toRoomBasicInfo(roomBasicInfoItems) {
+        const toRoomBasicInfo = (roomBasicInfoItems) => {
             return {
                 title: roomBasicInfoItems.get('title'),
                 address: {
@@ -106,22 +106,23 @@ const ROOM_APP = (() => {
         }
 
         const saveRoom = event => {
-
             event.preventDefault();
-
             const roomBasicInfoItems = getBasicInfoItems(roomBasicInfoItemIds);
 
             if (noneBlank(roomBasicInfoItems) === false) {
                 alert('모든 항목을 입력해주세요!');
                 return;
             }
-
             const roomBasicInfo = toRoomBasicInfo(roomBasicInfoItems);
+            
+            if(new Date(roomBasicInfo.startTime) - new Date(roomBasicInfo.endTime) > 0) {
+                alert('시작 시간은 종료 시간보다 일러야 합니다.');
+                return;
+            }
 
             const ifSucceed = (response) => {
-                response.json().then(data => {
-                    window.location.href = `/rooms/${data}`
-                })
+                response.json()
+                    .then(data => window.location.href = `/rooms/${data}`)
             };
 
             connector.fetchTemplate('/rooms',
@@ -143,6 +144,11 @@ const ROOM_APP = (() => {
             }
 
             const roomBasicInfo = toRoomBasicInfo(roomBasicInfoItems);
+
+            if(new Date(startTime) - new Date(endTime) > 0) {
+                alert('시작 시간은 종료 시간보다 일러야 합니다.');
+                return;
+            }
 
             const ifSucceed = (response) => {
                 response.json().then(data => {
@@ -181,8 +187,8 @@ const ROOM_APP = (() => {
         const quitRoom = () => {
 
             const ifSucceed = () => {
-                    alert("나가는 데 성공했습니다!");
-                    window.location.href = `/rooms`
+                alert("나가는 데 성공했습니다!");
+                window.location.href = `/rooms`
             };
 
             connector.fetchTemplateWithoutBody('/rooms/quit/' + roomId,
