@@ -1,0 +1,12 @@
+<body th:fragment="bodyFragment" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<div class="body_div_margin">
+    <th:block layout:fragment="content_menu"></th:block>
+    <th:block layout:fragment="content_header"></th:block>
+    <th:block layout:fragment="content_body"></th:block>
+    <th:block layout:fragment="content_footer"></th:block>
+
+    <th:block th:replace="fragment/script"/>
+    <th:block layout:fragment="custom_js"></th:block>
+</div>
+</body>

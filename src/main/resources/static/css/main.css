@@ -1,0 +1,24 @@
+body > .grid {
+    height: 100%;
+}
+
+.column {
+    max-width: 450px;
+}
+
+.div_signup {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.body_div_margin {
+    margin: 1rem;
+}
+
+.card_max_width {
+    width: 100%;
+}
+
+.basic_padding {
+    padding: 1rem;
+}
